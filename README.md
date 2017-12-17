@@ -1,31 +1,29 @@
 
-     ,-----.,--.                  ,--. ,---.   ,--.,------.  ,------.
-    '  .--./|  | ,---. ,--.,--. ,-|  || o   \  |  ||  .-.  \ |  .---'
-    |  |    |  || .-. ||  ||  |' .-. |`..'  |  |  ||  |  \  :|  `--, 
-    '  '--'\|  |' '-' ''  ''  '\ `-' | .'  /   |  ||  '--'  /|  `---.
-     `-----'`--' `---'  `----'  `---'  `--'    `--'`-------' `------'
-    ----------------------------------------------------------------- 
+________          __              .___            .__                  .__        
+\______ \ _____ _/  |______     __| _/____ ______ |  |   ____ ___.__.  |__| ____  
+ |    |  \\__  \\   __\__  \   / __ |/ __ \\____ \|  |  /  _ <   |  |  |  |/  _ \ 
+ |    `   \/ __ \|  |  / __ \_/ /_/ \  ___/|  |_> >  |_(  <_> )___  |  |  (  <_> )
+/_______  (____  /__| (____  /\____ |\___  >   __/|____/\____// ____| /\__|\____/ 
+        \/     \/          \/      \/    \/|__|               \/      \/          
+__________                __          __                         
+\______   \_______  _____/  |_  _____/  |_ ___.__.______   ____  
+ |     ___/\_  __ \/  _ \   __\/  _ \   __<   |  |\____ \_/ __ \ 
+ |    |     |  | \(  <_> )  | (  <_> )  |  \___  ||  |_> >  ___/ 
+ |____|     |__|   \____/|__|  \____/|__|  / ____||   __/ \___  >
+                                           \/     |__|        \/ 
 
 
-Hi there! Welcome to Cloud9 IDE!
+Hi there! Welcome to Datadeploy.io Opensource prototype!
 
-To get you started, we have created a small hello world application.
+# Getting Started
 
-1) Open the hello-world.php file
+1) Project Files: https://drive.google.com/drive/folders/1hH4ffAgpU3q77DlJJ0WVKavwxKDXdaVZ?usp=sharing
 
-2) Follow the run instructions in the file's comments
-
-3) If you want to look at the Apache logs, check out ~/lib/apache2/log
+2) Install the following:
+    * LAMP (For Linux) or WAMP (for Windows)
+    * Geoserver
 
 And that's all there is to it! Just have fun. Go ahead and edit the code, 
 or add new files. It's all up to you! 
 
 Happy coding!
-The Cloud9 IDE team
-
-
-## Support & Documentation
-
-Visit http://docs.c9.io for support, or to learn more about using Cloud9 IDE. 
-To watch some training videos, visit http://www.youtube.com/user/c9ide
-# DataDeployPrototype
