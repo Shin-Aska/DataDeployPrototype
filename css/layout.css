@@ -18,7 +18,7 @@
     -ms-flex-align: start;
     align-items: flex-start;
     height: 90vh;
-    overflow: scroll;
+    overflow: auto;
     }
 
 .flex-item:nth-child(1) {
