@@ -2,20 +2,19 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Prototype - Day 3</title>
+	<title>Prototype - Day 4 (Phase 1)</title>
 	
 	<link rel="stylesheet" href="css/fontawesome-all.css" />
 	<link rel="stylesheet" href="css/themes/datadep.min.css" />
 	<link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
 	<link rel="stylesheet" href="css/dialog-polyfill.min.css">
-	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.css" />
+	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.css"/>
 	<link rel="stylesheet" href="css/layout.css" />
 	<link rel="stylesheet" href="css/overrides.css" />
-	<link rel="stylesheet" href="https//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	
 	<script src="js/dialog-polyfill.min.js" type="text/javascript"></script>
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="https://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.js"></script>
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery-mobile.js"></script>
 	<script src="js/overrides.js"></script>
 	
 	<link rel="stylesheet" href="./webinterface/target/resources/ol.css" />
@@ -53,195 +52,16 @@
     				<div class="flex-item">
     				    
     				    <fieldset class="fieldList">
-                        <legend>Operational Layers <p class="legendStyle"><i class="fa fa-cogs" style="margin-top: 5px; " aria-hidden="true"></i></p></legend>
-                       
-                       <div> <!-- item 1 -->
-                            <p onclick='toggleInfo("item1")' class="infoCircle"><i class="fa fa-info-circle" aria-hidden="true"></i></p>
-                            <a href="#popupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-                            <label for="checkbox-1">
-                                Pictures 
-                            </label>
-                            <input type="checkbox" name="checkbox-1" id="checkbox-1">
-                        </div>
+                        <legend id="operationalLayer">Operational Layers <p class="legendStyle"><i class="fa fa-cogs" style="margin-top: 5px; " aria-hidden="true"></i></p></legend>
                         
-                        <div class="toggler">
-                          <div id="item1" class="ui-widget-content ui-corner-all hiddenAtFirst">
-                            <h3 class="ui-widget-header ui-corner-all">Toggle</h3>
-                            <p>
-                              Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <div> <!-- item 2 -->
-                            <p onclick='toggleInfo("item2")' class="infoCircle"><i class="fa fa-info-circle" aria-hidden="true"></i></p>
-                            <a href="#popupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-                            <label for="checkbox-2">
-                                Electrical - Wiring
-                            </label>
-                            <input type="checkbox" name="checkbox-2" id="checkbox-2">
-                        </div>
-                        
-                        <div class="toggler">
-                          <div id="item2" class="ui-widget-content ui-corner-all hiddenAtFirst">
-                            <h3 class="ui-widget-header ui-corner-all">Toggle</h3>
-                            <p>
-                              Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <div> <!-- item 3 -->
-                            <p onclick='toggleInfo("item3")' class="infoCircle"><i class="fa fa-info-circle" aria-hidden="true"></i></p>
-                            <a href="#popupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-                            <label for="checkbox-3">
-                                CAD - Door
-                            </label>
-                            <input type="checkbox" name="checkbox-3" id="checkbox-3">
-                        </div>
-                        
-                        <div class="toggler">
-                          <div id="item3" class="ui-widget-content ui-corner-all hiddenAtFirst">
-                            <h3 class="ui-widget-header ui-corner-all">Toggle</h3>
-                            <p>
-                              Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <div> <!-- item 4 -->
-                            <p onclick='toggleInfo("item4")' class="infoCircle"><i class="fa fa-info-circle" aria-hidden="true"></i></p>
-                            <a href="#popupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-                            <label for="checkbox-4">
-                                CAD - Door
-                            </label>
-                            <input type="checkbox" name="checkbox-4" id="checkbox-4">
-                        </div>
-                        
-                        <div class="toggler">
-                          <div id="item4" class="ui-widget-content ui-corner-all hiddenAtFirst">
-                            <h3 class="ui-widget-header ui-corner-all">Toggle</h3>
-                            <p>
-                              Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
-                            </p>
-                          </div>
-                        </div>
-                
-                        <div> <!-- item 5 -->
-                            <p onclick='toggleInfo("item5")' class="infoCircle"><i class="fa fa-info-circle" aria-hidden="true"></i></p>
-                            <a href="#popupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-                            <label for="checkbox-5">
-                                CAD - Door
-                            </label>
-                            <input type="checkbox" name="checkbox-5" id="checkbox-5">
-                        </div>
-                        
-                        <div class="toggler">
-                          <div id="item5" class="ui-widget-content ui-corner-all hiddenAtFirst">
-                            <h3 class="ui-widget-header ui-corner-all">Toggle</h3>
-                            <p>
-                              Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <div> <!-- item 7 -->
-                            <p onclick='toggleInfo("item7")' class="infoCircle"><i class="fa fa-info-circle" aria-hidden="true"></i></p>
-                            <a href="#popupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-                            <label for="checkbox-7">
-                                CAD - Door
-                            </label>
-                            <input type="checkbox" name="checkbox-7" id="checkbox-7">
-                        </div>
-                        
-                        <div class="toggler">
-                          <div id="item7" class="ui-widget-content ui-corner-all hiddenAtFirst">
-                            <h3 class="ui-widget-header ui-corner-all">Toggle</h3>
-                            <p>
-                              Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <div> <!-- item 8-->
-                            <p onclick='toggleInfo("item8")' class="infoCircle"><i class="fa fa-info-circle" aria-hidden="true"></i></p>
-                            <a href="#popupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-                            <label for="checkbox-8">
-                                CAD - Door
-                            </label>
-                            <input type="checkbox" name="checkbox-8" id="checkbox-8">
-                        </div>
-                        
-                        <div class="toggler">
-                          <div id="item8" class="ui-widget-content ui-corner-all hiddenAtFirst">
-                            <h3 class="ui-widget-header ui-corner-all">Toggle</h3>
-                            <p>
-                              Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <div> <!-- item 9 -->
-                            <p onclick='toggleInfo("item9")' class="infoCircle"><i class="fa fa-info-circle" aria-hidden="true"></i></p>
-                            <a href="#popupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-                            <label for="checkbox-9">
-                                CAD - Door
-                            </label>
-                            <input type="checkbox" name="checkbox-9" id="checkbox-9">
-                        </div>
-                        
-                        <div class="toggler">
-                          <div id="item9" class="ui-widget-content ui-corner-all hiddenAtFirst">
-                            <h3 class="ui-widget-header ui-corner-all">Toggle</h3>
-                            <p>
-                              Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <div> <!-- item 10 -->
-                            <p onclick='toggleInfo("item10")' class="infoCircle"><i class="fa fa-info-circle" aria-hidden="true"></i></p>
-                            <a href="#popupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-                            <label for="checkbox-10">
-                                CAD - Door
-                            </label>
-                            <input type="checkbox" name="checkbox-10" id="checkbox-10">
-                        </div>
-                        
-                        <div class="toggler">
-                          <div id="item10" class="ui-widget-content ui-corner-all hiddenAtFirst">
-                            <h3 class="ui-widget-header ui-corner-all">Toggle</h3>
-                            <p>
-                              Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <div> <!-- item 11-->
-                            <p onclick='toggleInfo("item11")' class="infoCircle"><i class="fa fa-info-circle" aria-hidden="true"></i></p>
-                            <a href="#popupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-                            <label for="checkbox-11">
-                                CAD - Door
-                            </label>
-                            <input type="checkbox" name="checkbox-11" id="checkbox-11">
-                        </div>
-                        
-                        <div class="toggler">
-                          <div id="item11" class="ui-widget-content ui-corner-all hiddenAtFirst">
-                            <h3 class="ui-widget-header ui-corner-all">Toggle</h3>
-                            <p>
-                              Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.
-                            </p>
-                          </div>
-                        </div>
                         
                         <div data-role="popup" id="popupMenu" data-theme="a">
                           <ul data-role="listview" data-inset="true" style="min-width:210px;">
                               <li data-role="list-divider">Choose an action</li>
                               <li><a href="#">Zoom to</a></li>
                               <li><a href="#">Transparency</a></li>
-                              <li><a href="#">Move Up</a></li>
-                              <li><a href="#">Move Down</a></li>
+                              <li id='actUp'   onclick="moveItemUp()"><a href="#">Move Up</a></li>
+                              <li id='actDown' onclick="moveItemDown()"><a href="#">Move Down</a></li>
                               <li><a href="#">Show item details</a></li>
                           </ul>
                         </div>
@@ -298,11 +118,10 @@
 
    	</div>
     
+    <script src="js/preload.js"></script>
     <script src="webinterface/target/resources/polyfills.js"></script>
     <script src="./webinterface/target/resources/ol.js"></script>
     <script src="./webinterface/target/resources/ol3-layerswitcher.js"></script>
     <script src="./webinterface/target/layers/layers.js" type="text/javascript"></script> 
-    <script src="./webinterface/target/resources/qgis2web.js"></script>
-    <script src="./webinterface/target/resources/Autolinker.min.js"></script>
 </body>
 </html>

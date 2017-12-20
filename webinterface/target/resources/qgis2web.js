@@ -2,7 +2,7 @@
 isTracking = false;
 externalGeoLocate = "";
 
-var yourLocation = new ol.style.Style({
+yourLocation = new ol.style.Style({
     image: new ol.style.Icon({
         anchor: [0.5, 46],
         anchorXUnits: 'fraction',
@@ -75,29 +75,29 @@ geolocateControl = function(opt_options) {
 };
 ol.inherits(geolocateControl, ol.control.Control);
 
-var container = document.getElementById('popup');
-var content = document.getElementById('popup-content');
-var closer = document.getElementById('popup-closer');
+container = document.getElementById('popup');
+content = document.getElementById('popup-content');
+closer = document.getElementById('popup-closer');
 closer.onclick = function() {
     container.style.display = 'none';
     closer.blur();
     return false;
 };
-var overlayPopup = new ol.Overlay({
+overlayPopup = new ol.Overlay({
     element: container
 });
 
-var expandedAttribution = new ol.control.Attribution({
+expandedAttribution = new ol.control.Attribution({
     collapsible: false
 });
 
-var determinant = false;
-var blockedGeom = [];
-var drawMap = function(){
+determinant = false;
+blockedGeom = [];
+drawMap = function(){
     return determinant;
 }
 
-var interaction = new ol.interaction.DragBox({
+interaction = new ol.interaction.DragBox({
     condition: drawMap,
     style: new ol.style.Style({
         stroke: new ol.style.Stroke({
@@ -123,9 +123,8 @@ interaction.on('boxend', function (evt) {
     determinant = false;
 });
 
-var bounds = [-8432930.741096409, 4809544.659519571, -8432535.843712168, 4810008.508272814];
-                    
-var map = new ol.Map({
+bounds = [-8432930.741096409, 4809544.659519571, -8432535.843712168, 4810008.508272814];
+map = new ol.Map({
     controls: ol.control.defaults({attribution:false}).extend([
         expandedAttribution,new geolocateControl()
     ]),
@@ -134,15 +133,15 @@ var map = new ol.Map({
     overlays: [overlayPopup],
     layers: layersList,
     view: new ol.View({
-        /*extent: [13982175.710359, 790355.549581, 13989494.555818, 794573.918079], maxZoom: 16, minZoom: 15*/
+        extent: bounds, maxZoom: 23, minZoom: 10
     })
 });
 
 map.addInteraction(interaction);
 map.getView().fit(bounds, map.getSize());
 
-var NO_POPUP = 0
-var ALL_FIELDS = 1
+NO_POPUP = 0
+ALL_FIELDS = 1
 
 /**
  * Returns either NO_POPUP, ALL_FIELDS or the name of a single field to use for
@@ -150,7 +149,7 @@ var ALL_FIELDS = 1
  * @param layerList {Array} List of ol.Layer instances
  * @param layer {ol.Layer} Layer to find field info about
  */
-function getPopupFields(layerList, layer) {
+getPopupFields = function(layerList, layer) {
     // Determine the index that the layer will have in the popupLayers Array,
     // if the layersList contains more items than popupLayers then we need to
     // adjust the index to take into account the base maps group
@@ -158,13 +157,13 @@ function getPopupFields(layerList, layer) {
     return popupLayers[idx];
 }
 
-var vectorSource = new ol.source.Vector({
+vectorSource = new ol.source.Vector({
         features: collection,
         useSpatialIndex: false // optional, might improve performance
 });
 
-var collection = new ol.Collection();
-var featureOverlay = new ol.layer.Vector({
+collection = new ol.Collection();
+featureOverlay = new ol.layer.Vector({
     map: map,
     source: vectorSource,
     style: [new ol.style.Style({
@@ -180,11 +179,11 @@ var featureOverlay = new ol.layer.Vector({
     updateWhileInteracting: true // optional, for instant visual feedback
 });
 
-var doHighlight = false;
-var doHover = false;
+doHighlight = false;
+doHover = false;
 
-var highlight;
-var onPointerMove = function(evt) {
+highlight;
+onPointerMove = function(evt) {
     if (!doHover && !doHighlight) {
         return;
     }
@@ -293,7 +292,7 @@ var onPointerMove = function(evt) {
     }
 };
 
-var onSingleClick = function(evt) {
+onSingleClick = function(evt) {
     if (doHover) {
         return;
     }
@@ -358,17 +357,17 @@ map.on('singleclick', function(evt) {
 
 
 
-      var geolocation = new ol.Geolocation({
+geolocation = new ol.Geolocation({
   projection: map.getView().getProjection()
 });
 
 
-var accuracyFeature = new ol.Feature();
+accuracyFeature = new ol.Feature();
 geolocation.on('change:accuracyGeometry', function() {
   accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
 });
 
-var positionFeature = new ol.Feature();
+positionFeature = new ol.Feature();
 positionFeature.setStyle(new ol.style.Style({
   image: new ol.style.Circle({
     radius: 6,
@@ -394,7 +393,7 @@ geolocation.on('change:position', function() {
   positionFeature.setGeometry(new ol.geom.Point(coordinates));
 });
 
-var geolocateOverlay = new ol.layer.Vector({
+geolocateOverlay = new ol.layer.Vector({
   source: new ol.source.Vector({
     features: [accuracyFeature, positionFeature]
   })
@@ -408,5 +407,5 @@ var attribution = document.getElementsByClassName('ol-attribution')[0];
 var attributionList = attribution.getElementsByTagName('ul')[0];
 var firstLayerAttribution = attributionList.getElementsByTagName('li')[0];
 var qgis2webAttribution = document.createElement('li');
-qgis2webAttribution.innerHTML = '<p></p>';
+qgis2webAttribution.innerHTML = '<p>Datadeploy Prototype Alpha (Phase 1)</p>';
 attributionList.insertBefore(qgis2webAttribution, firstLayerAttribution);

@@ -5,3 +5,8 @@
 .hiddenAtFirst {
     display: none;
 }
+
+.ol-attribution {
+	padding-bottom: 10px !important;
+	background-color: rgba(0,0,0,0) !important;
+}
