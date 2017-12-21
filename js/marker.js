@@ -341,12 +341,56 @@ map.on('click', function(evt){
         manualselect = false;
         manualcoords = evt.coordinate;
         manualmode   = true;
-        alert("I have now set that location as the base location for my search");
     }
 
     if (selectMode) {
         selectCoord = evt.coordinate;
         selectMode = false;
+        if (selectType == "addCircle") {
+
+          var circle = new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 5,
+                fill: new ol.style.Fill({ color: 'rgba(255,0,0,1)' }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(255,0,0,1)',
+                    width: 3
+                })
+            })
+          });
+          
+          circleFeature = new ol.Feature(
+              new ol.geom.Point(evt.coordinate)
+          );
+          circleFeature.setStyle(circle);
+          vectorSource.addFeature(circleFeature);
+        }
+        else if (selectType == "addCustom") {
+
+          var markerStyle = new ol.style.Style({
+              image: new ol.style.Icon({
+                  anchor: [0.5, 46],
+                  anchorXUnits: 'fraction',
+                  anchorYUnits: 'pixels',
+                  opacity: 0.75,
+                  src: 'assets/marker.png'
+              }),
+              text: new ol.style.Text({
+                  font: '15px Calibri,sans-serif',
+                  fill: new ol.style.Fill({ color: '#fff' }),
+                  stroke: new ol.style.Stroke({
+                      color: '#044c27', width: 5
+                  }),
+                  text: 'Sample Marker'
+              })
+          });
+
+          var feature = new ol.Feature(
+              new ol.geom.Point(evt.coordinate)
+          );
+          feature.setStyle(markerStyle);
+          vectorSource.addFeature(feature);
+        }
     }
 
     map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {

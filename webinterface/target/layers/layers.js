@@ -2,20 +2,20 @@
 // Do not touch this (such as swapping areas)
 // As a lot of functionalities (GUI related) rely on this one
 var layers = [
-  new ol.layer.Tile({
+  /*new ol.layer.Tile({
     extent: [-13884991, 2870341, -7455066, 6338219],
     source: new ol.source.OSM()
-  })
+  })*/
 ];
 
 // The extent (or position) of a particular layer
 // The same as above, this should not be touched
 // since a lot of functionalities rely on this one
-var layerExtents = [[-13884991, 2870341, -7455066, 6338219]];
+var layerExtents = [/*[-13884991, 2870341, -7455066, 6338219]*/];
 
 // The names of the layers as fetched in the GeoServer
 // unlike the other two, this one is interchangeable
-var layerNames = ["OpenStreetMaps"];
+var layerNames = [/*"OpenStreetMaps"*/];
 
 // The layer group array to be feeded to qgis2web.js
 var group_newmap = "";

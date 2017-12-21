@@ -294,7 +294,8 @@ $(document).ready(function(){
 
     // This attaches events to the buttons in the select button
     $("#selectMarkerBtn").click((function(){
-
+      $("#leftpanel2").panel("close");
+      determinant = true;
     }));
 
     $("#chooseCircle")
@@ -306,7 +307,8 @@ $(document).ready(function(){
 
       $("#leftpanel2").panel("close");
       $("#popupAddMarker").popup("close");
-
+      selectType = "addCircle";
+      selectMode = true;
     }));
 
     $("#chooseCustom")
@@ -317,5 +319,7 @@ $(document).ready(function(){
     $("#chooseCustom").click((function(){
       $("#leftpanel2").panel("close");
       $("#popupAddMarker").popup("close");
+      selectType = "addCustom";
+      selectMode = true;
     }));
 });

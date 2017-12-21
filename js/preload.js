@@ -52,6 +52,7 @@ var manualcoords = false;
 var manualmode   = false;
 var selectMode   = false;
 var selectCoord  = false;
+var selectType   = "";
 
 
 var manual = "";
