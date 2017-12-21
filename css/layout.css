@@ -89,7 +89,7 @@
     }
     
 .fieldList {
-    display: block;
+    display: block !important;
 }
 
 .legendStyle {
