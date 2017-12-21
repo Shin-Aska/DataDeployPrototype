@@ -343,6 +343,18 @@ onSingleClick = function(evt) {
             popupText = popupText + '</table>';
         }
     });
+    var view = map.getView();
+    var viewResolution = view.getResolution();
+    layerInfoCallStack = [];
+    for (var i = 0; i < layers.length; i++) {
+        var source = layers[i].getSource();
+        var url = source.getGetFeatureInfoUrl(
+          evt.coordinate, viewResolution, view.getProjection(),
+          {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50});
+        if (url) {
+          layerInfoCallStack.push(url);
+        }
+    }
 
     if (popupText) {
         overlayPopup.setPosition(coord);

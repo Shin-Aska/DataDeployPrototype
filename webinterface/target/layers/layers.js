@@ -17,6 +17,9 @@ var layerExtents = [/*[-13884991, 2870341, -7455066, 6338219]*/];
 // unlike the other two, this one is interchangeable
 var layerNames = [/*"OpenStreetMaps"*/];
 
+// This one obtains the layer info url. It resets everytime the user clicks
+var layerInfoCallStack = [];
+
 // The layer group array to be feeded to qgis2web.js
 var group_newmap = "";
 
