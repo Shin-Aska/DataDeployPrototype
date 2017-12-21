@@ -95,7 +95,8 @@
 .legendStyle {
     float: right; 
     margin: 0px; 
-    position: relative; 
+    position: relative;
+    cursor: pointer;
 }
 
 .infoCircle {
@@ -123,4 +124,28 @@
 
 .centerText {
     text-align: center;
+}
+
+#popTargs {
+    padding: 10px;
+    font-weight: bold;
+    padding-bottom: 0px;
+}
+
+.ui-slider {
+    padding: 10px !important;
+}
+
+.headingMarker {
+    padding: 10px;
+    padding-left: 0px;
+}
+
+.noteContent {
+    padding-left: 5px;
+}
+
+.optionsChooser {
+    width: 130px !important;
+    display: inline-block;
 }

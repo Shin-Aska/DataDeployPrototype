@@ -3,25 +3,11 @@
 // we change engines, we don't need to re-add each
 // markers. Awesome right?
 
-events = [];
-_Event = function(name, desc, img, coord, start, end) {
-    this.name = name;
-    this.desc = desc;
-    this.img  = img;
-    this.coordinates = coord;
-    this.startDate = start;
-    this.endDate = end;
-}
-
-_EventHandle = function(name, callback) {
-    this.name = name;
-    this.function = callback;
-}
-
-iconEventsList   = [];
 wgs84Sphere= new ol.Sphere(6378137);
 
-roadIconStyle = new ol.style.Style({
+// Example markers
+
+/*roadIconStyle = new ol.style.Style({
     image: new ol.style.Icon({
         anchor: [0.5, 46],
         anchorXUnits: 'fraction',
@@ -55,7 +41,7 @@ speedStarStyle = new ol.style.Style({
         }),
         text: 'Sample Marker 2'
     })
-});
+});*/
 
 /*
  * This method initMaps() will be called to initialize the markers
@@ -341,11 +327,8 @@ createRoute = function(p1, p2) {
     return r.json();
   }).then(function(json) {
     if(json.code !== 'Ok') {
-      //msg_el.innerHTML = 'No route found.';
       return;
     }
-    //msg_el.innerHTML = 'Route added';
-    //points.length = 0;
     utils.createRoute(json.routes[0].geometry);
   });
 }
@@ -364,17 +347,15 @@ map.on('click', function(evt){
     if (selectMode) {
         selectCoord = evt.coordinate;
         selectMode = false;
-        dialog.showModal();
-        //$("#eventCoord").html("Coordinate:<h5>Longitude:</h5> " + evt.coordinate[0] + "<h5>Latitude:</h5> " + evt.coordinate[1]);
-        $("#eventCoord").html("Coordinate: " + evt.coordinate[0].toFixed(2) + ", " + evt.coordinate[1].toFixed(2));
     }
 
     map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
         for (var i = 0; i < iconEventsList.length; i++) {
-            if (feature.getStyle().getText().H == iconEventsList[i].name) {
-                iconEventsList[i].function();
+
+            /*if (feature.getStyle().getText().H == iconEventsList[i].name) {
+                
                 break;
-            }
+            }*/
         }
     })
 })

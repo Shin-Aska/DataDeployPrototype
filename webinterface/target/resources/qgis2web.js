@@ -1,7 +1,10 @@
-
+// These variables are for keeping track of the current location
+// idk if we will use this but I just kept it in here just in case
 isTracking = false;
 externalGeoLocate = "";
 
+// If we use the location, it will point out a market. This is the
+// market image to be used
 yourLocation = new ol.style.Style({
     image: new ol.style.Icon({
         anchor: [0.5, 46],
@@ -19,7 +22,8 @@ yourLocation = new ol.style.Style({
         text: 'You are here'
     })
 });
-
+/******************Location Tracking Initialization*******************/
+// Uses the browser's built in Geolocation feature
 geolocateControl = function(opt_options) {
     var options = opt_options || {};
     var button = document.createElement('button');
@@ -91,6 +95,7 @@ expandedAttribution = new ol.control.Attribution({
     collapsible: false
 });
 
+/******************Route Tracking*******************/
 determinant = false;
 blockedGeom = [];
 drawMap = function(){
@@ -123,6 +128,7 @@ interaction.on('boxend', function (evt) {
     determinant = false;
 });
 
+/******************OpenLayers Initialization*******************/
 bounds = [-8432930.741096409, 4809544.659519571, -8432535.843712168, 4810008.508272814];
 map = new ol.Map({
     controls: ol.control.defaults({attribution:false}).extend([
@@ -183,6 +189,8 @@ doHighlight = false;
 doHover = false;
 
 highlight;
+
+/******************OpenLayer Events*******************/
 onPointerMove = function(evt) {
     if (!doHover && !doHighlight) {
         return;
@@ -401,7 +409,10 @@ geolocateOverlay = new ol.layer.Vector({
 
 geolocation.setTracking(true);
 
-
+/*
+ * This part of over here can be edited to change the text display on the bottom right corner
+   of the app.
+ */
 
 var attribution = document.getElementsByClassName('ol-attribution')[0];
 var attributionList = attribution.getElementsByTagName('ul')[0];

@@ -1,3 +1,9 @@
+// This section is for preloading variables used by dynamically loaded javascript files
+// The following variables are used by the following files:
+// * qgis2web.js
+// * autolinker.min.js
+// * marker.js
+
 var yourLocation = "";
 var container = "";
 var content = "";

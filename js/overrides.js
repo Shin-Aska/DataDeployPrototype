@@ -1,3 +1,8 @@
+// This is the list of overrides created for certain GUI functionalities to be possible
+// As much as possible do not touch this unless a new feature is to be added or a bug is needed to be fixed
+
+// This overrides the checkboxes created on JQuery Mobile
+// so that it always is possible to refresh it (Needed for MoveLayerUp and MoveLayerDown methods)
 $(document).on("pagebeforecreate", "#page1", function () {
 
     $('#collapsibleSetWrapper .mycheckbox').on("checkboxradiocreate", function (event, ui) {
@@ -18,16 +23,36 @@ $(document).on("pagebeforecreate", "#page1", function () {
 
 });
 
-var toggleInfo = function(elementId) {
+// See the (i)[info icons] near the checkbox?
+// this method is the one responsible for making them appear or
+// disappear. An optional second parameter is added called override
+// where if u put in show, regardless of status, it will actually overwrite
+// its toggle functionality Possible values [show, hide]
+var toggleInfo = function(elementId, override) {
+    if (override == null) {
+        override = "";
+    }
     var display = $("#" + elementId).css("display");
-    if (display == "block") {
-        $("#" + elementId).css("display", "none");
+    if (override == "") {
+        if (display == "block") {
+            $("#" + elementId).css("display", "none");
+        }
+        else {
+            $("#" + elementId).css("display", "block");
+        }
     }
     else {
-        $("#" + elementId).css("display", "block");
+        if (override == "show") {
+            $("#" + elementId).css("display", "block");
+        }
+        else if (override == "hide") {
+            $("#" + elementId).css("display", "none");
+        }
     }
 }
 
+// An override from jquery itself. This adds the swapWith
+// method in the Jquery class in order to switch to elements (Needed for MoveLayerUp and MoveLayerDown methods)
 $.fn.swapWith = function(to) {
     return this.each(function() {
         var copy_to = $(to).clone(true);
@@ -36,3 +61,4 @@ $.fn.swapWith = function(to) {
         $(this).replaceWith(copy_to);
     });
 };
+
