@@ -8,7 +8,6 @@
 var serverString = "http://localhost:8080";
 var workspace    = "cite";
 
-
 var createTargetLayer = function(ws, ds) {
   return ws + ":" + ds;
 }
@@ -112,23 +111,27 @@ var setLayersAllOff = function() {
 // while also switching certain array values (See webinterface/target/layers/layers.js)
 // making it seem like they actually switched places.
 var moveLayerDown = function(id) {
+
+  var original = parseInt($("#contentItem"+ (id+1) +" > div:nth-child(1) > div:nth-child(1) > input:nth-child(1)").val()) + 1;
+  var original2 = parseInt($("#contentItem"+ (id+2) +" > div:nth-child(1) > div:nth-child(1) > input:nth-child(1)").val()) + 1;
+
   if (id != layers.length - 1) {
-    var tmp = layers[id].getZIndex();
-    layers[id].setZIndex(layers[id+1].getZIndex());
-    layers[id+1].setZIndex(tmp);
+    var tmp = layers[original2-1].getZIndex();
+    layers[original2-1].setZIndex(layers[original-1].getZIndex());
+    layers[original-1].setZIndex(tmp);
 
     tmp = layerNames[id];
     layerNames[id] = layerNames[id+1];
     layerNames[id+1] = tmp;
   }
 
-  $("#checkbox-" + (id+1)).checkboxradio("destroy");
-  $("#checkbox-" + (id+2)).checkboxradio("destroy");
+  $("#checkbox-" + (original)).checkboxradio("destroy");
+  $("#checkbox-" + (original2)).checkboxradio("destroy");
 
   $("#contentItem" + (id+1)).swapWith("#contentItem" + (id+2));
 
-  $("#checkbox-" + (id+1)).checkboxradio();
-  $("#checkbox-" + (id+2)).checkboxradio();
+  $("#checkbox-" + (original)).checkboxradio();
+  $("#checkbox-" + (original2)).checkboxradio();
 
   var tmp = $("#contentItem" + (id+1)).attr("id");
 
@@ -155,54 +158,11 @@ var moveLayerDown = function(id) {
   tmp = $("#popupItem" + (id+1)).attr("id");
   $("#popupItem" + (id+1)).attr("id", $("#popupItem" +(id+2)).attr("id"));
   $("#popupItem" + (id+2)).attr("id", tmp);
-
 }
 
-// Moves the layer up in the list
+// Moves the layer up in the list, I'm just reusing code.
 var moveLayerUp = function(id) {
-  if (id != 0) {
-    var tmp = layers[id].getZIndex();
-    layers[id].setZIndex(layers[id-1].getZIndex());
-    layers[id-1].setZIndex(tmp);
-    
-    tmp = layerNames[id];
-    layerNames[id] = layerNames[id-1];
-    layerNames[id-1] = tmp;
-  }
-
-  $("#checkbox-" + (id)).checkboxradio("destroy");
-  $("#checkbox-" + (id+1)).checkboxradio("destroy");
-
-  $("#contentItem" + (id+1)).swapWith("#contentItem" + (id));
-
-  $("#checkbox-" + (id)).checkboxradio();
-  $("#checkbox-" + (id+1)).checkboxradio();
-
-  var tmp = $("#contentItem" + (id)).attr("id");
-
-  $("#contentItem" + id).attr("id", $("#contentItem" + (id+1)).attr("id"));
-  $("#contentItem" + (id+1)).attr("id", tmp);
-
-  $("#popupItem" + (id)).off("click");
-  $("#popupItem" + (id+1)).off("click");
-
-  $("#popupItem" + (id)).click((function(id){
-    return function() {
-      setMoveTarget(id);
-    }
-  }(id)));
-
-  $("#popupItem" + (id+1)).click((function(id){
-    return function() {
-      setMoveTarget(id);
-    }
-  }(id-1)));
-
-  
-  
-  tmp = $("#popupItem" + (id)).attr("id");
-  $("#popupItem" + (id)).attr("id", $("#popupItem" +(id+1)).attr("id"));
-  $("#popupItem" + (id+1)).attr("id", tmp);
+  moveLayerDown(id-1);
 }
 
 /***************--GUI Functionalities--*********************/
@@ -210,6 +170,7 @@ var moveLayerUp = function(id) {
 // This will indicate which element is being referred to without going through some quirky hacks
 var setMoveTarget = function(id) {
   targetContent = id;
+  $("#headerPopupMenu").html("Choose an action for " + layerNames[targetContent]);
   if (id == 0) {
     $("#actUp").css("display", "none");
     $("#actDown").css("display", "block");
