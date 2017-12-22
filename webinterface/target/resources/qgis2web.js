@@ -451,6 +451,14 @@ geolocateOverlay = new ol.layer.Vector({
 
 geolocation.setTracking(true);
 
+if ($.urlParam("settings") != null) {
+    console.log($.urlParam("settings"));
+    console.log(atob($.urlParam("settings")));
+    var settings = JSON.parse(atob($.urlParam("settings")));
+    map.getView().setCenter(settings.coords);
+    map.getView().setZoom(settings.zoomLvl);
+}
+
 /*
  * This part of over here can be edited to change the text display on the bottom right corner
    of the app.

@@ -31,7 +31,7 @@
                 <a href="#leftpanel1" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-left: 120px; margin-top: -5px;">Layer List</a>
                 <a href="#leftpanel2" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;">Edit</a>
                 <a href="#leftpanel3" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;">Filter</a>
-                <a href="sharing.html" data-role="button" data-inline="true" data-mini="true" data-rel="dialog" data-transition="slidedown" style="z-index: 100; margin-top: -5px;">Share</a>
+                <a id="shareBtnPage" href="#sharePage" data-role="button" data-inline="true" data-mini="true" data-rel="popup" data-transition="slidedown" data-position-to="window" style="z-index: 100; margin-top: -5px;">Share</a>
 
                 <div id="map" style="height: 99vh; width: 100vw; position: absolute; top: 0; left: 0;" class="map"></div>
                 <div id="popup" class="ol-popup">
@@ -144,6 +144,71 @@
                 <h4 id="infoContent" class="noteContent" style="width: 500px; height:400px; overflow: auto;">
                 </h4>
             </div>
+            
+            <div data-role="popup" id="addLayer" data-theme="a">
+                <div style="padding: 10px">
+                    <h2 class="headingMarker">Layer Information</h2>
+                    <div style="display: block; width: 500px; height:400px; overflow: auto;">
+                        <label for="text-a">Long</label>
+                        <input data-clear-btn="true" name="text-a" id="text-3" value="" type="text">
+                        <label for="text-b">Lot</label>
+                        <input data-clear-btn="true" name="text-b" id="text-3" value="" type="text">
+                        <label for="text-c">Alt</label>
+                        <input data-clear-btn="true" name="text-c" id="text-3" value="" type="text">
+                        <label for="text-d">Location</label>
+                        <input data-clear-btn="true" name="text-d" id="text-3" value="" type="text">
+                        <label for="text-e">Device Type</label>
+                        <input data-clear-btn="true" name="text-e" id="text-3" value="" type="text">
+                        <label for="text-f">Date</label>
+                        <input data-clear-btn="true" name="text-f" id="text-3" value="" type="text">
+                        <label for="text-g">Path</label>
+                        <input data-clear-btn="true" name="text-g" id="text-3" value="" type="text">
+                        <input type="button" name="Add" value="Add" class="ui-btn ui-corner-all layoutButton">
+                        <input type="button" name="Cancel" value="Cancel" class="ui-btn ui-corner-all layoutButton">
+                    </div>
+                </div>
+            </div>
+            
+            <div data-role="popup" id="sharePage" style="width: 700px; height: 400px; overflow: auto;"><!-- dialog-->
+
+            <div data-role="header">
+                <h1 id="headerTexter" class="centerText">Share the page</h1>
+            </div><!-- /header -->
+
+            <div class="ui-content" role="main">
+                <label for="text-3">Share a link to this app<a id="mailToLinker" href="mailto:?"><i  class="fa fa-envelope" aria-hidden="true" style="float: right; cursor: pointer; font-size: 20pt"></i></a></label>
+                <input id="linkTxtBox" data-clear-btn="false" name="text-3" id="text-3" value="" type="text">
+                <div data-role="collapsible" data-collapsed-icon="arrow-r"  data-expanded-icon="arrow-d">
+                    <h3>Link Options</h3>
+                    <fieldset data-role="controlgroup">
+                        <legend>Map Options:</legend>
+                        <input name="checkbox-v-2a" id="checkbox-v-2a" type="checkbox" checked>
+                        <label for="checkbox-v-2a">Save current position to link</label>
+                    </fieldset>
+                </div>
+                <br><br>
+                <label for="textarea-1">Embed this app in a website</label>
+                <textarea id="linkTxtArea" name="textarea-1" id="textarea-1"></textarea>
+                <div data-role="collapsible" data-collapsed-icon="arrow-r"  data-expanded-icon="arrow-d">
+                    <h3>Embed Options</h3>
+                    <fieldset data-role="controlgroup">
+                        <legend>iframe settings (You can customize the value if you wish)</legend>
+                        <label for="templateSize">Template size:</label>
+                        <select name="templateSize" id="templateSize">
+                            <option value="1">Small</option>
+                            <option value="2">Medium</option>
+                            <option value="3">Large</option>
+                        </select>
+                        <label for="text-width">Width</label>
+                        <input data-clear-btn="false" name="text-width" id="text-width" value="300" type="number">
+                        <label for="text-height">Height</label>
+                        <input data-clear-btn="false" name="text-height" id="text-height" value="300" type="number">
+                    </fieldset>
+                </div>
+                <br>
+                <input id="closeSharePage" type="button" value="Close thise window" class="ui-btn ui-corner-all layoutButton" >
+            </div>
+        </div><!-- dialog-->
 
         </div>
 

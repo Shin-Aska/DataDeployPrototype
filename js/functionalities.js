@@ -237,6 +237,23 @@ var zoomTo = function() {
   $("#popupMenu").popup("close");
 }
 
+var generateSharePage = function() {
+    var url = "http://" + window.location.hostname + window.location.pathname;
+    if ($("#checkbox-v-2a").prop("checked")) {
+        var settings = {
+            coords: map.getView().getCenter(),
+            zoomLvl: map.getView().getZoom()
+        };
+
+        url += "?settings=" + btoa(JSON.stringify(settings));
+    }
+    var txtarea = '<iframe width="'+ $("#text-width").val() +'" height="'+ $("#text-height").val() +'" frameborder="0" scrolling="no" src="' + url +'"></iframe>';
+    var mailto  = 'mailto:?Subject=Sharing%20web%20app%3A%20Facility%20Viewer%20App%20&Body=Here%20is%20a%20web%20app%20shared%20with%20you%20by%20using%20the%20Datadeploy%20geoserver%20solution.%0A%0AFacility%20Viewer%20App%0A' + url;
+    $("#linkTxtBox").val(url);
+    $("#linkTxtArea").val(txtarea);
+    $("#mailToLinker").attr("href", mailto);
+}
+
 // Code below here are still part of the GUI but uses JQuery's document.ready
 $(document).ready(function(){
 
@@ -268,8 +285,11 @@ $(document).ready(function(){
 
       $("#leftpanel2").panel("close");
       $("#popupAddMarker").popup("close");
-      selectType = "addCircle";
-      selectMode = true;
+      setTimeout(function(){
+          $("#addLayer").popup("open", {"transition": "flip"});
+      }, 800);
+      //selectType = "addCircle";
+      //selectMode = true;
     }));
 
     $("#chooseCustom")
@@ -280,7 +300,47 @@ $(document).ready(function(){
     $("#chooseCustom").click((function(){
       $("#leftpanel2").panel("close");
       $("#popupAddMarker").popup("close");
-      selectType = "addCustom";
-      selectMode = true;
+      setTimeout(function(){
+          $("#addLayer").popup("open", {"transition": "flip"});
+      }, 800);
+      //selectType = "addCustom";
+      //selectMode = true;
     }));
+    
+    $("#shareBtnPage").click(function(){
+        generateSharePage();
+    });
+    
+    $("#closeSharePage").click(function(){
+        $("#sharePage").popup("close");
+    });
+    
+    $("#checkbox-v-2a").change(function(){
+        generateSharePage();
+    })
+    
+    $("#text-width").bind("propertychange change keyup paste input", function(){
+        generateSharePage();
+    });
+    
+    $("#text-height").bind("propertychange change keyup paste input", function(){
+        generateSharePage();
+    });
+    
+    $("#templateSize").change(function(){
+        
+        if ($("#templateSize").val() == 1) {
+            $("#text-width").val(300);
+            $("#text-height").val(300);
+        }
+        else if ($("#templateSize").val() == 2) {
+            $("#text-width").val(800);
+            $("#text-height").val(600);
+        }
+        else {
+            $("#text-width").val(1080);
+            $("#text-height").val(720);
+        }
+        generateSharePage();
+    });
 });
