@@ -127,7 +127,6 @@ lastcoords = [0, 0];
 locationFeature = null;
 
 compareCoords = function(c1, c2) {
-
     if (c1[0] == c2[0] && c1[1] == c2[1]) {
         return true;
     }
@@ -200,6 +199,10 @@ setInterval(function(){
         vectorSource.addFeature(feat);
         drawnFeature.push(feat);
       }
+    }
+    
+    if (currentcoords == null || lastcoords == null) {
+        return;
     }
 
     if (!compareCoords(currentcoords, lastcoords)) {
@@ -333,8 +336,6 @@ createRoute = function(p1, p2) {
   });
 }
 
-
-
 map.on('click', function(evt){
     console.log((evt.coordinate));
     if (manualselect) {
@@ -363,7 +364,10 @@ map.on('click', function(evt){
               new ol.geom.Point(evt.coordinate)
           );
           circleFeature.setStyle(circle);
+          testVar = circleFeature;
+          alert(testVar);
           vectorSource.addFeature(circleFeature);
+          
         }
         else if (selectType == "addCustom") {
 

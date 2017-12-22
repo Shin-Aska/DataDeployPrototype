@@ -134,6 +134,7 @@ map = new ol.Map({
     controls: ol.control.defaults({attribution:false}).extend([
         expandedAttribution,new geolocateControl()
     ]),
+    projection: 'EPSG:3857',
     target: document.getElementById('map'),
     renderer: 'canvas',
     overlays: [overlayPopup],
@@ -452,8 +453,6 @@ geolocateOverlay = new ol.layer.Vector({
 geolocation.setTracking(true);
 
 if ($.urlParam("settings") != null) {
-    console.log($.urlParam("settings"));
-    console.log(atob($.urlParam("settings")));
     var settings = JSON.parse(atob($.urlParam("settings")));
     map.getView().setCenter(settings.coords);
     map.getView().setZoom(settings.zoomLvl);
