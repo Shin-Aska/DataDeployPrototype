@@ -4,6 +4,7 @@
 // * autolinker.min.js
 // * marker.js
 
+var loadingBar1 = '<center><div class="lds-css ng-scope"><div style="width:100%;height:100%" class="lds-double-ring"><div></div><div></div></div></div><h5>Loading information...</h5></center>';
 var yourLocation = "";
 var container = "";
 var content = "";

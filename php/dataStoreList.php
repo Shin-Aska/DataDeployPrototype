@@ -39,14 +39,15 @@
 
         $targ = json_decode($txt);
         $bounds = array();
-
-        array_push($bounds, $targ->featureType->nativeBoundingBox->minx);
-        array_push($bounds, $targ->featureType->nativeBoundingBox->miny);
-        array_push($bounds, $targ->featureType->nativeBoundingBox->maxx);
-        array_push($bounds, $targ->featureType->nativeBoundingBox->maxy);
-
-        $object->extent = $bounds;
-        array_push($result->dataStores, $object);
+        if (is_null($targ) == false) {
+            array_push($bounds, $targ->featureType->nativeBoundingBox->minx);
+            array_push($bounds, $targ->featureType->nativeBoundingBox->miny);
+            array_push($bounds, $targ->featureType->nativeBoundingBox->maxx);
+            array_push($bounds, $targ->featureType->nativeBoundingBox->maxy);
+            $object->extent = $bounds;
+            array_push($result->dataStores, $object);
+        }
+        
     }
     
     echo json_encode($result);

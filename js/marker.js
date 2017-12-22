@@ -336,7 +336,7 @@ createRoute = function(p1, p2) {
 
 
 map.on('click', function(evt){
-    console.log(utils.to4326(evt.coordinate));
+    console.log((evt.coordinate));
     if (manualselect) {
         manualselect = false;
         manualcoords = evt.coordinate;

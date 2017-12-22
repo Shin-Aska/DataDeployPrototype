@@ -345,6 +345,7 @@ onSingleClick = function(evt) {
     });
     var view = map.getView();
     var viewResolution = view.getResolution();
+    var isInside = false;
     layerInfoCallStack = [];
     for (var i = 0; i < layers.length; i++) {
         var source = layers[i].getSource();
@@ -354,11 +355,37 @@ onSingleClick = function(evt) {
         if (url) {
           layerInfoCallStack.push(url);
         }
+        
+        if (ol.extent.containsXY(layerExtents[i], coord[0], coord[1]) && i > imageLastIndex) {
+            isInside = true;
+        }
+    }
+    
+    if (isInside) {
+        $("#popupInfo").popup("open", {"transition": "flip"});
+        $("#infoContent").html(loadingBar1);
     }
     
     $.post("php/infoLister.php", {"data": btoa(JSON.stringify(layerInfoCallStack))}, function(data){
+        var txtStr = "";
+        for (var i = 0; i < data.info.length; i++) {
+            var info = data.info[i];
+            if (typeof(info.features[0]) !== "undefined") {
+                if (info.features[0].geometry != null) {
+                    txtStr += "<p>Properties for: " + info.features[0].id + "</p>";
+                    txtStr += "<hr>";
+                    for (const prop in info.features[0].properties) {
+                        if (info.features[0].properties.hasOwnProperty(prop)) {
+                            txtStr += prop + ' = ' + info.features[0].properties[prop] + "<br>";
+                        } 
+                    }
+                    txtStr += "<br><br>";
+                }
+            }
+        }
         
-    });
+        $("#infoContent").html(txtStr);
+    }, "JSON");
     if (popupText) {
         overlayPopup.setPosition(coord);
         content.innerHTML = popupText;

@@ -26,6 +26,11 @@ var group_newmap = "";
 // The layerList to be feeded to qgis2web
 var layersList   = "";
 
+// This keeps track of the last image index loaded by coverageStoreList.php
+// this is important so that we can ignore displaying information when user
+// clicks on an image. Since it doesn't contain important data at all.
+var imageLastIndex = -1;
+
 // This fetches the coverages and datastores in the geoserver.
 // Once it fetches the data, it will add those into the 3 arrays respectively.
 // After that, it will group it using ol.layer.Group and then turn it into an
@@ -51,6 +56,7 @@ $.get( "php/coverageStoreList.php", function( data ) {
     layerNames.push(store.name);
     layers.push(layer);
   }
+  imageLastIndex = coverageStores.dataStores.length -1;
 
   $.get( "php/dataStoreList.php", function( data ) {
     var dataStores = JSON.parse(data);
