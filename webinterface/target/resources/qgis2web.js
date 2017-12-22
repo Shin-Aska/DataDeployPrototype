@@ -355,7 +355,10 @@ onSingleClick = function(evt) {
           layerInfoCallStack.push(url);
         }
     }
-
+    
+    $.post("php/infoLister.php", {"data": btoa(JSON.stringify(layerInfoCallStack))}, function(data){
+        
+    });
     if (popupText) {
         overlayPopup.setPosition(coord);
         content.innerHTML = popupText;

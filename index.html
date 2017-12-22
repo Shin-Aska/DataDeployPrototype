@@ -1,150 +1,154 @@
 <html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Prototype - Day 5 (Phase 1)</title>
-	
-	<link rel="stylesheet" href="css/fontawesome-all.css" />
-	<link rel="stylesheet" href="css/dialog-polyfill.min.css">
-	<link rel="stylesheet" href="css/jquery.mobile-1.5.0-alpha.1.min.css"/>
-	<link rel="stylesheet" href="css/layout.css" />
-	<link rel="stylesheet" href="css/overrides.css" />
-	
-	<script src="js/dialog-polyfill.min.js" type="text/javascript"></script>
-	<script src="js/jquery.js"></script>
-	<script src="js/jquery-mobile.js"></script>
-	<script src="js/overrides.js"></script>
-  <script src="js/functionalities.js"></script>
-	
-	<link rel="stylesheet" href="./webinterface/target/resources/ol.css" />
-  <link rel="stylesheet" href="./webinterface/target/resources/ol3-layerswitcher.css">
-  <link rel="stylesheet" href="./webinterface/target/resources/qgis2web.css">
-</head>
-<body>
-    
-    
-    <div data-role="page" style="max-height:440px; min-height:440px;" class="type-home" class="ui-responsive-panel" id="page1">
-        
-		
-		<div role="main" class="ui-content">
-			<a href="#leftpanel1" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-left: 120px; margin-top: -5px;">Layer List</a>
-			<a href="#leftpanel2" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;">Edit</a>
-			<a href="#leftpanel3" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;">Filter</a>
-			<a href="sharing.html" data-role="button" data-inline="true" data-mini="true" data-rel="dialog" data-transition="slidedown" style="z-index: 100; margin-top: -5px;">Share</a>
-			
-		<div id="map" style="height: 99vh; width: 100vw; position: absolute; top: 0; left: 0;" class="map"></div>
-      <div id="popup" class="ol-popup">
-          <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-          <div id="popup-content"></div>
-      </div>
-		</div>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Prototype - Day 5 (Phase 1)</title>
+
+        <link rel="stylesheet" href="css/fontawesome-all.css" />
+        <link rel="stylesheet" href="css/dialog-polyfill.min.css">
+        <link rel="stylesheet" href="css/jquery.mobile-1.5.0-alpha.1.min.css"/>
+        <link rel="stylesheet" href="css/layout.css" />
+        <link rel="stylesheet" href="css/overrides.css" />
+
+        <script src="js/dialog-polyfill.min.js" type="text/javascript"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/jquery-mobile.js"></script>
+        <script src="js/overrides.js"></script>
+        <script src="js/functionalities.js"></script>
+
+        <link rel="stylesheet" href="./webinterface/target/resources/ol.css" />
+        <link rel="stylesheet" href="./webinterface/target/resources/ol3-layerswitcher.css">
+        <link rel="stylesheet" href="./webinterface/target/resources/qgis2web.css">
+    </head>
+    <body>
 
 
-		<!-- leftpanel1  -->
-		<div data-role="panel" id="leftpanel1" data-position="left" data-display="push" data-dismissible="true" data-theme="a" style="height: 80vh; display: block;">
+        <div data-role="page" style="max-height:440px; min-height:440px;" class="type-home" class="ui-responsive-panel" id="page1">
 
-			<div class="panel-content">
-			    <div class="flex-container">
-			        <div class="flex-item">
-    				    <h3>Layer List</h3>
-    				</div>
-    				<div class="flex-item">
-    				    
-    				    <fieldset class="fieldList">
-                        <legend id="operationalLayer">Operational Layers <a class="legendStyle" href="#popupGeneral" data-rel="popup" data-transition="slideup"><i class="fa fa-cogs" style="margin-top: 5px; " aria-hidden="true"></i></a></legend>
-                        
-                        
-                        <div data-role="popup" id="popupMenu" data-theme="a">
-                          <ul data-role="listview" data-inset="true" style="min-width:210px;">
-                              <li id="headerPopupMenu" data-role="list-divider">Choose an action</li>
-                              <li              onclick="zoomTo()"><a href="#">Zoom to</a></li>
-                              <li              onclick="setTransparency()"><a href="#">Transparency</a></li>
-                              <li id='actUp'   onclick="moveItemUp()"><a href="#">Move Up</a></li>
-                              <li id='actDown' onclick="moveItemDown()"><a href="#">Move Down</a></li>
-                          </ul>
-                        </div>
 
-                        <div data-role="popup" id="popupGeneral" data-theme="a">
-                          <ul data-role="listview" data-inset="true" style="min-width:210px;">
-                              <li data-role="list-divider">Choose an action</li>
-                              <li><a href="#" onclick="setLayersAllOn()">Turn all layers on</a></li>
-                              <li><a href="#" onclick="setLayersAllOff()">Turn all layers off</a></li>
-                              <li><a href="#" onclick="expandAllLayers()">Expand all layers</a></li>
-                              <li><a href="#" onclick="collapseAllLayers()">Collapse all layers</a></li>
-                          </ul>
-                        </div>
+            <div role="main" class="ui-content">
+                <a href="#leftpanel1" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-left: 120px; margin-top: -5px;">Layer List</a>
+                <a href="#leftpanel2" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;">Edit</a>
+                <a href="#leftpanel3" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;">Filter</a>
+                <a href="sharing.html" data-role="button" data-inline="true" data-mini="true" data-rel="dialog" data-transition="slidedown" style="z-index: 100; margin-top: -5px;">Share</a>
 
-                        <div data-role="popup" id="popupTransparency" data-theme="a">
-                          <label for="slider-1"><p id="popTargs" >Modify transparency of layer:</p></label>
-                          <input type="range" name="slider-1" id="slider-1" value="100" min="0" max="100">
-                        </div>
-        
-                      </fieldset>
-                    </div>
+                <div id="map" style="height: 99vh; width: 100vw; position: absolute; top: 0; left: 0;" class="map"></div>
+                <div id="popup" class="ol-popup">
+                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                    <div id="popup-content"></div>
                 </div>
-                  
-				<!--<a href="#demo-links" data-rel="close" data-role="button" data-theme="a" data-icon="delete" data-inline="true">Close panel</a>-->
-			</div><!-- /content wrapper for padding -->
+            </div>
 
-		</div><!-- /leftpanel1 -->
-		
-		<!-- leftpanel2  -->
-		<div data-role="panel" id="leftpanel2" data-position="left" data-display="push" data-dismissible="true" data-theme="a">
 
-			<div class="panel-content">
-			  <div class="flex-container">
-  				<div class="flex-item">
-    				<h3>Edit</h3>
-    				<p>This panel is positioned on the left with the push display mode. The panel markup is <em>after</em> the header, content and footer in the source order.</p>
-    				<p>To close, click off the panel, swipe left or right, hit the Esc key, or use the button below:</p>
-    			</div>
-    			<div class="flex-item">
-    			  <button id="addMarkerBtn" class="ui-btn ui-corner-all"><i class="fa fa-map-marker" aria-hidden="true"></i> Add a marker</button>
-    			  <button id="selectMarkerBtn" class="ui-btn ui-corner-all"><i class="fa fa-mouse-pointer" aria-hidden="true"></i> Make a selection</button>
-    			  <button class="ui-btn ui-corner-all" data-rel="close">Cancel Action</button>
-				  </div>
-				</div>
+            <!-- leftpanel1  -->
+            <div data-role="panel" id="leftpanel1" data-position="left" data-display="push" data-dismissible="true" data-theme="a" style="height: 80vh; display: block;">
 
-        <div data-role="popup" id="popupAddMarker" data-theme="a">
-           <h2 class="headingMarker">Select the type of marker you wish to add</h2>
-           <h4 class="noteContent">After pressing a button, you will be asked to point the location where you will place the marker.</h4>
-           <h4 class="noteContent">Marker choices:</h4>
-           <center>
-             <button class="optionsChooser" id="chooseCircle">Add a normal marker</button>
-             <button class="optionsChooser" id="chooseCustom">Add a custom marker</button>
-         </center>
+                <div class="panel-content">
+                    <div class="flex-container">
+                        <div class="flex-item">
+                            <h3>Layer List</h3>
+                        </div>
+                        <div class="flex-item">
+
+                            <fieldset class="fieldList">
+                                <legend id="operationalLayer">Operational Layers <a class="legendStyle" href="#popupGeneral" data-rel="popup" data-transition="slideup"><i class="fa fa-cogs" style="margin-top: 5px; " aria-hidden="true"></i></a></legend>
+
+
+                                <div data-role="popup" id="popupMenu" data-theme="a">
+                                    <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                                        <li id="headerPopupMenu" data-role="list-divider">Choose an action</li>
+                                        <li              onclick="zoomTo()"><a href="#">Zoom to</a></li>
+                                        <li              onclick="setTransparency()"><a href="#">Transparency</a></li>
+                                        <li id='actUp'   onclick="moveItemUp()"><a href="#">Move Up</a></li>
+                                        <li id='actDown' onclick="moveItemDown()"><a href="#">Move Down</a></li>
+                                    </ul>
+                                </div>
+
+                                <div data-role="popup" id="popupGeneral" data-theme="a">
+                                    <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                                        <li data-role="list-divider">Choose an action</li>
+                                        <li><a href="#" onclick="setLayersAllOn()">Turn all layers on</a></li>
+                                        <li><a href="#" onclick="setLayersAllOff()">Turn all layers off</a></li>
+                                        <li><a href="#" onclick="expandAllLayers()">Expand all layers</a></li>
+                                        <li><a href="#" onclick="collapseAllLayers()">Collapse all layers</a></li>
+                                    </ul>
+                                </div>
+
+                                <div data-role="popup" id="popupTransparency" data-theme="a">
+                                    <label for="slider-1"><p id="popTargs" >Modify transparency of layer:</p></label>
+                                    <input type="range" name="slider-1" id="slider-1" value="100" min="0" max="100">
+                                </div>
+
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    <!--<a href="#demo-links" data-rel="close" data-role="button" data-theme="a" data-icon="delete" data-inline="true">Close panel</a>-->
+                </div><!-- /content wrapper for padding -->
+
+            </div><!-- /leftpanel1 -->
+
+            <!-- leftpanel2  -->
+            <div data-role="panel" id="leftpanel2" data-position="left" data-display="push" data-dismissible="true" data-theme="a">
+
+                <div class="panel-content">
+                    <div class="flex-container">
+                        <div class="flex-item">
+                            <h3>Edit</h3>
+                            <p>This panel is positioned on the left with the push display mode. The panel markup is <em>after</em> the header, content and footer in the source order.</p>
+                            <p>To close, click off the panel, swipe left or right, hit the Esc key, or use the button below:</p>
+                        </div>
+                        <div class="flex-item">
+                            <button id="addMarkerBtn" class="ui-btn ui-corner-all"><i class="fa fa-map-marker" aria-hidden="true"></i> Add a marker</button>
+                            <button id="selectMarkerBtn" class="ui-btn ui-corner-all"><i class="fa fa-mouse-pointer" aria-hidden="true"></i> Make a selection</button>
+                            <button class="ui-btn ui-corner-all" data-rel="close">Cancel Action</button>
+                        </div>
+                    </div>
+
+                    <div data-role="popup" id="popupAddMarker" data-theme="a">
+                        <h2 class="headingMarker">Select the type of marker you wish to add</h2>
+                        <h4 class="noteContent">After pressing a button, you will be asked to point the location where you will place the marker.</h4>
+                        <h4 class="noteContent">Marker choices:</h4>
+                        <center>
+                            <button class="optionsChooser" id="chooseCircle">Add a normal marker</button>
+                            <button class="optionsChooser" id="chooseCustom">Add a custom marker</button>
+                        </center>
+                    </div>
+                </div><!-- /content wrapper for padding -->
+
+            </div><!-- /leftpanel2 -->
+
+            <!-- leftpanel3  -->
+            <div data-role="panel" id="leftpanel3" data-position="left" data-display="push" data-dismissible="true" data-theme="a">
+
+                <div class="panel-content">
+                    <h3>Circuit</h3>
+                    <form>
+                        <div class="ui-field-contain">
+                            <label for="select-native-1">Circuit is:</label>
+                            <select name="select-native-1" id="select-native-1">
+                                <option value="1">The 1st Option</option>
+                                <option value="2">The 2nd Option</option>
+                                <option value="3">The 3rd Option</option>
+                                <option value="4">The 4th Option</option>
+                            </select>
+                        </div>
+                    </form>
+                </div><!-- /content wrapper for padding -->
+
+            </div><!-- /leftpanel3 -->
+
+            <div data-role="popup" id="popupInfo" data-theme="a">
+                <h2 class="headingMarker">Layer Information</h2>
+                <h4 id="infoContent" class="noteContent" style="width: 500px"></h4>
+            </div>
+
         </div>
-			</div><!-- /content wrapper for padding -->
 
-		</div><!-- /leftpanel2 -->
-		
-		<!-- leftpanel3  -->
-		<div data-role="panel" id="leftpanel3" data-position="left" data-display="push" data-dismissible="true" data-theme="a">
-
-			<div class="panel-content">
-				<h3>Circuit</h3>
-				<form>
-          <div class="ui-field-contain">
-              <label for="select-native-1">Circuit is:</label>
-              <select name="select-native-1" id="select-native-1">
-                  <option value="1">The 1st Option</option>
-                  <option value="2">The 2nd Option</option>
-                  <option value="3">The 3rd Option</option>
-                  <option value="4">The 4th Option</option>
-              </select>
-          </div>
-        </form>
-			</div><!-- /content wrapper for padding -->
-
-		</div><!-- /leftpanel3 -->
-
-
-   	</div>
-    
-    <script src="js/preload.js"></script>
-    <script src="webinterface/target/resources/polyfills.js"></script>
-    <script src="./webinterface/target/resources/ol.js"></script>
-    <script src="./webinterface/target/resources/ol3-layerswitcher.js"></script>
-    <script src="./webinterface/target/layers/layers.js" type="text/javascript"></script>
-</body>
+        <script src="js/preload.js"></script>
+        <script src="webinterface/target/resources/polyfills.js"></script>
+        <script src="./webinterface/target/resources/ol.js"></script>
+        <script src="./webinterface/target/resources/ol3-layerswitcher.js"></script>
+        <script src="./webinterface/target/layers/layers.js" type="text/javascript"></script>
+    </body>
 </html>
