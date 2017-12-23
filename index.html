@@ -51,8 +51,8 @@
                         </div>
                         <div class="flex-item">
 
-                            <fieldset class="fieldList">
-                                <legend id="operationalLayer">Operational Layers <a class="legendStyle" href="#popupGeneral" data-rel="popup" data-transition="slideup"><i class="fa fa-cogs" style="margin-top: 5px; " aria-hidden="true"></i></a></legend>
+                            <fieldset id="individualFields" class="fieldList" style="display:none !important">
+                                <legend id="operationalLayer">All Layers<a class="legendStyle" href="#popupGeneral" data-rel="popup" data-transition="slideup"><i class="fa fa-cogs" style="margin-top: 5px; " aria-hidden="true"></i></a></legend>
 
 
                                 <div data-role="popup" id="popupMenu" data-theme="a">
@@ -62,6 +62,7 @@
                                         <li              onclick="setTransparency()"><a href="#">Transparency</a></li>
                                         <li id='actUp'   onclick="moveItemUp()"><a href="#">Move Up</a></li>
                                         <li id='actDown' onclick="moveItemDown()"><a href="#">Move Down</a></li>
+                                        <li id='showInfo'onclick="showSpecificInfo()"><a href="#">Show Information</a></li>
                                     </ul>
                                 </div>
 
@@ -72,6 +73,7 @@
                                         <li><a href="#" onclick="setLayersAllOff()">Turn all layers off</a></li>
                                         <li><a href="#" onclick="expandAllLayers()">Expand all layers</a></li>
                                         <li><a href="#" onclick="collapseAllLayers()">Collapse all layers</a></li>
+                                        <li><a href="#" onclick="toGroup()">Show Layer Groups</a></li>
                                     </ul>
                                 </div>
 
@@ -80,6 +82,32 @@
                                     <input type="range" name="slider-1" id="slider-1" value="100" min="0" max="100">
                                 </div>
 
+                            </fieldset>
+                            
+                            <fieldset id="groupFields" class="fieldList" style="display:none !important">
+                                <fieldset class="fieldList">
+                                <legend id="groupOpsLayer">All Groups<a class="legendStyle" href="#gpopupGeneral" data-rel="popup" data-transition="slideup"><i class="fa fa-cogs" style="margin-top: 5px; " aria-hidden="true"></i></a></legend>
+                                
+                                <div data-role="popup" id="gpopupMenu" data-theme="a">
+                                    <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                                        <li id="headerPopupMenu" data-role="list-divider">Choose an action</li>
+                                        <li              onclick="gsetTransparency()"><a href="#">Transparency</a></li>
+                                    </ul>
+                                </div>
+
+                                <div data-role="popup" id="gpopupGeneral" data-theme="a">
+                                    <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                                        <li data-role="list-divider">Choose an action</li>
+                                        <li><a href="#" onclick="gsetLayersAllOn()">Turn all layers on</a></li>
+                                        <li><a href="#" onclick="gsetLayersAllOff()">Turn all layers off</a></li>
+                                        <li><a href="#" onclick="toIndividual()">Show Layers Individually</a></li>
+                                    </ul>
+                                </div>
+
+                                <div data-role="popup" id="gpopupTransparency" data-theme="a">
+                                    <label for="slider-2"><p id="gpopTargs" >Modify transparency of group:</p></label>
+                                    <input type="range" name="slider-2" id="slider-2" value="100" min="0" max="100">
+                                </div>
                             </fieldset>
                         </div>
                     </div>

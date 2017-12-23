@@ -30,7 +30,7 @@ var loadExternalJavascript = function (dir) {
 
 function createInsertXML(coords) {
     var geomType;
- 
+
     if (coords.length == 2) {
         geomType = 'Point';
     } else if (coords.length > 2) {
@@ -91,9 +91,9 @@ function createInsertXML(coords) {
     //var xmlhttp = new XMLHttpRequest();
     //xmlhttp.open("POST", serverString + "geoserver/wfs", true);
     //xmlhttp.send(XMLCompleteString);
-    
-    $.post(serverString + "/geoserver/wfs", XMLCompleteString, function(){
-        
+
+    $.post(serverString + "/geoserver/wfs", XMLCompleteString, function () {
+
     });
     alert(serverString + "/geoserver/wfs");
     alert(XMLCompleteString);
@@ -108,13 +108,35 @@ var layerAction = function (id) {
     layers[parseInt(id) - 1].setVisible(sValue);
 }
 
+var glayerAction = function (id) {
+    var sValue = $("#gcheckbox-" + id).prop("checked");
+    layersList[parseInt(id) - 1].setVisible(sValue);
+}
+
 // This variable is the key to make the sidebar layerlist work
 var targetContent = -1;
+var gTargetContent= -1;
+
+// The renderer is basically targeted to the layer lists
+// It's a bit too tricky to 
+var renderMode = "i";
+var updateRenderer = function() {
+    if (renderMode == "i") {
+        $("#individualFields").css("display", "block");
+        $("#groupFields").css("cssText", "display: none !important");
+    }
+    else {
+        $("#individualFields").css("cssText", "display: none !important");
+        $("#groupFields").css("display", "block");
+    }
+}
 
 // Once the web app is finished fetching data to the Geoserver,
 // it will generate a list of elements to the sidebar using this method
 // Also while its generating.. The Layers will set their ZIndexes base on the
 // position it was fetched on the geoserver.
+// This also includes now the groups using the namespaces (first name before the underscore)
+
 var initializeLayerList = function () {
 
     var totalString = "";
@@ -140,8 +162,9 @@ var initializeLayerList = function () {
         totalString += '  </div>';
         totalString += '</div>';
     }
+
     $("#operationalLayer").after(totalString);
-    $(".fieldList").enhanceWithin();
+    $("#individualFields").enhanceWithin();
 
     for (var i = 0; i < layerNames.length; i++) {
         $("#popupItem" + (i + 1)).click((function (id) {
@@ -150,6 +173,33 @@ var initializeLayerList = function () {
             }
         }(i)));
     }
+    
+    totalString = "";
+    for (var i = 0; i < layersList.length; i++) {
+        totalString += "<div id='gcontentItem" + (i + 1) + "'>";
+        totalString += "  <div> <!-- item " + (i + 1) + " -->";
+        totalString += '     <input class="originalValue" type="text" value="' + (i) + '" style="display: none;"  readonly></input>';
+        totalString += '     <a id="gpopupItem' + (i + 1) + '" href="#gpopupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>';
+        totalString += '     <label for="gcheckbox-' + (i + 1) + '">';
+        totalString += '         ' + layersList[i].H.title + ' ';
+        totalString += '      </label>';
+        totalString += '     <input onclick="glayerAction(' + (i + 1) + ')" type="checkbox" name="gcheckbox-' + (i + 1) + '" id="gcheckbox-' + (i + 1) + '" checked>';
+        totalString += "  </div>";
+    }
+    
+    
+    $("#groupOpsLayer").after(totalString);
+    $("#groupFields").enhanceWithin();
+    
+    for (var i = 0; i < layerNames.length; i++) {
+        $("#gpopupItem" + (i + 1)).click((function (id) {
+            return function () {
+                gsetMoveTarget(id);
+            }
+        }(i)));
+    }
+    
+    updateRenderer();
 }
 
 // Sets the ZIndex of the Geoserver
@@ -168,6 +218,16 @@ var setLayersAllOn = function () {
     $("#popupGeneral").popup("close");
 }
 
+// Sets all of the layers in a particular group to turn on
+var gsetLayersAllOn = function () {
+    for (var i = 0; i < layersList.length; i++) {
+        $("#gcheckbox-" + (i + 1)).prop("checked", true).checkboxradio("refresh");
+        layersList[i].setVisible(true);
+    }
+    $("#gpopupGeneral").popup("close");
+}
+
+
 // Sets all of the layers to turn off
 var setLayersAllOff = function () {
     for (var i = 0; i < layerNames.length; i++) {
@@ -175,6 +235,15 @@ var setLayersAllOff = function () {
         layers[i].setVisible(false);
     }
     $("#popupGeneral").popup("close");
+}
+
+// Sets all of the layers in a group to turn off
+var gsetLayersAllOff = function () {
+    for (var i = 0; i < layersList.length; i++) {
+        $("#gcheckbox-" + (i + 1)).prop("checked", false).checkboxradio("refresh");
+        layersList[i].setVisible(false);
+    }
+    $("#gpopupGeneral").popup("close");
 }
 
 // Moves the layer down in the list,
@@ -252,6 +321,17 @@ var setMoveTarget = function (id) {
         $("#actUp").css("display", "block");
         $("#actDown").css("display", "block");
     }
+
+    if (id > imageLastIndex) {
+        $("#showInfo").css("display", "block");
+    } else {
+        $("#showInfo").css("display", "none");
+    }
+}
+
+var gsetMoveTarget = function (id) {
+    gTargetContent = id;
+    $("#headerPopupMenu").html("Choose an action for " + layersList[gTargetContent].H.title);
 }
 
 // Expands all layer informations
@@ -298,12 +378,73 @@ var setTransparency = function () {
     $("#popTargs").html("Modify transparency of layer " + layerNames[targetContent]);
 }
 
+var gsetTransparency = function () {
+    $("#gpopupMenu").popup("close");
+    setTimeout(function () {
+        $("#gpopupTransparency").popup("open", {"transition": "flip"});
+    }, 500);
+    $("#gpopTargs").html("Modify transparency of layer " + layersList[gTargetContent].H.title);
+}
+
 // This moves the camera to fit on a particular layer
 // It should belong to the OpenLayer's Functionalities but since it uses the concept of
 // the setMoveTarget, i moved it here instead
 var zoomTo = function () {
     map.getView().fit(layerExtents[targetContent], map.getSize());
     $("#popupMenu").popup("close");
+}
+
+var toGroup = function() {
+    $("#popupGeneral").popup("close");
+    renderMode = "g";
+    updateRenderer();
+}
+
+var toIndividual = function() {
+    $("#gpopupGeneral").popup("close");
+    renderMode = "i";
+    updateRenderer();
+}
+
+// Shows Information about the layer
+var showSpecificInfo = function () {
+    var view = map.getView();
+    var viewResolution = view.getResolution();
+
+    var id = $("#contentItem" + (targetContent + 1) + " > div:nth-child(1) > div:nth-child(1) > input:nth-child(1)").val();
+    var source = layersWMS[id].getSource();
+    var fakeURL = []; // I call this fake since its just pretending to be the layerInfoCallStack
+
+    var url = layerCalls[id];
+    fakeURL.push(url);
+    $("#popupMenu").popup("close");
+    $("#infoContent").html(loadingBar1);
+    setTimeout(function () {
+        $("#popupInfo").popup("open", {"transition": "flip"});
+    }, 800)
+    $.post("php/infoLister.php", {"data": btoa(JSON.stringify(fakeURL))}, function (data) {
+        var txtStr = "";
+
+        for (var i = 0; i < data.info.length; i++) {
+            var info = data.info[i];
+
+            for (var j = 0; j < info.features.length; j++) {
+                var feat = info.features[j];
+                txtStr += "<p>Properties for: " + feat.id + "</p>";
+                txtStr += "<hr>";
+                for (const prop in feat.properties) {
+                    if (feat.properties.hasOwnProperty(prop)) {
+                        txtStr += prop + " = " + feat.properties[prop] + "<br>";
+                        ;
+                    }
+                }
+                console.log(feat);
+            }
+        }
+
+        $("#infoContent").html(txtStr);
+
+    }, "JSON");
 }
 
 // This code generates the link for the app. This one supports the
@@ -336,6 +477,12 @@ $(document).ready(function () {
         var op = $("#slider-1").val() / 100;
         layers[id].setOpacity(op);
     });
+    
+    $("#slider-2").on('slidestop', function (event) {
+        var id = $("#gcontentItem" + (gTargetContent + 1) + " > div:nth-child(1) > div:nth-child(1) > input:nth-child(1)").val();
+        var op = $("#slider-2").val() / 100;
+        layersList[id].setOpacity(op);
+    });
 
     // This attaches events to the buttons in the add marker button
     $("#addMarkerBtn").click((function () {
@@ -347,7 +494,7 @@ $(document).ready(function () {
         $("#leftpanel2").panel("close");
         determinant = true;
     }));
-    
+
     // Code below is for pressing the circle button add marker event.
     $("#chooseCircle")
             .text("")
@@ -380,7 +527,7 @@ $(document).ready(function () {
         //selectType = "addCustom";
         //selectMode = true;
     }));
-    
+
     // Code below is for having a responsive share page
     $("#shareBtnPage").click(function () {
         generateSharePage();
@@ -416,7 +563,7 @@ $(document).ready(function () {
         }
         generateSharePage();
     });
-    
+
     // Google Chrome Hack (Prevent scrollbar from overflowing)
     if (chrome) {
         $("#page1").css("overflow", "hidden");

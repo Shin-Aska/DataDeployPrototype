@@ -126,7 +126,7 @@
     text-align: center;
 }
 
-#popTargs {
+#popTargs, #gpopTargs {
     padding: 10px;
     font-weight: bold;
     padding-bottom: 0px;

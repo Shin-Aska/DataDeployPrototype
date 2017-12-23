@@ -18,6 +18,8 @@ var layersWMS = [
 // since a lot of functionalities rely on this one
 var layerExtents = [/*[-13884991, 2870341, -7455066, 6338219]*/];
 
+var layerCalls = [];
+
 // The names of the layers as fetched in the GeoServer
 // unlike the other two, this one is interchangeable
 var layerNames = [/*"OpenStreetMaps"*/];
@@ -60,10 +62,10 @@ $.get("php/coverageStoreList.php", function (data) {
             })
         });
         layerExtents.push(store.extent);
-        layerNames.push(store.name);
+        layerNames.push(store.name + " [Raster]");
         layers.push(layer);
         layersWMS.push(layer);
-        
+        layerCalls.push(serverString + '/geoserver/wms');
         group_layer_buffer.push(layer);
     }
     imageLastIndex = coverageStores.dataStores.length - 1;
@@ -102,10 +104,13 @@ $.get("php/coverageStoreList.php", function (data) {
                 //strategy: ol.loadingstrategy.bbox
                 strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ())
             });
-            
+            var urStr = serverString + '/geoserver/wfs?service=WFS&' +
+                            'version=1.1.0&request=GetFeature&typename=' + param + '&' +
+                            'outputFormat=application/json&srsname=EPSG:3857&' +
+                            'bbox=' + bounds.join(',') + ',EPSG:3857';
             var cColor = groupColors[layersList.length - 1];
             var fColor = groupColorsFill[layersList.length - 1];
-            alert(cColor + "  " + fColor);
+            
             var vector = new ol.layer.Vector({
                 source: layer,
                 style: new ol.style.Style({
@@ -144,6 +149,7 @@ $.get("php/coverageStoreList.php", function (data) {
 
             layerExtents.push(store.extent);
             layerNames.push(store.name);
+            layerCalls.push(urStr);
             layers.push(vector);
             layersWMS.push(layerWMS);
             var currentNameSpace = store.name.split("_")[0];
