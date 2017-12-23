@@ -129,7 +129,6 @@ interaction.on('boxend', function (evt) {
 });
 
 /******************OpenLayers Initialization*******************/
-bounds = [-8432930.741096409, 4809544.659519571, -8432535.843712168, 4810008.508272814];
 map = new ol.Map({
     controls: ol.control.defaults({attribution:false}).extend([
         expandedAttribution,new geolocateControl()
@@ -346,10 +345,16 @@ onSingleClick = function(evt) {
     });
     var view = map.getView();
     var viewResolution = view.getResolution();
+    
+    // Do not remove this commented code. 
+    // What this code does is that it loads the information
+    // of the layer IF and only IF it is loaded using WMS.
+    // ---- I might need it in the future.. hehe
+
     var isInside = false;
     layerInfoCallStack = [];
     for (var i = 0; i < layers.length; i++) {
-        var source = layers[i].getSource();
+        var source = layersWMS[i].getSource();
         var url = source.getGetFeatureInfoUrl(
           evt.coordinate, viewResolution, view.getProjection(),
           {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50});
@@ -387,6 +392,8 @@ onSingleClick = function(evt) {
         
         $("#infoContent").html(txtStr);
     }, "JSON");
+   
+   
     if (popupText) {
         overlayPopup.setPosition(coord);
         content.innerHTML = popupText;
