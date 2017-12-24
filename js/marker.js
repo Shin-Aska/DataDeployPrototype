@@ -3,6 +3,9 @@
 // we change engines, we don't need to re-add each
 // markers. Awesome right?
 
+// In data deploy, I did not use anything in here but you might
+// ask 
+
 wgs84Sphere = new ol.Sphere(6378137);
 
 // Example markers

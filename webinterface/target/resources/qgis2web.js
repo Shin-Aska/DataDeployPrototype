@@ -15,7 +15,7 @@ yourLocation = new ol.style.Style({
     }),
     text: new ol.style.Text({
         font: '15px Calibri,sans-serif',
-        fill: new ol.style.Fill({ color: '#fff' }),
+        fill: new ol.style.Fill({color: '#fff'}),
         stroke: new ol.style.Stroke({
             color: 'red', width: 5
         }),
@@ -24,46 +24,42 @@ yourLocation = new ol.style.Style({
 });
 /******************Location Tracking Initialization*******************/
 // Uses the browser's built in Geolocation feature
-geolocateControl = function(opt_options) {
+geolocateControl = function (opt_options) {
     var options = opt_options || {};
     var button = document.createElement('button');
     button.className += ' fa fa-map-marker';
-    var handleGeolocate = function() {
+    var handleGeolocate = function () {
 
-      if ((typeof(manualmode) !== "undefined" && manualmode == false) && typeof(geolocation.getPosition()) === "undefined") {
-        var result = confirm("Sorry, this functionality will not work because your GPS is either turned off or not working. Would you like to turn on manual mode instead?");
-        if (result) {
-            manual();
-        }
-        else {
-            throw "action canceled";
-        }
-      }
-      else {
-        if (isTracking) {
-            //map.removeLayer(geolocateOverlay);
-            isTracking = false;
-        } else if (geolocation.getTracking()) {
-            
-            //map.addLayer(geolocateOverlay);
-            if (typeof(manualmode) !== "undefined" && manualmode == true) {
+        if ((typeof (manualmode) !== "undefined" && manualmode == false) && typeof (geolocation.getPosition()) === "undefined") {
+            var result = confirm("Sorry, this functionality will not work because your GPS is either turned off or not working. Would you like to turn on manual mode instead?");
+            if (result) {
+                manual();
+            } else {
+                throw "action canceled";
+            }
+        } else {
+            if (isTracking) {
+                //map.removeLayer(geolocateOverlay);
+                isTracking = false;
+            } else if (geolocation.getTracking()) {
+
+                //map.addLayer(geolocateOverlay);
+                if (typeof (manualmode) !== "undefined" && manualmode == true) {
+                    map.getView().setCenter(manualcoords);
+                } else {
+                    map.getView().setCenter(geolocation.getPosition());
+                }
+
+                isTracking = true;
+            } else if (typeof (manualmode) !== "undefined" && manualmode == true) {
+                map.addLayer(geolocateOverlay);
                 map.getView().setCenter(manualcoords);
+                isTracking = true;
+
             }
-            else {
-                map.getView().setCenter(geolocation.getPosition());
-            }
-
-            isTracking = true;
         }
-        else if (typeof(manualmode) !== "undefined" && manualmode == true) {
-            map.addLayer(geolocateOverlay);
-            map.getView().setCenter(manualcoords);
-            isTracking = true;
 
-        }
-      }
 
-      
     };
 
     externalGeoLocate = handleGeolocate;
@@ -82,7 +78,7 @@ ol.inherits(geolocateControl, ol.control.Control);
 container = document.getElementById('popup');
 content = document.getElementById('popup-content');
 closer = document.getElementById('popup-closer');
-closer.onclick = function() {
+closer.onclick = function () {
     container.style.display = 'none';
     closer.blur();
     return false;
@@ -98,7 +94,7 @@ expandedAttribution = new ol.control.Attribution({
 /******************Route Tracking*******************/
 determinant = false;
 blockedGeom = [];
-drawMap = function(){
+drawMap = function () {
     return determinant;
 }
 
@@ -114,24 +110,94 @@ interaction = new ol.interaction.DragBox({
 interaction.on('boxend', function (evt) {
     var geom = evt.target.getGeometry();
     var vectors = geom.B.slice();
-    geom.B      = vectors;
+    geom.B = vectors;
     console.log(geom);
     var feat = new ol.Feature({
         geometry: geom
     });
-    
-    var vect    = [];
+
+    var vect = [];
     for (var i = 0; i < vectors.length; i += 2) {
-        vect.push([vectors[i], vectors[i+1]]);
+        vect.push([vectors[i], vectors[i + 1]]);
     }
-    blockedGeom.push(vect);
+
+    var testLayer = new ol.source.Vector({
+        features: collection,
+        useSpatialIndex: false // optional, might improve performance
+    });
+
+    var polygon = new ol.geom.Polygon([vect]);
+    var feat = new ol.Feature({
+        geometry: polygon
+    });
+    testLayer.addFeature(feat);
+
+    // Do not remove this commented code. 
+    // What this code does is that it loads the information
+    // of the layer IF and only IF it is loaded using WMS.
+    // ---- I might need it in the future.. hehe
+
+    var isInside = false;
+    layerInfoCallStack = [];
+    targetFeature = [];
+    $("#editBtn").css("display", "none");
+    for (var i = 0; i < layerGeometry.length; i++) {
+
+        if (layerGeometry[i] == "Raster") {
+            targetFeature.push([]);
+        } else {
+            var features = layerGeometry[i].getFeatures();
+            var searchRes = [];
+            for (var j = 0; j < features.length; j++) {
+                var obj = features[j];
+                try {
+                    var point2 = obj.H.geometry.B;
+                    if (testLayer.getFeaturesAtCoordinate(point2).length > 0) {
+                        searchRes.push(obj);
+                        isInside = true;
+                        if (layersConfig[i].type == "MySQL") {
+                            $("#editBtn").css("display", "block");
+                        }
+                    }
+                } catch (exception) {
+                    console.log(exception);
+                }
+            }
+            targetFeature.push(searchRes);
+        }
+    }
+
+    testLayer.removeFeature(feat);
+    if (isInside) {
+        $("#infoContent").html(loadingBar1);
+        $("#popupInfo").popup("open", {"transition": "flip"});
+    }
+    
+    var txtStr = "";
+    for (var i = 0; i < targetFeature.length; i++) {
+        var info = targetFeature[i];
+        for (var j = 0; j < info.length; j++) {
+            var feat = info[j].H;
+            txtStr += "<p>Properties for: " + info[j].f + "</p>";
+            txtStr += "<hr>";
+            for (const prop in feat) {
+                if (feat.hasOwnProperty(prop) && prop != "geometry") {
+                    txtStr += prop + ' = ' + feat[prop] + "<br>";
+                }
+            }
+            txtStr += "<br><br>";
+        }
+    }
+    $("#infoContent").html(txtStr);
+
+    //blockedGeom.push(vect);
     determinant = false;
 });
 
 /******************OpenLayers Initialization*******************/
 map = new ol.Map({
-    controls: ol.control.defaults({attribution:false}).extend([
-        expandedAttribution,new geolocateControl()
+    controls: ol.control.defaults({attribution: false}).extend([
+        expandedAttribution, new geolocateControl()
     ]),
     projection: 'EPSG:3857',
     target: document.getElementById('map'),
@@ -155,7 +221,7 @@ ALL_FIELDS = 1
  * @param layerList {Array} List of ol.Layer instances
  * @param layer {ol.Layer} Layer to find field info about
  */
-getPopupFields = function(layerList, layer) {
+getPopupFields = function (layerList, layer) {
     // Determine the index that the layer will have in the popupLayers Array,
     // if the layersList contains more items than popupLayers then we need to
     // adjust the index to take into account the base maps group
@@ -164,8 +230,8 @@ getPopupFields = function(layerList, layer) {
 }
 
 vectorSource = new ol.source.Vector({
-        features: collection,
-        useSpatialIndex: false // optional, might improve performance
+    features: collection,
+    useSpatialIndex: false // optional, might improve performance
 });
 
 collection = new ol.Collection();
@@ -173,14 +239,14 @@ featureOverlay = new ol.layer.Vector({
     map: map,
     source: vectorSource,
     style: [new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: '#f00',
-            width: 1
-        }),
-        fill: new ol.style.Fill({
-            color: 'rgba(255,0,0,0.1)'
-        }),
-    })],
+            stroke: new ol.style.Stroke({
+                color: '#f00',
+                width: 1
+            }),
+            fill: new ol.style.Fill({
+                color: 'rgba(255,0,0,0.1)'
+            }),
+        })],
     updateWhileAnimating: true, // optional, for instant visual feedback
     updateWhileInteracting: true // optional, for instant visual feedback
 });
@@ -191,7 +257,7 @@ doHover = false;
 highlight;
 
 /******************OpenLayer Events*******************/
-onPointerMove = function(evt) {
+onPointerMove = function (evt) {
     if (!doHover && !doHighlight) {
         return;
     }
@@ -202,7 +268,7 @@ onPointerMove = function(evt) {
     var currentFeature;
     var currentLayer;
     var currentFeatureKeys;
-    map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+    map.forEachFeatureAtPixel(pixel, function (feature, layer) {
         // We only care about features from layers in the layersList, ignore
         // any other layers which the map might contain such as the vector
         // layer used by the measure tool
@@ -220,7 +286,7 @@ onPointerMove = function(evt) {
         }
         if (doPopup) {
             popupText = '<table>';
-            for (var i=0; i<currentFeatureKeys.length; i++) {
+            for (var i = 0; i < currentFeatureKeys.length; i++) {
                 if (currentFeatureKeys[i] != 'geometry') {
                     popupField = '';
                     if (layer.get('fieldLabels')[currentFeatureKeys[i]] == "inline label") {
@@ -234,7 +300,7 @@ onPointerMove = function(evt) {
                     if (layer.get('fieldImages')[currentFeatureKeys[i]] != "Photo") {
                         popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? Autolinker.link(String(currentFeature.get(currentFeatureKeys[i]))) + '</td>' : '');
                     } else {
-                        popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? '<img src="images/' + currentFeature.get(currentFeatureKeys[i]).replace(/[\\\/:]/g, '_').trim()  + '" /></td>' : '');
+                        popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? '<img src="images/' + currentFeature.get(currentFeatureKeys[i]).replace(/[\\\/:]/g, '_').trim() + '" /></td>' : '');
                     }
                     popupText = popupText + '<tr>' + popupField + '</tr>';
                 }
@@ -264,7 +330,7 @@ onPointerMove = function(evt) {
                     })
                 } else if (currentFeature.getGeometry().getType() == 'LineString') {
 
-                    var featureWidth = styleDefinition.split('width')[1].split(' ')[1].replace('})','');
+                    var featureWidth = styleDefinition.split('width')[1].split(' ')[1].replace('})', '');
 
                     highlightStyle = new ol.style.Style({
                         stroke: new ol.style.Stroke({
@@ -292,7 +358,7 @@ onPointerMove = function(evt) {
         if (popupText) {
             overlayPopup.setPosition(coord);
             content.innerHTML = popupText;
-            container.style.display = 'block';        
+            container.style.display = 'block';
         } else {
             container.style.display = 'none';
             closer.blur();
@@ -300,7 +366,7 @@ onPointerMove = function(evt) {
     }
 };
 
-onSingleClick = function(evt) {
+onSingleClick = function (evt) {
     if (doHover) {
         return;
     }
@@ -310,7 +376,7 @@ onSingleClick = function(evt) {
     var popupText = '';
     var currentFeature;
     var currentFeatureKeys;
-    map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+    map.forEachFeatureAtPixel(pixel, function (feature, layer) {
         currentFeature = feature;
         currentFeatureKeys = currentFeature.getKeys();
         var doPopup = false;
@@ -321,7 +387,7 @@ onSingleClick = function(evt) {
         }
         if (doPopup) {
             popupText = '<table>';
-            for (var i=0; i<currentFeatureKeys.length; i++) {
+            for (var i = 0; i < currentFeatureKeys.length; i++) {
                 if (currentFeatureKeys[i] != 'geometry') {
                     popupField = '';
                     if (layer.get('fieldLabels')[currentFeatureKeys[i]] == "inline label") {
@@ -335,7 +401,7 @@ onSingleClick = function(evt) {
                     if (layer.get('fieldImages')[currentFeatureKeys[i]] != "Photo") {
                         popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? Autolinker.link(String(currentFeature.get(currentFeatureKeys[i]))) + '</td>' : '');
                     } else {
-                        popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? '<img src="images/' + currentFeature.get(currentFeatureKeys[i]).replace(/[\\\/:]/g, '_').trim()  + '" /></td>' : '');
+                        popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? '<img src="images/' + currentFeature.get(currentFeatureKeys[i]).replace(/[\\\/:]/g, '_').trim() + '" /></td>' : '');
                     }
                     popupText = popupText + '<tr>' + popupField + '</tr>';
                 }
@@ -345,7 +411,7 @@ onSingleClick = function(evt) {
     });
     var view = map.getView();
     var viewResolution = view.getResolution();
-    
+
     // Do not remove this commented code. 
     // What this code does is that it loads the information
     // of the layer IF and only IF it is loaded using WMS.
@@ -358,46 +424,44 @@ onSingleClick = function(evt) {
     for (var i = 0; i < layers.length; i++) {
         var source = layersWMS[i].getSource();
         var url = source.getGetFeatureInfoUrl(
-          evt.coordinate, viewResolution, view.getProjection(),
-          {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50});
-          
+                evt.coordinate, viewResolution, view.getProjection(),
+                {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50});
+
         if (layerGeometry[i] == "Raster") {
             targetFeature.push([]);
-        }
-        else {
+        } else {
             targetFeature.push(doesIntersect([coord[0], coord[1]], layerGeometry[i]));
         }
-        
+
         if (layerGeometry[i] != "Raster" && doesIntersect([coord[0], coord[1]], layerGeometry[i]).length > 0) {
             isInside = true;
             if (layersConfig[i].type == "Shapefile") {
                 layerInfoCallStack.push(url);
-            }
-            else if (layersConfig[i].type == "MySQL") {
+            } else if (layersConfig[i].type == "MySQL") {
                 layerInfoCallStack.push(url);
                 $("#editBtn").css("display", "block");
             }
-            
+
         }
     }
-    
+
     if (isInside) {
         $("#infoContent").html(loadingBar1);
         $("#popupInfo").popup("open", {"transition": "flip"});
     }
-    
-    $.post("php/infoLister.php", {"data": btoa(JSON.stringify(layerInfoCallStack))}, function(data){
+
+    $.post("php/infoLister.php", {"data": btoa(JSON.stringify(layerInfoCallStack))}, function (data) {
         var txtStr = "";
         for (var i = 0; i < data.info.length; i++) {
             var info = data.info[i];
-            if (typeof(info.features[0]) !== "undefined") {
+            if (typeof (info.features[0]) !== "undefined") {
                 if (info.features[0].geometry != null) {
                     txtStr += "<p>Properties for: " + info.features[0].id + "</p>";
                     txtStr += "<hr>";
                     for (const prop in info.features[0].properties) {
                         if (info.features[0].properties.hasOwnProperty(prop)) {
                             txtStr += prop + ' = ' + info.features[0].properties[prop] + "<br>";
-                        } 
+                        }
                     }
                     txtStr += "<br><br>";
                 }
@@ -405,12 +469,12 @@ onSingleClick = function(evt) {
         }
         $("#infoContent").html(txtStr);
     }, "JSON");
-   
-   
+
+
     if (popupText) {
         overlayPopup.setPosition(coord);
         content.innerHTML = popupText;
-        container.style.display = 'block';        
+        container.style.display = 'block';
     } else {
         container.style.display = 'none';
         closer.blur();
@@ -419,55 +483,54 @@ onSingleClick = function(evt) {
 
 
 
-map.on('pointermove', function(evt) {
+map.on('pointermove', function (evt) {
     onPointerMove(evt);
 });
-map.on('singleclick', function(evt) {
+map.on('singleclick', function (evt) {
     onSingleClick(evt);
 });
 
 
 
 geolocation = new ol.Geolocation({
-  projection: map.getView().getProjection()
+    projection: map.getView().getProjection()
 });
 
 
 accuracyFeature = new ol.Feature();
-geolocation.on('change:accuracyGeometry', function() {
-  accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+geolocation.on('change:accuracyGeometry', function () {
+    accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
 });
 
 positionFeature = new ol.Feature();
 positionFeature.setStyle(new ol.style.Style({
-  image: new ol.style.Circle({
-    radius: 6,
-    fill: new ol.style.Fill({
-      color: '#3399CC'
-    }),
-    stroke: new ol.style.Stroke({
-      color: '#fff',
-      width: 2
+    image: new ol.style.Circle({
+        radius: 6,
+        fill: new ol.style.Fill({
+            color: '#3399CC'
+        }),
+        stroke: new ol.style.Stroke({
+            color: '#fff',
+            width: 2
+        })
     })
-  })
 }));
 
-geolocation.on('change:position', function() {
-  var coordinates = null;
-  if (typeof(manualmode) !== "undefined" && manualmode == true) {
-    coordinates = manualcoords;
-  }
-  else {
-    coordinates = geolocation.getPosition();
-  }
+geolocation.on('change:position', function () {
+    var coordinates = null;
+    if (typeof (manualmode) !== "undefined" && manualmode == true) {
+        coordinates = manualcoords;
+    } else {
+        coordinates = geolocation.getPosition();
+    }
 
-  positionFeature.setGeometry(new ol.geom.Point(coordinates));
+    positionFeature.setGeometry(new ol.geom.Point(coordinates));
 });
 
 geolocateOverlay = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    features: [accuracyFeature, positionFeature]
-  })
+    source: new ol.source.Vector({
+        features: [accuracyFeature, positionFeature]
+    })
 });
 
 geolocation.setTracking(true);
@@ -480,7 +543,7 @@ if ($.urlParam("settings") != null) {
 
 /*
  * This part of over here can be edited to change the text display on the bottom right corner
-   of the app.
+ of the app.
  */
 
 var attribution = document.getElementsByClassName('ol-attribution')[0];
