@@ -366,7 +366,7 @@ map.on('click', function (evt) {
                     new ol.geom.Point(evt.coordinate)
                     );
             circleFeature.setStyle(circle);
-            vectorSource.addFeature(circleFeature);
+            //vectorSource.addFeature(circleFeature);
             $("#addLayer").popup("open", {"transition": "flip"});
             $("#text-a").val(evt.coordinate[0]);
             $("#text-b").val(evt.coordinate[1]);

@@ -55,6 +55,15 @@ var doesIntersect = function(coord, geometry) {
 
 // This method here enables/disables a particular
 // layer by turning on and off its visibility
+
+var reloadMySQLLayers = function() {
+    for (var i = 0; i < layerGeometry.length; i++) {
+        if (layersConfig[i].type == "MySQL") {
+            layerGeometry[i].clear();
+        }
+    }
+}
+
 var layerAction = function (id) {
     var sValue = $("#checkbox-" + id).prop("checked");
     layers[parseInt(id) - 1].setVisible(sValue);
@@ -372,6 +381,7 @@ var addInformation = function() {
     {"lon": lon, "lat": lat, "alt": alt, "loc": loc, "dev":dev, "dat": dat, "pat": pat, "pic": pic, "not": note}, 
     function(){
          $("#addLayer").popup("close");
+         reloadMySQLLayers();
     });
 }
 
@@ -431,6 +441,7 @@ var editInformation = function() {
     {"id": id, "alt": alt, "loc": loc, "dev":dev, "dat": dat, "pat": pat, "pic": pic, "not": note}, 
     function(){
          $("#popupEdit").popup("close");
+         reloadMySQLLayers();
     });
 }
 
