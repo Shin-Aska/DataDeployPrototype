@@ -6,8 +6,8 @@
  Configuration parameters here
  */
 var serverString = "http://localhost:8080";
-var hostString   = "http://localhost/DataDeployPrototype";
-var workspace    = "cite";
+var hostString = "http://localhost/DataDeployPrototype";
+var workspace = "cite";
 
 var createTargetLayer = function (ws, ds) {
     return ws + ":" + ds;
@@ -29,75 +29,26 @@ var loadExternalJavascript = function (dir) {
     });
 }
 
-function createInsertXML(coords) {
-    var geomType;
-
-    if (coords.length == 2) {
-        geomType = 'Point';
-    } else if (coords.length > 2) {
-        if (coords.lastIndexOf(coords[1]) == (coords.length - 1)) {
-            geomType = 'Polygon';
-        } else {
-            geomType = 'LineString';
+var doesIntersect = function(coord, geometry) {
+    var iResult = geometry.getFeaturesAtCoordinate(coord);
+    if (iResult.length == 0) {
+        var features = geometry.getFeatures();
+        iResult = [];
+        for (var i = 0; i < features.length; i++) {
+            var obj = features[i];
+            var point2 = obj.H.geometry.B;
+            
+            var diffx = coord[0] - point2[0];
+            var diffy = coord[1] - point2[1];
+            diffx *= diffx;
+            diffy *= diffy;
+            var diff  = Math.sqrt(diffx + diffy);
+            if (diff <= 10) {
+                iResult.push(obj);
+            } 
         }
     }
-
-    var featNS = workspace;
-    var featName = 'abc';
-    var featType = geomType;
-    var featGeom = coords;
-    var XMLCompleteString = '';
-    var XMLInsertHeaderString = '<wfs:Transaction service="WFS" version="1.0.0" ' +
-            'xmlns:wfs="http://www.opengis.net/wfs" ' +
-            'xmlns:' + featNS + '="' + featNS + '" ' +
-            'xmlns:gml="http://www.opengis.net/gml" ' +
-            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
-            '<wfs:Insert>';
-    var XMLInsertContentHeaderString = '<' + featNS + ':' + featName + '>';
-
-    switch (featType) {
-        case 'Point':
-            var XMLInsertGeometryHeaderString = '<' + featNS + ':' + 'Geometry' + '>';
-            var XMLInsertFeatureTypeHeaderString = '<gml:Point>';
-            var XMLInsertCoordinateString = '<gml:coordinates decimal="." cs="," ts=" ">' +
-                    featGeom[0] + "," + featGeom[1] +
-                    '</gml:coordinates>';
-            var XMLInsertFeatureTypeCloseString = '</gml:Point>';
-            var XMLInsertGeometryCloseString = '</' + featNS + ':' + 'Geometry' + '>';
-            break;
-        case 'PolyLine':
-            //TODO Implement PolyLines
-            break;
-        case 'Polygon':
-            //TODO Implement Polygons
-            break;
-    }
-
-    var XMLInsertJobNumberString = '<' + featNS + ':' + 'JobNumber' + '>' + $('#jobNumber').val() + '</' + featNS + ':' + 'JobNumber' + '>';
-    var XMLInsertContentCloseString = '</' + featNS + ':' + featName + '>';
-    var XMLInsertCloseString = '</wfs:Insert>' +
-            '</wfs:Transaction>';
-    XMLCompleteString = XMLCompleteString.concat(
-            XMLInsertHeaderString,
-            XMLInsertContentHeaderString,
-            XMLInsertGeometryHeaderString,
-            XMLInsertFeatureTypeHeaderString,
-            XMLInsertCoordinateString,
-            XMLInsertFeatureTypeCloseString,
-            XMLInsertGeometryCloseString,
-            XMLInsertJobNumberString,
-            XMLInsertContentCloseString,
-            XMLInsertCloseString
-            );
-    //var xmlhttp = new XMLHttpRequest();
-    //xmlhttp.open("POST", serverString + "geoserver/wfs", true);
-    //xmlhttp.send(XMLCompleteString);
-
-    $.post(serverString + "/geoserver/wfs", XMLCompleteString, function () {
-
-    });
-    alert(serverString + "/geoserver/wfs");
-    alert(XMLCompleteString);
+    return iResult;
 }
 
 /***************--OpenLayers Functionalities--*********************/
@@ -116,17 +67,16 @@ var glayerAction = function (id) {
 
 // This variable is the key to make the sidebar layerlist work
 var targetContent = -1;
-var gTargetContent= -1;
+var gTargetContent = -1;
 
 // The renderer is basically targeted to the layer lists
 // It's a bit too tricky to 
 var renderMode = "i";
-var updateRenderer = function() {
+var updateRenderer = function () {
     if (renderMode == "i") {
         $("#individualFields").css("display", "block");
         $("#groupFields").css("cssText", "display: none !important");
-    }
-    else {
+    } else {
         $("#individualFields").css("cssText", "display: none !important");
         $("#groupFields").css("display", "block");
     }
@@ -174,7 +124,7 @@ var initializeLayerList = function () {
             }
         }(i)));
     }
-    
+
     totalString = "";
     for (var i = 0; i < layersList.length; i++) {
         totalString += "<div id='gcontentItem" + (i + 1) + "'>";
@@ -187,11 +137,11 @@ var initializeLayerList = function () {
         totalString += '     <input onclick="glayerAction(' + (i + 1) + ')" type="checkbox" name="gcheckbox-' + (i + 1) + '" id="gcheckbox-' + (i + 1) + '" checked>';
         totalString += "  </div>";
     }
-    
-    
+
+
     $("#groupOpsLayer").after(totalString);
     $("#groupFields").enhanceWithin();
-    
+
     for (var i = 0; i < layerNames.length; i++) {
         $("#gpopupItem" + (i + 1)).click((function (id) {
             return function () {
@@ -199,7 +149,7 @@ var initializeLayerList = function () {
             }
         }(i)));
     }
-    
+
     updateRenderer();
 }
 
@@ -395,16 +345,97 @@ var zoomTo = function () {
     $("#popupMenu").popup("close");
 }
 
-var toGroup = function() {
+var toGroup = function () {
     $("#popupGeneral").popup("close");
     renderMode = "g";
     updateRenderer();
 }
 
-var toIndividual = function() {
+var toIndividual = function () {
     $("#gpopupGeneral").popup("close");
     renderMode = "i";
     updateRenderer();
+}
+
+var addInformation = function() {
+    var lon = $("#text-a").val();
+    var lat = $("#text-b").val();
+    var alt = $("#text-c").val();
+    var loc = $("#text-d").val();
+    var dev = $("#text-e").val();
+    var dat=  $("#text-f").val();
+    var pat = $("#text-g").val();
+    var pic = JSON.stringify(file64);
+    var note= $("#text-i").val();
+    
+    $.post("php/addMySQLData.php", 
+    {"lon": lon, "lat": lat, "alt": alt, "loc": loc, "dev":dev, "dat": dat, "pat": pat, "pic": pic, "not": note}, 
+    function(){
+         $("#addLayer").popup("close");
+    });
+}
+
+var cancelAddInformation = function() {
+    $("#addLayer").popup("close");
+    base64 = [];
+    elPreview.innerHTML = "";
+}
+
+var spawnEdit = function() {
+    $("#popupInfo").popup("close");
+    setTimeout(function(){
+        $("#popupEditSelection").popup("open",  {"transition": "flip"});
+    }, 800);
+    var txt = "";
+    for (var i = 0; i < layersConfig.length; i++) {
+        var cfg = layersConfig[i];
+        if (cfg.type == "MySQL") {
+            for (var j = 0; j < targetFeature[i].length; j++) {
+                txt += "<button onclick='editFeature(" + i + "," + j +")'>Edit " + targetFeature[i][j].f + "</button>";
+            }
+        }
+    }
+    $("#editSelect").html(txt);
+    $("#editSelect").enhanceWithin();
+}
+
+var editId = -1;
+var editFeature = function(i, j) {
+    $("#popupEditSelection").popup("close");
+    setTimeout(function(){
+        $("#popupEdit").popup("open",  {"transition": "flip"});
+    }, 800);
+    var feature = targetFeature[i][j].H;
+    editId = feature.pointID;
+    $("#etext-c").val(feature.altitude);
+    $("#etext-d").val(feature.location);
+    $("#etext-e").val(feature.devicetype);
+    $("#etext-f").val(feature.date);
+    $("#etext-g").val(feature.path);
+    $("#etext-i").val(feature.note);
+    $("#headingEdit").html("Edit Feature " + targetFeature[i][j].f);
+}
+
+var editInformation = function() {
+    
+    var id  = editId;
+    var alt = $("#etext-c").val();
+    var loc = $("#etext-d").val();
+    var dev = $("#etext-e").val();
+    var dat=  $("#etext-f").val();
+    var pat = $("#etext-g").val();
+    var pic = JSON.stringify(file64);
+    var note= $("#etext-i").val();
+    
+    $.post("php/editMySQLData.php", 
+    {"id": id, "alt": alt, "loc": loc, "dev":dev, "dat": dat, "pat": pat, "pic": pic, "not": note}, 
+    function(){
+         $("#popupEdit").popup("close");
+    });
+}
+
+var cancelEditInformation = function() {
+    $("#popupEdit").popup("close");
 }
 
 // Shows Information about the layer
@@ -417,8 +448,9 @@ var showSpecificInfo = function () {
     var fakeURL = []; // I call this fake since its just pretending to be the layerInfoCallStack
 
     var url = layerCalls[id];
-    
+
     fakeURL.push(url);
+    $("#editBtn").css("display", "none");
     $("#popupMenu").popup("close");
     $("#infoContent").html(loadingBar1);
     setTimeout(function () {
@@ -448,17 +480,16 @@ var showSpecificInfo = function () {
             $("#infoContent").html(txtStr);
 
         }, "JSON");
-    }
-    else if (layersConfig[id].type == "MySQL") {
+    } else if (layersConfig[id].type == "MySQL") {
         $.post("php/showMySQLInfo.php", function (data) {
             var txtStr = "";
-            
+
             for (var i = 0; i < data.info.length; i++) {
                 var info = data.info[i];
-   
+
                 for (var j = 0; j < info.features.length; j++) {
                     var feat = info.features[j];
-                    
+
                     txtStr += "<p>Properties for: " + feat.id + "</p>";
                     txtStr += "<hr>";
                     for (const prop in feat.properties) {
@@ -467,7 +498,7 @@ var showSpecificInfo = function () {
                             ;
                         }
                     }
-                    
+
                 }
             }
 
@@ -497,9 +528,67 @@ var generateSharePage = function () {
     $("#mailToLinker").attr("href", mailto);
 }
 
+
+var file64 = [];
+// Read image ext
+function readImage(file) {
+
+    // Create a new FileReader instance
+    // https://developer.mozilla.org/en/docs/Web/API/FileReader
+    var reader = new FileReader();
+
+    // Once a file is successfully readed:
+    reader.addEventListener("load", function () {
+
+        // At this point `reader.result` contains already the Base64 Data-URL
+        // and we've could immediately show an image using
+        // `elPreview.insertAdjacentHTML("beforeend", "<img src='"+ reader.result +"'>");`
+        // But we want to get that image's width and height px values!
+        // Since the File Object does not hold the size of an image
+        // we need to create a new image and assign it's src, so when
+        // the image is loaded we can calculate it's width and height:
+        var image = new Image();
+        image.addEventListener("load", function () {
+
+            // Concatenate our HTML image info 
+            var imageInfo = file.name + ' ' + // get the value of `name` from the `file` Obj
+                    image.width + '×' + // But get the width from our `image`
+                    image.height + ' ' +
+                    file.type + ' ' +
+                    Math.round(file.size / 1024) + 'KB';
+
+            // Finally append our created image and the HTML info string to our `#preview` 
+            elPreview.appendChild(this);
+            elPreview.insertAdjacentHTML("beforeend", imageInfo + '<br>');
+
+            // If we set the variable `useBlob` to true:
+            // (Data-URLs can end up being really large
+            // `src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAA...........etc`
+            // Blobs are usually faster and the image src will hold a shorter blob name
+            // src="blob:http%3A//example.com/2a303acf-c34c-4d0a-85d4-2136eef7d723"
+            if (useBlob) {
+                // Free some memory for optimal performance
+                window.URL.revokeObjectURL(image.src);
+            }
+        });
+
+        image.src = useBlob ? window.URL.createObjectURL(file) : reader.result;
+        file64.push(reader.result);
+    });
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
+    reader.readAsDataURL(file);
+}
+
+
 // Code below here are still part of the GUI but uses JQuery's document.ready
 $(document).ready(function () {
 
+    window.URL = window.URL || window.webkitURL;
+    elBrowse = document.getElementById("text-h");
+    elPreview = document.getElementById("preview");
+    useBlob = false && window.URL; // Set to `true` to use Blob instead of Data-URL
+    //
     // This is used to interact with the slider.
     // What this one does is that it makes the slider interact with the opacity of the layer.
     $("#slider-1").on('slidestop', function (event) {
@@ -507,7 +596,7 @@ $(document).ready(function () {
         var op = $("#slider-1").val() / 100;
         layers[id].setOpacity(op);
     });
-    
+
     $("#slider-2").on('slidestop', function (event) {
         var id = $("#gcontentItem" + (gTargetContent + 1) + " > div:nth-child(1) > div:nth-child(1) > input:nth-child(1)").val();
         var op = $("#slider-2").val() / 100;
@@ -535,9 +624,6 @@ $(document).ready(function () {
 
         $("#leftpanel2").panel("close");
         $("#popupAddMarker").popup("close");
-        setTimeout(function () {
-            $("#addLayer").popup("open", {"transition": "flip"});
-        }, 800);
         selectType = "addCircle";
         selectMode = true;
     }));
@@ -592,6 +678,49 @@ $(document).ready(function () {
             $("#text-height").val(720);
         }
         generateSharePage();
+    });
+
+    elBrowse.addEventListener("change", function () {
+
+        // Let's store the FileList Array into a variable:
+        // https://developer.mozilla.org/en-US/docs/Web/API/FileList
+        var files = this.files;
+        // Let's create an empty `errors` String to collect eventual errors into:
+        var errors = "";
+
+        if (!files) {
+            errors += "File upload not supported by your browser.";
+        }
+        elPreview.innerHTML = "";
+        file64 = [];
+        // Check for `files` (FileList) support and if contains at least one file:
+        if (files && files[0]) {
+
+            // Iterate over every File object in the FileList array
+            for (var i = 0; i < files.length; i++) {
+
+                // Let's refer to the current File as a `file` variable
+                // https://developer.mozilla.org/en-US/docs/Web/API/File
+                var file = files[i];
+
+                // Test the `file.name` for a valid image extension:
+                // (pipe `|` delimit more image extensions)
+                // The regex can also be expressed like: /\.(png|jpe?g|gif)$/i
+                if ((/\.(png|jpeg|jpg|gif)$/i).test(file.name)) {
+                    // SUCCESS! It's an image!
+                    // Send our image `file` to our `readImage` function!
+                    readImage(file);
+                } else {
+                    errors += file.name + " Unsupported Image extension\n";
+                }
+            }
+        }
+
+        // Notify the user for any errors (i.e: try uploading a .txt file)
+        if (errors) {
+            alert(errors);
+        }
+
     });
 
     // Google Chrome Hack (Prevent scrollbar from overflowing)

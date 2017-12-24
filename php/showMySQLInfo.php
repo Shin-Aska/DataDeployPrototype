@@ -20,7 +20,7 @@
         $properties = $array[0];
         
         $array      = array();
-        array_push($array, array("type" => "feature", "id" => "CUS_Pictures." . $row["id"], "properties" => $properties));
+        array_push($array, array("type" => "feature", "id" => "CUS_Pictures." . $row["pointID"], "properties" => $properties));
         
         $info->features = $array;
         array_push($result->info, $info);

@@ -169,7 +169,39 @@
 
             <div data-role="popup" id="popupInfo" data-theme="a">
                 <h2 class="headingMarker">Layer Information</h2>
+                <button id="editBtn" onclick="spawnEdit()">Edit selected feature(s)</button>
                 <h4 id="infoContent" class="noteContent" style="width: 500px; height:400px; overflow: auto;">
+                </h4>
+            </div>
+            
+            <div data-role="popup" id="popupEdit" data-theme="a">
+                <div style="padding: 10px">
+                    <h2 id="headingEdit" class="headingMarker">Edit Layer</h2>
+                    <div style="display: block; width: 500px; height:400px; overflow: auto;">
+                        <label for="etext-c">Alt</label>
+                        <input data-clear-btn="true" name="etext-c" id="etext-c" value="" type="text">
+                        <label for="etext-d">Location</label>
+                        <input data-clear-btn="true" name="etext-d" id="etext-d" value="" type="text">
+                        <label for="etext-e">Device Type</label>
+                        <input data-clear-btn="true" name="etext-e" id="etext-e" value="" type="text">
+                        <label for="etext-f">Date</label>
+                        <input data-role="date" data-clear-btn="true" name="etext-f" id="etext-f" value="" type="date">
+                        <label for="etext-g">Path</label>
+                        <input data-clear-btn="true" name="etext-g" id="etext-g" value="" type="text">
+                        <label for="etext-h">Picture</label>
+                        <input data-clear-btn="true" name="etext-h" id="etext-h" type="file" multiple>
+                        <div id="preview"></div>
+                        <label for="etext-i">Note</label>
+                        <input data-clear-btn="true" name="etext-i" id="etext-i" value="" type="text">
+                        <input onclick="editInformation()" type="button" name="Update" value="Update" class="ui-btn ui-corner-all layoutButton">
+                        <input onclick="cancelEditInformation()" type="button" name="Cancel" value="Cancel" class="ui-btn ui-corner-all layoutButton">
+                    </div>
+                </div>
+            </div>
+            
+            <div data-role="popup" id="popupEditSelection" data-theme="a">
+                <h2 class="headingMarker">Select features to edit</h2>
+                <h4 id="editSelect" class="noteContent" style="width: 500px; height:400px; overflow: auto;">
                 </h4>
             </div>
             
@@ -178,21 +210,26 @@
                     <h2 class="headingMarker">Layer Information</h2>
                     <div style="display: block; width: 500px; height:400px; overflow: auto;">
                         <label for="text-a">Long</label>
-                        <input data-clear-btn="true" name="text-a" id="text-3" value="" type="text">
+                        <input data-clear-btn="true" name="text-a" id="text-a" value="" type="text">
                         <label for="text-b">Lot</label>
-                        <input data-clear-btn="true" name="text-b" id="text-3" value="" type="text">
+                        <input data-clear-btn="true" name="text-b" id="text-b" value="" type="text">
                         <label for="text-c">Alt</label>
-                        <input data-clear-btn="true" name="text-c" id="text-3" value="" type="text">
+                        <input data-clear-btn="true" name="text-c" id="text-c" value="" type="text">
                         <label for="text-d">Location</label>
-                        <input data-clear-btn="true" name="text-d" id="text-3" value="" type="text">
+                        <input data-clear-btn="true" name="text-d" id="text-d" value="" type="text">
                         <label for="text-e">Device Type</label>
-                        <input data-clear-btn="true" name="text-e" id="text-3" value="" type="text">
+                        <input data-clear-btn="true" name="text-e" id="text-e" value="" type="text">
                         <label for="text-f">Date</label>
-                        <input data-clear-btn="true" name="text-f" id="text-3" value="" type="text">
+                        <input data-role="date" data-clear-btn="true" name="text-f" id="text-f" value="" type="date">
                         <label for="text-g">Path</label>
-                        <input data-clear-btn="true" name="text-g" id="text-3" value="" type="text">
-                        <input type="button" name="Add" value="Add" class="ui-btn ui-corner-all layoutButton">
-                        <input type="button" name="Cancel" value="Cancel" class="ui-btn ui-corner-all layoutButton">
+                        <input data-clear-btn="true" name="text-g" id="text-g" value="" type="text">
+                        <label for="text-h">Picture</label>
+                        <input data-clear-btn="true" name="text-h" id="text-h" type="file" multiple>
+                        <div id="preview"></div>
+                        <label for="text-i">Note</label>
+                        <input data-clear-btn="true" name="text-i" id="text-i" value="" type="text">
+                        <input onclick="addInformation()" type="button" name="Add" value="Add" class="ui-btn ui-corner-all layoutButton">
+                        <input onclick="cancelAddInformation()" type="button" name="Cancel" value="Cancel" class="ui-btn ui-corner-all layoutButton">
                     </div>
                 </div>
             </div>

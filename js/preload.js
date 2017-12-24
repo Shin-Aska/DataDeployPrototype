@@ -99,3 +99,8 @@ var points = "",
 var routeFeature = "";
 var utils = "";
 var createRoute = "";
+
+var elBrowse     =  "";
+var elPreview   = "";
+var useBlob     = false;
+var targetFeature = "";

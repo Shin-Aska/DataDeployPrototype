@@ -353,26 +353,37 @@ onSingleClick = function(evt) {
 
     var isInside = false;
     layerInfoCallStack = [];
+    targetFeature = [];
+    $("#editBtn").css("display", "none");
     for (var i = 0; i < layers.length; i++) {
         var source = layersWMS[i].getSource();
         var url = source.getGetFeatureInfoUrl(
           evt.coordinate, viewResolution, view.getProjection(),
           {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50});
+          
+        if (layerGeometry[i] == "Raster") {
+            targetFeature.push([]);
+        }
+        else {
+            targetFeature.push(doesIntersect([coord[0], coord[1]], layerGeometry[i]));
+        }
         
-        if (ol.extent.containsXY(layerExtents[i], coord[0], coord[1]) && i > imageLastIndex) {
+        if (layerGeometry[i] != "Raster" && doesIntersect([coord[0], coord[1]], layerGeometry[i]).length > 0) {
             isInside = true;
             if (layersConfig[i].type == "Shapefile") {
                 layerInfoCallStack.push(url);
             }
             else if (layersConfig[i].type == "MySQL") {
                 layerInfoCallStack.push(url);
+                $("#editBtn").css("display", "block");
             }
+            
         }
     }
     
     if (isInside) {
-        $("#popupInfo").popup("open", {"transition": "flip"});
         $("#infoContent").html(loadingBar1);
+        $("#popupInfo").popup("open", {"transition": "flip"});
     }
     
     $.post("php/infoLister.php", {"data": btoa(JSON.stringify(layerInfoCallStack))}, function(data){
@@ -392,7 +403,6 @@ onSingleClick = function(evt) {
                 }
             }
         }
-        
         $("#infoContent").html(txtStr);
     }, "JSON");
    

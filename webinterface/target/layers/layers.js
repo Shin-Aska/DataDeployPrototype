@@ -23,6 +23,7 @@ var layersConfig = [
 // The same as above, this should not be touched
 // since a lot of functionalities rely on this one
 var layerExtents = [/*[-13884991, 2870341, -7455066, 6338219]*/];
+var layerGeometry= [];
 
 var layerCalls = [];
 
@@ -72,7 +73,7 @@ $.get("php/coverageStoreList.php", function (data) {
         config["name"] = store.name;
         config["type"] = "Raster";
         layersConfig.push(config);
-            
+        layerGeometry.push("Raster");
         layerExtents.push(store.extent);
         layerNames.push(store.name + " [Raster]");
         layers.push(layer);
@@ -117,10 +118,11 @@ $.get("php/coverageStoreList.php", function (data) {
                 //strategy: ol.loadingstrategy.bbox
                 strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ())
             });
-            
+            layerGeometry.push(layer);
             var config = {};
             config["name"] = store.name;
             config["type"] = store.type;
+            config["group"]= currentNameSpace;
             
             var tmpVal= 0;
             if (stringNameSpace != currentNameSpace && stringNameSpace != "") {
@@ -132,10 +134,6 @@ $.get("php/coverageStoreList.php", function (data) {
                             'bbox=' + bounds.join(',') + ',EPSG:3857';
             var cColor = groupColors[layersList.length + tmpVal - 1];
             var fColor = groupColorsFill[layersList.length + tmpVal - 1];
-            
-            if (store.type == "MySQL") {
-                urStr = hostString + "/php/showMySQLInfo.php";
-            }
             
             var vector = new ol.layer.Vector({
                 source: layer,
@@ -187,7 +185,6 @@ $.get("php/coverageStoreList.php", function (data) {
                 });
                 group_layer_buffer = [];
                 layersList.push(group_newmap);
-                
                 stringNameSpace = currentNameSpace;
                 group_layer_buffer.push(vector);
             }
