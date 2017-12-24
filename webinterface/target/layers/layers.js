@@ -11,7 +11,13 @@ var layers = [
 // I need this for fetching information to the geoserver
 var layersWMS = [
 
-]
+];
+
+// This will be the one responsible for identifying if the layer is
+// of MySQL or not
+var layersConfig = [
+    
+];
 
 // The extent (or position) of a particular layer
 // The same as above, this should not be touched
@@ -61,6 +67,12 @@ $.get("php/coverageStoreList.php", function (data) {
                 transition: 0
             })
         });
+        
+        var config = {};
+        config["name"] = store.name;
+        config["type"] = "Raster";
+        layersConfig.push(config);
+            
         layerExtents.push(store.extent);
         layerNames.push(store.name + " [Raster]");
         layers.push(layer);
@@ -82,7 +94,8 @@ $.get("php/coverageStoreList.php", function (data) {
         for (var i = 0; i < dataStores.dataStores.length; i++) {
             var store = dataStores.dataStores[i];
             param = createTargetLayer(workspace, store.name);
-
+            var currentNameSpace = store.name.split("_")[0];
+            
             var layerWMS = new ol.layer.Tile({
                 source: new ol.source.TileWMS({
                     url: serverString + '/geoserver/wms',
@@ -104,12 +117,25 @@ $.get("php/coverageStoreList.php", function (data) {
                 //strategy: ol.loadingstrategy.bbox
                 strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ())
             });
+            
+            var config = {};
+            config["name"] = store.name;
+            config["type"] = store.type;
+            
+            var tmpVal= 0;
+            if (stringNameSpace != currentNameSpace && stringNameSpace != "") {
+                tmpVal = 1;
+            }
             var urStr = serverString + '/geoserver/wfs?service=WFS&' +
                             'version=1.1.0&request=GetFeature&typename=' + param + '&' +
                             'outputFormat=application/json&srsname=EPSG:3857&' +
                             'bbox=' + bounds.join(',') + ',EPSG:3857';
-            var cColor = groupColors[layersList.length - 1];
-            var fColor = groupColorsFill[layersList.length - 1];
+            var cColor = groupColors[layersList.length + tmpVal - 1];
+            var fColor = groupColorsFill[layersList.length + tmpVal - 1];
+            
+            if (store.type == "MySQL") {
+                urStr = hostString + "/php/showMySQLInfo.php";
+            }
             
             var vector = new ol.layer.Vector({
                 source: layer,
@@ -146,13 +172,13 @@ $.get("php/coverageStoreList.php", function (data) {
                 })
             });
 
-
             layerExtents.push(store.extent);
             layerNames.push(store.name);
+            layersConfig.push(config);
             layerCalls.push(urStr);
             layers.push(vector);
             layersWMS.push(layerWMS);
-            var currentNameSpace = store.name.split("_")[0];
+            
             if (stringNameSpace != currentNameSpace && stringNameSpace != "") {
                 
                 group_newmap = new ol.layer.Group({

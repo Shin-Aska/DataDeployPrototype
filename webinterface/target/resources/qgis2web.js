@@ -358,12 +358,15 @@ onSingleClick = function(evt) {
         var url = source.getGetFeatureInfoUrl(
           evt.coordinate, viewResolution, view.getProjection(),
           {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50});
-        if (url) {
-          layerInfoCallStack.push(url);
-        }
         
         if (ol.extent.containsXY(layerExtents[i], coord[0], coord[1]) && i > imageLastIndex) {
             isInside = true;
+            if (layersConfig[i].type == "Shapefile") {
+                layerInfoCallStack.push(url);
+            }
+            else if (layersConfig[i].type == "MySQL") {
+                layerInfoCallStack.push(url);
+            }
         }
     }
     

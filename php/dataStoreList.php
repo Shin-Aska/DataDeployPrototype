@@ -24,7 +24,21 @@
         $object = new Data();
         $object->name = $obj->dataStores->dataStore[$i]->name;
         
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "http://localhost:8080/geoserver/rest/workspaces/cite/datastores/" . $object->name . ".json");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_USERPWD, "admin" . ":" . "geoserver");
+        
+        $txt = curl_exec($ch);
+        if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+        }
+        curl_close ($ch);
 
+        $dats = json_decode($txt);
+        $object->setType($dats->dataStore->type);
+        
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "http://localhost:8080/geoserver/rest/workspaces/cite/datastores/" . $object->name . "/featuretypes/". $object->name . ".json");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -38,6 +52,7 @@
         curl_close ($ch);
 
         $targ = json_decode($txt);
+        
         $bounds = array();
         if (is_null($targ) == false) {
             array_push($bounds, $targ->featureType->nativeBoundingBox->minx);

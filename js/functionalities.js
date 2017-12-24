@@ -6,7 +6,8 @@
  Configuration parameters here
  */
 var serverString = "http://localhost:8080";
-var workspace = "cite";
+var hostString   = "http://localhost/DataDeployPrototype";
+var workspace    = "cite";
 
 var createTargetLayer = function (ws, ds) {
     return ws + ":" + ds;
@@ -416,35 +417,64 @@ var showSpecificInfo = function () {
     var fakeURL = []; // I call this fake since its just pretending to be the layerInfoCallStack
 
     var url = layerCalls[id];
+    
     fakeURL.push(url);
     $("#popupMenu").popup("close");
     $("#infoContent").html(loadingBar1);
     setTimeout(function () {
         $("#popupInfo").popup("open", {"transition": "flip"});
     }, 800)
-    $.post("php/infoLister.php", {"data": btoa(JSON.stringify(fakeURL))}, function (data) {
-        var txtStr = "";
+    if (layersConfig[id].type == "Shapefile") {
+        $.post("php/infoLister.php", {"data": btoa(JSON.stringify(fakeURL))}, function (data) {
+            var txtStr = "";
 
-        for (var i = 0; i < data.info.length; i++) {
-            var info = data.info[i];
+            for (var i = 0; i < data.info.length; i++) {
+                var info = data.info[i];
 
-            for (var j = 0; j < info.features.length; j++) {
-                var feat = info.features[j];
-                txtStr += "<p>Properties for: " + feat.id + "</p>";
-                txtStr += "<hr>";
-                for (const prop in feat.properties) {
-                    if (feat.properties.hasOwnProperty(prop)) {
-                        txtStr += prop + " = " + feat.properties[prop] + "<br>";
-                        ;
+                for (var j = 0; j < info.features.length; j++) {
+                    var feat = info.features[j];
+                    txtStr += "<p>Properties for: " + feat.id + "</p>";
+                    txtStr += "<hr>";
+                    for (const prop in feat.properties) {
+                        if (feat.properties.hasOwnProperty(prop)) {
+                            txtStr += prop + " = " + feat.properties[prop] + "<br>";
+                            ;
+                        }
                     }
+                    console.log(feat);
                 }
-                console.log(feat);
             }
-        }
 
-        $("#infoContent").html(txtStr);
+            $("#infoContent").html(txtStr);
 
-    }, "JSON");
+        }, "JSON");
+    }
+    else if (layersConfig[id].type == "MySQL") {
+        $.post("php/showMySQLInfo.php", function (data) {
+            var txtStr = "";
+            
+            for (var i = 0; i < data.info.length; i++) {
+                var info = data.info[i];
+   
+                for (var j = 0; j < info.features.length; j++) {
+                    var feat = info.features[j];
+                    
+                    txtStr += "<p>Properties for: " + feat.id + "</p>";
+                    txtStr += "<hr>";
+                    for (const prop in feat.properties) {
+                        if (feat.properties.hasOwnProperty(prop)) {
+                            txtStr += prop + " = " + feat.properties[prop] + "<br>";
+                            ;
+                        }
+                    }
+                    
+                }
+            }
+
+            $("#infoContent").html(txtStr);
+
+        }, "JSON");
+    }
 }
 
 // This code generates the link for the app. This one supports the
