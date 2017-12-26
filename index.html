@@ -2,7 +2,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Prototype - Day 7 (Phase 1)</title>
+        <title>Phase 1 Prototype - FINAL</title>
 
         <link rel="stylesheet" href="css/fontawesome-all.css" />
         <link rel="stylesheet" href="css/dialog-polyfill.min.css">
@@ -27,9 +27,10 @@
             <center>
                 <div class="lds-css ng-scope" style="display: table; height: 100%;">
                 <div style="display: table-cell; vertical-align: middle;" class="lds-ball">
-                    <div></div>
-                    <br><br><br>
-                    <h2>Loading...</h2>
+                    <div style="margin-left: auto; margin-right: auto;"></div>
+                    <br><br><br><br>
+                    <h2 style="text-align: center;">Now loading...</h2>
+                    <h3 style="text-align: center">datadeploy.io</h3>
                 </div>
             </center>
         </div>
@@ -178,9 +179,9 @@
             </div><!-- /leftpanel3 -->
 
             <div data-role="popup" id="popupInfo" data-theme="a">
-                <h2 class="headingMarker">Layer Information</h2>
+                <h2 class="headingMarker">Layer(s) Information</h2>
                 <button id="editBtn" onclick="spawnEdit()">Edit selected feature(s)</button>
-                <h4 id="infoContent" class="noteContent" style="width: 500px; height:400px; overflow: auto;">
+                <h4 id="infoContent" class="noteContent" style="width: 800px; height:600px; overflow: auto;">
                 </h4>
             </div>
             
@@ -200,7 +201,7 @@
                         <input data-clear-btn="true" name="etext-g" id="etext-g" value="" type="text">
                         <label for="etext-h">Picture</label>
                         <input data-clear-btn="true" name="etext-h" id="etext-h" type="file" multiple>
-                        <div id="preview"></div>
+                        <div id="gpreview"></div>
                         <label for="etext-i">Note</label>
                         <input data-clear-btn="true" name="etext-i" id="etext-i" value="" type="text">
                         <input onclick="editInformation()" type="button" name="Update" value="Update" class="ui-btn ui-corner-all layoutButton">
@@ -244,7 +245,7 @@
                 </div>
             </div>
             
-            <div data-role="popup" id="sharePage" style="width: 700px; height: 400px; overflow: auto;"><!-- dialog-->
+            <div data-role="popup" id="sharePage" style="width: 700px; height: 600px; overflow: auto;"><!-- dialog-->
 
             <div data-role="header">
                 <h1 id="headerTexter" class="centerText">Share the page</h1>

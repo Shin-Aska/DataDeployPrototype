@@ -29,7 +29,7 @@ var loadExternalJavascript = function (dir) {
     });
 }
 
-var doesIntersect = function(coord, geometry) {
+var doesIntersect = function (coord, geometry) {
     var iResult = geometry.getFeaturesAtCoordinate(coord);
     if (iResult.length == 0) {
         var features = geometry.getFeatures();
@@ -37,15 +37,15 @@ var doesIntersect = function(coord, geometry) {
         for (var i = 0; i < features.length; i++) {
             var obj = features[i];
             var point2 = obj.H.geometry.B;
-            
+
             var diffx = coord[0] - point2[0];
             var diffy = coord[1] - point2[1];
             diffx *= diffx;
             diffy *= diffy;
-            var diff  = Math.sqrt(diffx + diffy);
+            var diff = Math.sqrt(diffx + diffy);
             if (diff <= 10) {
                 iResult.push(obj);
-            } 
+            }
         }
     }
     return iResult;
@@ -56,7 +56,7 @@ var doesIntersect = function(coord, geometry) {
 // This method here enables/disables a particular
 // layer by turning on and off its visibility
 
-var reloadMySQLLayers = function() {
+var reloadMySQLLayers = function () {
     for (var i = 0; i < layerGeometry.length; i++) {
         if (layersConfig[i].type == "MySQL") {
             layerGeometry[i].clear();
@@ -268,6 +268,94 @@ var moveLayerUp = function (id) {
 /***************--GUI Functionalities--*********************/
 // This method is called when the options button (The one with the [...] ellipses) is pressed or touched
 // This will indicate which element is being referred to without going through some quirky hacks
+
+function isURL(s) {
+    s = s + "";
+    return !!s.match(isURL.regex);
+}
+isURL.regex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm;
+
+function isDataURL(s) {
+    s = s + "";
+    return !!s.match(isDataURL.regex);
+}
+isDataURL.regex = /^\s*data:([a-z]+\/[a-z]+(;[a-z\-]+\=[a-z\-]+)?)?(;base64)?,[a-z0-9\!\$\&\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i;
+
+function isArray(s) {
+    try {
+        var x = JSON.parse(s);
+        if (x.length > 0)
+            return true;
+        return false;
+    }
+    catch (ex){
+        return false;
+    }
+}
+
+var formatify = function (names, properties, value, id) {
+    var tabs = "";
+    var placement = "";
+    ftoggle = true;
+    for (var i = 0; i < names.length; i++) {
+        tabs += "<li><a href=\"#" + id + "-" + (i + 1) + "\" class=\"ui-btn-active\">" + names[i] + "</a></li>";
+        var content = "";
+        //content += '<div data-role="collapsibleset" data-theme="a" data-content-theme="a">';
+        for (var j = 0; j < properties[i].length; j++) {
+
+            content += "<div class=\"formatifyc\" data-role=\"collapsible\" data-collapsed=\"false\">" +
+                    "        <h3>" + properties[i][j] + "</h3>";
+
+            if (isURL(value[i][j])) {
+                content += "<a target='_blank' href='" + value[i][j] + "'>" + value[i][j] + "</a>";
+            } else if (isDataURL(value[i][j])) {
+                content += "<img src='" + value[i][j] + "'>";
+            } else if (isArray(value[i][j])) {
+                var arr = JSON.parse(value[i][j]);
+                for (var k = 0; k < arr.length; k++) {
+                    if (isURL(arr[k])) {
+                        content += "<a target='_blank' href='" + arr[k] + "'>" + arr[k] + "</a>";
+                    }
+                    else if (isDataURL(arr[k])) {
+                        content += "<img src='" + arr[k] + "'>";
+                    }
+                    else {
+                        content += "<p>" + arr[k] + "</p>";
+                    }
+                }
+            }
+            else {
+                content += "<p>" + value[i][j] + "</p>";
+            }
+            content += "    </div>";
+        }
+        //content += '</div>'
+        placement += "    <div id=\"" + id + "-" + (i + 1) + "\">" +
+                content +
+                "      </div>"
+    }
+
+    return "<button id=\"ffbut\" onclick=\"formatifytoggle()\">Hide all values</button><div role=\"main\" class=\"ui-content\">" +
+            "   <div data-role=\"tabs\">" +
+            "      <div data-role=\"navbar\">" +
+            "        <ul>" +
+            tabs +
+            "        </ul>" +
+            "      </div>" +
+            placement +
+            "       </div>" +
+            "   </div>";
+}
+
+var ftoggle = true;
+var formatifytoggle = function () {
+    var fval = ftoggle ? "collapse" : "expand";
+    var xval = !ftoggle ? "Hide all values" : "Show all values";
+    $(".formatifyc").collapsible(fval);
+    $("#ffbut").html(xval);
+    ftoggle = !ftoggle;
+}
+
 var setMoveTarget = function (id) {
     targetContent = id;
     $("#headerPopupMenu").html("Choose an action for " + layerNames[targetContent]);
@@ -366,42 +454,42 @@ var toIndividual = function () {
     updateRenderer();
 }
 
-var addInformation = function() {
+var addInformation = function () {
     var lon = $("#text-a").val();
     var lat = $("#text-b").val();
     var alt = $("#text-c").val();
     var loc = $("#text-d").val();
     var dev = $("#text-e").val();
-    var dat=  $("#text-f").val();
+    var dat = $("#text-f").val();
     var pat = $("#text-g").val();
     var pic = JSON.stringify(file64);
-    var note= $("#text-i").val();
-    
-    $.post("php/addMySQLData.php", 
-    {"lon": lon, "lat": lat, "alt": alt, "loc": loc, "dev":dev, "dat": dat, "pat": pat, "pic": pic, "not": note}, 
-    function(){
-         $("#addLayer").popup("close");
-         reloadMySQLLayers();
-    });
+    var note = $("#text-i").val();
+
+    $.post("php/addMySQLData.php",
+            {"lon": lon, "lat": lat, "alt": alt, "loc": loc, "dev": dev, "dat": dat, "pat": pat, "pic": pic, "not": note},
+            function () {
+                $("#addLayer").popup("close");
+                reloadMySQLLayers();
+            });
 }
 
-var cancelAddInformation = function() {
+var cancelAddInformation = function () {
     $("#addLayer").popup("close");
     base64 = [];
     elPreview.innerHTML = "";
 }
 
-var spawnEdit = function() {
+var spawnEdit = function () {
     $("#popupInfo").popup("close");
-    setTimeout(function(){
-        $("#popupEditSelection").popup("open",  {"transition": "flip"});
+    setTimeout(function () {
+        $("#popupEditSelection").popup("open", {"transition": "flip"});
     }, 800);
     var txt = "";
     for (var i = 0; i < layersConfig.length; i++) {
         var cfg = layersConfig[i];
         if (cfg.type == "MySQL") {
             for (var j = 0; j < targetFeature[i].length; j++) {
-                txt += "<button onclick='editFeature(" + i + "," + j +")'>Edit " + targetFeature[i][j].f + "</button>";
+                txt += "<button onclick='editFeature(" + i + "," + j + ")'>Edit " + targetFeature[i][j].f + "</button>";
             }
         }
     }
@@ -410,10 +498,10 @@ var spawnEdit = function() {
 }
 
 var editId = -1;
-var editFeature = function(i, j) {
+var editFeature = function (i, j) {
     $("#popupEditSelection").popup("close");
-    setTimeout(function(){
-        $("#popupEdit").popup("open",  {"transition": "flip"});
+    setTimeout(function () {
+        $("#popupEdit").popup("open", {"transition": "flip"});
     }, 800);
     var feature = targetFeature[i][j].H;
     editId = feature.pointID;
@@ -426,26 +514,26 @@ var editFeature = function(i, j) {
     $("#headingEdit").html("Edit Feature " + targetFeature[i][j].f);
 }
 
-var editInformation = function() {
-    
-    var id  = editId;
+var editInformation = function () {
+
+    var id = editId;
     var alt = $("#etext-c").val();
     var loc = $("#etext-d").val();
     var dev = $("#etext-e").val();
-    var dat=  $("#etext-f").val();
+    var dat = $("#etext-f").val();
     var pat = $("#etext-g").val();
     var pic = JSON.stringify(file64);
-    var note= $("#etext-i").val();
-    
-    $.post("php/editMySQLData.php", 
-    {"id": id, "alt": alt, "loc": loc, "dev":dev, "dat": dat, "pat": pat, "pic": pic, "not": note}, 
-    function(){
-         $("#popupEdit").popup("close");
-         reloadMySQLLayers();
-    });
+    var note = $("#etext-i").val();
+
+    $.post("php/editMySQLData.php",
+            {"id": id, "alt": alt, "loc": loc, "dev": dev, "dat": dat, "pat": pat, "pic": pic, "not": note},
+            function () {
+                $("#popupEdit").popup("close");
+                reloadMySQLLayers();
+            });
 }
 
-var cancelEditInformation = function() {
+var cancelEditInformation = function () {
     $("#popupEdit").popup("close");
 }
 
@@ -467,53 +555,65 @@ var showSpecificInfo = function () {
     setTimeout(function () {
         $("#popupInfo").popup("open", {"transition": "flip"});
     }, 800)
+
     if (layersConfig[id].type == "Shapefile") {
         $.post("php/infoLister.php", {"data": btoa(JSON.stringify(fakeURL))}, function (data) {
-            var txtStr = "";
+
+            var names = [];
+            var properties = [];
+            var values = [];
 
             for (var i = 0; i < data.info.length; i++) {
                 var info = data.info[i];
 
                 for (var j = 0; j < info.features.length; j++) {
                     var feat = info.features[j];
-                    txtStr += "<p>Properties for: " + feat.id + "</p>";
-                    txtStr += "<hr>";
+                    names.push(feat.id);
+                    var p = [];
+                    var v = [];
                     for (const prop in feat.properties) {
                         if (feat.properties.hasOwnProperty(prop)) {
-                            txtStr += prop + " = " + feat.properties[prop] + "<br>";
-                            ;
+                            p.push(prop);
+                            v.push(feat.properties[prop]);
                         }
                     }
-                    console.log(feat);
+                    properties.push(p);
+                    values.push(v);
                 }
             }
 
-            $("#infoContent").html(txtStr);
+            $("#infoContent").html(formatify(names, properties, values, "info"));
+            $("#infoContent").enhanceWithin();
 
         }, "JSON");
     } else if (layersConfig[id].type == "MySQL") {
         $.post("php/showMySQLInfo.php", function (data) {
-            var txtStr = "";
+
+            var names = [];
+            var properties = [];
+            var values = [];
 
             for (var i = 0; i < data.info.length; i++) {
                 var info = data.info[i];
 
                 for (var j = 0; j < info.features.length; j++) {
                     var feat = info.features[j];
-
-                    txtStr += "<p>Properties for: " + feat.id + "</p>";
-                    txtStr += "<hr>";
+                    names.push(feat.id);
+                    var p = [];
+                    var v = [];
                     for (const prop in feat.properties) {
                         if (feat.properties.hasOwnProperty(prop)) {
-                            txtStr += prop + " = " + feat.properties[prop] + "<br>";
-                            ;
+                            p.push(prop);
+                            v.push(feat.properties[prop]);
                         }
                     }
-
+                    properties.push(p);
+                    values.push(v);
                 }
             }
 
-            $("#infoContent").html(txtStr);
+            $("#infoContent").html(formatify(names, properties, values, "info"));
+            $("#infoContent").enhanceWithin();
 
         }, "JSON");
     }
@@ -591,6 +691,54 @@ function readImage(file) {
     reader.readAsDataURL(file);
 }
 
+function readImage2(file) {
+
+    // Create a new FileReader instance
+    // https://developer.mozilla.org/en/docs/Web/API/FileReader
+    var reader = new FileReader();
+
+    // Once a file is successfully readed:
+    reader.addEventListener("load", function () {
+
+        // At this point `reader.result` contains already the Base64 Data-URL
+        // and we've could immediately show an image using
+        // `elPreview.insertAdjacentHTML("beforeend", "<img src='"+ reader.result +"'>");`
+        // But we want to get that image's width and height px values!
+        // Since the File Object does not hold the size of an image
+        // we need to create a new image and assign it's src, so when
+        // the image is loaded we can calculate it's width and height:
+        var image = new Image();
+        image.addEventListener("load", function () {
+
+            // Concatenate our HTML image info 
+            var imageInfo = file.name + ' ' + // get the value of `name` from the `file` Obj
+                    image.width + '×' + // But get the width from our `image`
+                    image.height + ' ' +
+                    file.type + ' ' +
+                    Math.round(file.size / 1024) + 'KB';
+
+            // Finally append our created image and the HTML info string to our `#preview` 
+            elPreview2.appendChild(this);
+            elPreview2.insertAdjacentHTML("beforeend", imageInfo + '<br>');
+
+            // If we set the variable `useBlob` to true:
+            // (Data-URLs can end up being really large
+            // `src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAA...........etc`
+            // Blobs are usually faster and the image src will hold a shorter blob name
+            // src="blob:http%3A//example.com/2a303acf-c34c-4d0a-85d4-2136eef7d723"
+            if (useBlob) {
+                // Free some memory for optimal performance
+                window.URL.revokeObjectURL(image.src);
+            }
+        });
+
+        image.src = useBlob ? window.URL.createObjectURL(file) : reader.result;
+        file64.push(reader.result);
+    });
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
+    reader.readAsDataURL(file);
+}
 
 // Code below here are still part of the GUI but uses JQuery's document.ready
 $(document).ready(function () {
@@ -598,6 +746,9 @@ $(document).ready(function () {
     window.URL = window.URL || window.webkitURL;
     elBrowse = document.getElementById("text-h");
     elPreview = document.getElementById("preview");
+    elBrowse2 = document.getElementById("etext-h");
+    elPreview2= document.getElementById("gpreview");
+    
     useBlob = false && window.URL; // Set to `true` to use Blob instead of Data-URL
     //
     // This is used to interact with the slider.
@@ -703,6 +854,49 @@ $(document).ready(function () {
             errors += "File upload not supported by your browser.";
         }
         elPreview.innerHTML = "";
+        file64 = [];
+        // Check for `files` (FileList) support and if contains at least one file:
+        if (files && files[0]) {
+
+            // Iterate over every File object in the FileList array
+            for (var i = 0; i < files.length; i++) {
+
+                // Let's refer to the current File as a `file` variable
+                // https://developer.mozilla.org/en-US/docs/Web/API/File
+                var file = files[i];
+
+                // Test the `file.name` for a valid image extension:
+                // (pipe `|` delimit more image extensions)
+                // The regex can also be expressed like: /\.(png|jpe?g|gif)$/i
+                if ((/\.(png|jpeg|jpg|gif)$/i).test(file.name)) {
+                    // SUCCESS! It's an image!
+                    // Send our image `file` to our `readImage` function!
+                    readImage(file);
+                } else {
+                    errors += file.name + " Unsupported Image extension\n";
+                }
+            }
+        }
+
+        // Notify the user for any errors (i.e: try uploading a .txt file)
+        if (errors) {
+            alert(errors);
+        }
+
+    });
+    
+    elBrowse2.addEventListener("change", function () {
+
+        // Let's store the FileList Array into a variable:
+        // https://developer.mozilla.org/en-US/docs/Web/API/FileList
+        var files = this.files;
+        // Let's create an empty `errors` String to collect eventual errors into:
+        var errors = "";
+
+        if (!files) {
+            errors += "File upload not supported by your browser.";
+        }
+        elPreview2.innerHTML = "";
         file64 = [];
         // Check for `files` (FileList) support and if contains at least one file:
         if (files && files[0]) {

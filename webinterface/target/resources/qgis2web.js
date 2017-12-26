@@ -173,22 +173,31 @@ interaction.on('boxend', function (evt) {
         $("#popupInfo").popup("open", {"transition": "flip"});
     }
     
-    var txtStr = "";
+    var names = [];
+    var properties = [];
+    var values = [];
+    
     for (var i = 0; i < targetFeature.length; i++) {
         var info = targetFeature[i];
         for (var j = 0; j < info.length; j++) {
             var feat = info[j].H;
-            txtStr += "<p>Properties for: " + info[j].f + "</p>";
-            txtStr += "<hr>";
+            names.push(info[j].f);
+            var p = [];
+            var v = [];
             for (const prop in feat) {
                 if (feat.hasOwnProperty(prop) && prop != "geometry") {
-                    txtStr += prop + ' = ' + feat[prop] + "<br>";
+                    p.push(prop);
+                    v.push(feat[prop]);
                 }
             }
-            txtStr += "<br><br>";
+            properties.push(p);
+            values.push(v);
         }
     }
-    $("#infoContent").html(txtStr);
+    
+    $("#infoContent").html(formatify(names, properties, values, "info"));
+    $("#infoContent").enhanceWithin();
+    
 
     //blockedGeom.push(vect);
     determinant = false;
@@ -452,22 +461,35 @@ onSingleClick = function (evt) {
 
     $.post("php/infoLister.php", {"data": btoa(JSON.stringify(layerInfoCallStack))}, function (data) {
         var txtStr = "";
+        
+        var names = [];
+        var properties = [];
+        var values = [];
+        
         for (var i = 0; i < data.info.length; i++) {
             var info = data.info[i];
             if (typeof (info.features[0]) !== "undefined") {
                 if (info.features[0].geometry != null) {
-                    txtStr += "<p>Properties for: " + info.features[0].id + "</p>";
-                    txtStr += "<hr>";
+                    names.push(info.features[0].id);
+                    var p = [];
+                    var v = [];
+                    
                     for (const prop in info.features[0].properties) {
                         if (info.features[0].properties.hasOwnProperty(prop)) {
-                            txtStr += prop + ' = ' + info.features[0].properties[prop] + "<br>";
+                            p.push(prop);
+                            v.push(info.features[0].properties[prop]);
                         }
                     }
-                    txtStr += "<br><br>";
+                    
+                    properties.push(p);
+                    values.push(v);
                 }
             }
         }
-        $("#infoContent").html(txtStr);
+        
+        //$("#infoContent").html(txtStr);
+        $("#infoContent").html(formatify(names, properties, values, "info"));
+        $("#infoContent").enhanceWithin();
     }, "JSON");
 
 
