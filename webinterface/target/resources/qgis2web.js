@@ -184,7 +184,7 @@ interaction.on('boxend', function (evt) {
             names.push(info[j].f);
             var p = [];
             var v = [];
-            for (const prop in feat) {
+            for (prop in feat) {
                 if (feat.hasOwnProperty(prop) && prop != "geometry") {
                     p.push(prop);
                     v.push(feat[prop]);
@@ -474,7 +474,7 @@ onSingleClick = function (evt) {
                     var p = [];
                     var v = [];
                     
-                    for (const prop in info.features[0].properties) {
+                    for (prop in info.features[0].properties) {
                         if (info.features[0].properties.hasOwnProperty(prop)) {
                             p.push(prop);
                             v.push(info.features[0].properties[prop]);

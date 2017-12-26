@@ -1,7 +1,14 @@
+<!doctype html>
 <html>
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
         <title>Phase 1 Prototype - FINAL</title>
 
         <link rel="stylesheet" href="css/fontawesome-all.css" />
@@ -24,17 +31,17 @@
     <body>
 
         <div class="loadModal">
-            <center>
-                <div class="lds-css ng-scope" style="display: table; height: 100%;">
+
+            <div class="lds-css ng-scope" style="display: table; height: 100%; margin-left: auto; margin-right: auto;">
                 <div style="display: table-cell; vertical-align: middle;" class="lds-ball">
                     <div style="margin-left: auto; margin-right: auto;"></div>
                     <br><br><br><br>
                     <h2 style="text-align: center;">Now loading...</h2>
                     <h3 style="text-align: center">datadeploy.io</h3>
                 </div>
-            </center>
+            </div>
         </div>
-            
+
         <div data-role="page" style="max-height:440px; min-height:440px;" class="type-home" class="ui-responsive-panel" id="page1">
 
 
@@ -94,32 +101,32 @@
                                 </div>
 
                             </fieldset>
-                            
+
                             <fieldset id="groupFields" class="fieldList" style="display:none !important">
                                 <fieldset class="fieldList">
-                                <legend id="groupOpsLayer">All Groups<a class="legendStyle" href="#gpopupGeneral" data-rel="popup" data-transition="slideup"><i class="fa fa-cogs" style="margin-top: 5px; " aria-hidden="true"></i></a></legend>
-                                
-                                <div data-role="popup" id="gpopupMenu" data-theme="a">
-                                    <ul data-role="listview" data-inset="true" style="min-width:210px;">
-                                        <li id="headerPopupMenu" data-role="list-divider">Choose an action</li>
-                                        <li              onclick="gsetTransparency()"><a href="#">Transparency</a></li>
-                                    </ul>
-                                </div>
+                                    <legend id="groupOpsLayer">All Groups<a class="legendStyle" href="#gpopupGeneral" data-rel="popup" data-transition="slideup"><i class="fa fa-cogs" style="margin-top: 5px; " aria-hidden="true"></i></a></legend>
 
-                                <div data-role="popup" id="gpopupGeneral" data-theme="a">
-                                    <ul data-role="listview" data-inset="true" style="min-width:210px;">
-                                        <li data-role="list-divider">Choose an action</li>
-                                        <li><a href="#" onclick="gsetLayersAllOn()">Turn all layers on</a></li>
-                                        <li><a href="#" onclick="gsetLayersAllOff()">Turn all layers off</a></li>
-                                        <li><a href="#" onclick="toIndividual()">Show Layers Individually</a></li>
-                                    </ul>
-                                </div>
+                                    <div data-role="popup" id="gpopupMenu" data-theme="a">
+                                        <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                                            <li id="headerPopupMenu" data-role="list-divider">Choose an action</li>
+                                            <li              onclick="gsetTransparency()"><a href="#">Transparency</a></li>
+                                        </ul>
+                                    </div>
 
-                                <div data-role="popup" id="gpopupTransparency" data-theme="a">
-                                    <label for="slider-2"><p id="gpopTargs" >Modify transparency of group:</p></label>
-                                    <input type="range" name="slider-2" id="slider-2" value="100" min="0" max="100">
-                                </div>
-                            </fieldset>
+                                    <div data-role="popup" id="gpopupGeneral" data-theme="a">
+                                        <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                                            <li data-role="list-divider">Choose an action</li>
+                                            <li><a href="#" onclick="gsetLayersAllOn()">Turn all layers on</a></li>
+                                            <li><a href="#" onclick="gsetLayersAllOff()">Turn all layers off</a></li>
+                                            <li><a href="#" onclick="toIndividual()">Show Layers Individually</a></li>
+                                        </ul>
+                                    </div>
+
+                                    <div data-role="popup" id="gpopupTransparency" data-theme="a">
+                                        <label for="slider-2"><p id="gpopTargs" >Modify transparency of group:</p></label>
+                                        <input type="range" name="slider-2" id="slider-2" value="100" min="0" max="100">
+                                    </div>
+                                </fieldset>
                         </div>
                     </div>
 
@@ -184,7 +191,7 @@
                 <h4 id="infoContent" class="noteContent" style="width: 800px; height:600px; overflow: auto;">
                 </h4>
             </div>
-            
+
             <div data-role="popup" id="popupEdit" data-theme="a">
                 <div style="padding: 10px">
                     <h2 id="headingEdit" class="headingMarker">Edit Layer</h2>
@@ -209,13 +216,13 @@
                     </div>
                 </div>
             </div>
-            
+
             <div data-role="popup" id="popupEditSelection" data-theme="a">
                 <h2 class="headingMarker">Select features to edit</h2>
                 <h4 id="editSelect" class="noteContent" style="width: 500px; height:400px; overflow: auto;">
                 </h4>
             </div>
-            
+
             <div data-role="popup" id="addLayer" data-theme="a">
                 <div style="padding: 10px">
                     <h2 class="headingMarker">Layer Information</h2>
@@ -244,50 +251,50 @@
                     </div>
                 </div>
             </div>
-            
+
             <div data-role="popup" id="sharePage" style="width: 700px; height: 600px; overflow: auto;"><!-- dialog-->
 
-            <div data-role="header">
-                <h1 id="headerTexter" class="centerText">Share the page</h1>
-            </div><!-- /header -->
+                <div data-role="header">
+                    <h1 id="headerTexter" class="centerText">Share the page</h1>
+                </div><!-- /header -->
 
-            <div class="ui-content" role="main">
-                <label for="text-3">Share a link to this app<a id="mailToLinker" href="mailto:?"><i  class="fa fa-envelope" aria-hidden="true" style="float: right; cursor: pointer; font-size: 20pt"></i></a></label>
-                <input id="linkTxtBox" data-clear-btn="false" name="text-3" id="text-3" value="" type="text">
-                <div data-role="collapsible" data-collapsed-icon="arrow-r"  data-expanded-icon="arrow-d">
-                    <h3>Link Options</h3>
-                    <fieldset data-role="controlgroup">
-                        <legend>Map Options:</legend>
-                        <input name="checkbox-v-2a" id="checkbox-v-2a" type="checkbox" checked>
-                        <label for="checkbox-v-2a">Save current position to link</label>
-                    </fieldset>
+                <div class="ui-content" role="main">
+                    <label for="text-3">Share a link to this app<a id="mailToLinker" href="mailto:?"><i  class="fa fa-envelope" aria-hidden="true" style="float: right; cursor: pointer; font-size: 20pt"></i></a></label>
+                    <input id="linkTxtBox" data-clear-btn="false" name="text-3" id="text-3" value="" type="text">
+                    <div data-role="collapsible" data-collapsed-icon="arrow-r"  data-expanded-icon="arrow-d">
+                        <h3>Link Options</h3>
+                        <fieldset data-role="controlgroup">
+                            <legend>Map Options:</legend>
+                            <input name="checkbox-v-2a" id="checkbox-v-2a" type="checkbox" checked>
+                            <label for="checkbox-v-2a">Save current position to link</label>
+                        </fieldset>
+                    </div>
+                    <br><br>
+                    <label for="textarea-1">Embed this app in a website</label>
+                    <textarea id="linkTxtArea" name="textarea-1" id="textarea-1"></textarea>
+                    <div data-role="collapsible" data-collapsed-icon="arrow-r"  data-expanded-icon="arrow-d">
+                        <h3>Embed Options</h3>
+                        <fieldset data-role="controlgroup">
+                            <legend>iframe settings (You can customize the value if you wish)</legend>
+                            <label for="templateSize">Template size:</label>
+                            <select name="templateSize" id="templateSize">
+                                <option value="1">Small</option>
+                                <option value="2">Medium</option>
+                                <option value="3">Large</option>
+                            </select>
+                            <label for="text-width">Width</label>
+                            <input data-clear-btn="false" name="text-width" id="text-width" value="300" type="number">
+                            <label for="text-height">Height</label>
+                            <input data-clear-btn="false" name="text-height" id="text-height" value="300" type="number">
+                        </fieldset>
+                    </div>
+                    <br>
+                    <input id="closeSharePage" type="button" value="Close thise window" class="ui-btn ui-corner-all layoutButton" >
                 </div>
-                <br><br>
-                <label for="textarea-1">Embed this app in a website</label>
-                <textarea id="linkTxtArea" name="textarea-1" id="textarea-1"></textarea>
-                <div data-role="collapsible" data-collapsed-icon="arrow-r"  data-expanded-icon="arrow-d">
-                    <h3>Embed Options</h3>
-                    <fieldset data-role="controlgroup">
-                        <legend>iframe settings (You can customize the value if you wish)</legend>
-                        <label for="templateSize">Template size:</label>
-                        <select name="templateSize" id="templateSize">
-                            <option value="1">Small</option>
-                            <option value="2">Medium</option>
-                            <option value="3">Large</option>
-                        </select>
-                        <label for="text-width">Width</label>
-                        <input data-clear-btn="false" name="text-width" id="text-width" value="300" type="number">
-                        <label for="text-height">Height</label>
-                        <input data-clear-btn="false" name="text-height" id="text-height" value="300" type="number">
-                    </fieldset>
-                </div>
-                <br>
-                <input id="closeSharePage" type="button" value="Close thise window" class="ui-btn ui-corner-all layoutButton" >
-            </div>
-        </div><!-- dialog-->
+            </div><!-- dialog-->
 
         </div>
-        
+
         <script src="js/preload.js"></script>
         <script src="webinterface/target/resources/polyfills.js"></script>
         <script src="./webinterface/target/resources/ol.js"></script>

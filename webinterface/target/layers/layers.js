@@ -55,7 +55,7 @@ var imageLastIndex = -1;
 // You can have many ol.layer.Groups but in my Proof of Concept, I only made
 // one.
 $.get("php/coverageStoreList.php", function (data) {
-    var coverageStores = JSON.parse(data);
+    var coverageStores = data;
     for (var i = 0; i < coverageStores.dataStores.length; i++) {
         var store = coverageStores.dataStores[i];
         var param = createTargetLayer(workspace, store.name);
@@ -89,7 +89,7 @@ $.get("php/coverageStoreList.php", function (data) {
     group_layer_buffer = [];
     layersList.push(group_newmap);
     $.get("php/dataStoreList.php", function (data) {
-        var dataStores = JSON.parse(data);
+        var dataStores = data;
         var stringNameSpace = "";
         
         for (var i = 0; i < dataStores.dataStores.length; i++) {
@@ -109,7 +109,7 @@ $.get("php/coverageStoreList.php", function (data) {
             var layer = new ol.source.Vector({
                 format: new ol.format.GeoJSON(),
                 url: function (extent, z) {
-                    console.log(z);
+                    
                     return serverString + '/geoserver/wfs?service=WFS&' +
                             'version=1.1.0&request=GetFeature&typename=' + z + '&' +
                             'outputFormat=application/json&srsname=EPSG:3857&' +
@@ -213,6 +213,6 @@ $.get("php/coverageStoreList.php", function (data) {
         loadExternalJavascript("js/marker.js");
         initializeLayerList();
         setLayerZIndex();
-    });
-});
+    }, "JSON");
+}, "JSON");
 

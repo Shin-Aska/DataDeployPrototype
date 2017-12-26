@@ -79,15 +79,21 @@ var targetContent = -1;
 var gTargetContent = -1;
 
 // The renderer is basically targeted to the layer lists
-// It's a bit too tricky to 
+// It's a bit too tricky to implement. I wanted to use Jquery
+// but IE doesnt like it so i had to do it in DOM
 var renderMode = "i";
 var updateRenderer = function () {
     if (renderMode == "i") {
-        $("#individualFields").css("display", "block");
-        $("#groupFields").css("cssText", "display: none !important");
+        //$("#individualFields").css("display", "block");
+        //$("#groupFields").css("cssText", "display: none !important");
+        document.getElementById("individualFields").style.cssText = "display: block";
+        document.getElementById("groupFields").style.cssText = "display: none !important";
     } else {
-        $("#individualFields").css("cssText", "display: none !important");
-        $("#groupFields").css("display", "block");
+        //$("#individualFields").css("cssText", "display: none !important");
+        //$("#groupFields").css("display", "block");
+        
+        document.getElementById("individualFields").style.cssText = "display: none !important";
+        document.getElementById("groupFields").style.cssText = "display: block";
     }
 }
 
@@ -571,7 +577,7 @@ var showSpecificInfo = function () {
                     names.push(feat.id);
                     var p = [];
                     var v = [];
-                    for (const prop in feat.properties) {
+                    for (prop in feat.properties) {
                         if (feat.properties.hasOwnProperty(prop)) {
                             p.push(prop);
                             v.push(feat.properties[prop]);
@@ -601,7 +607,7 @@ var showSpecificInfo = function () {
                     names.push(feat.id);
                     var p = [];
                     var v = [];
-                    for (const prop in feat.properties) {
+                    for (prop in feat.properties) {
                         if (feat.properties.hasOwnProperty(prop)) {
                             p.push(prop);
                             v.push(feat.properties[prop]);
@@ -929,7 +935,12 @@ $(document).ready(function () {
     });
 
     // Google Chrome Hack (Prevent scrollbar from overflowing)
-    if (chrome) {
-        $("#page1").css("overflow", "hidden");
+    try {
+        if (chrome) {
+            $("#page1").css("overflow", "hidden");
+        }
+    }
+    catch(ex) {
+        
     }
 });

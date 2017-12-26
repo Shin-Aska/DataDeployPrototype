@@ -1,4 +1,10 @@
 <?php
+    header("Cache-Control: no-cache, must-revalidate");
+    header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: GET, POST");
+    header("Access-Control-Allow-Headers: Authorization");
+    header('Content-type: application/json');
     include("InfoList.php");
     $ch = curl_init();
     $urls = json_decode(base64_decode($_POST["data"]));
