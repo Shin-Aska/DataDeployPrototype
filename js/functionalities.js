@@ -115,7 +115,7 @@ var initializeLayerList = function () {
         totalString += '     <label for="checkbox-' + (i + 1) + '">';
         totalString += '         ' + layerNames[i] + ' ';
         totalString += '      </label>';
-        totalString += '     <input onclick="layerAction(' + (i + 1) + ')" type="checkbox" name="checkbox-' + (i + 1) + '" id="checkbox-' + (i + 1) + '" checked>';
+        totalString += '     <input type="checkbox" name="checkbox-' + (i + 1) + '" id="checkbox-' + (i + 1) + '" checked>';
         totalString += "  </div>";
 
         totalString += '  <div class="toggler">';
@@ -138,6 +138,12 @@ var initializeLayerList = function () {
                 setMoveTarget(id);
             }
         }(i)));
+        
+        $("#checkbox-" + (i+1)).change((function (id) {
+            return function () {
+                layerAction(id);
+            }
+        }(i+1)));
     }
 
     totalString = "";
@@ -149,7 +155,7 @@ var initializeLayerList = function () {
         totalString += '     <label for="gcheckbox-' + (i + 1) + '">';
         totalString += '         ' + layersList[i].H.title + ' ';
         totalString += '      </label>';
-        totalString += '     <input onclick="glayerAction(' + (i + 1) + ')" type="checkbox" name="gcheckbox-' + (i + 1) + '" id="gcheckbox-' + (i + 1) + '" checked>';
+        totalString += '     <input type="checkbox" name="gcheckbox-' + (i + 1) + '" id="gcheckbox-' + (i + 1) + '" checked>';
         totalString += "  </div>";
     }
 
@@ -163,6 +169,12 @@ var initializeLayerList = function () {
                 gsetMoveTarget(id);
             }
         }(i)));
+        
+        $("#gcheckbox-" + (i+1)).change((function (id) {
+            return function () {
+                glayerAction(id);
+            }
+        }(i+1)));
     }
 
     updateRenderer();
