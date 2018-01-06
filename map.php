@@ -57,7 +57,7 @@
                 <a href="#leftpanel3" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;">Filter</a>
                 <a id="newLayerBtnPage" href="#newLayerPage" data-role="button" data-inline="true" data-mini="true" data-rel="popup" data-transition="slidedown" data-position-to="window" style="z-index: 100; margin-top: -5px;">Connect Layer</a>
                 <a id="shareBtnPage" href="#sharePage" data-role="button" data-inline="true" data-mini="true" data-rel="popup" data-transition="slidedown" data-position-to="window" style="z-index: 100; margin-top: -5px;">Share</a>
-                
+                <a id="logoutBtn" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;" >Logout</a> 
                 <div id="map" style="height: 99vh; width: 100vw; position: absolute; top: 0; left: 0;" class="map"></div>
                 <div id="popup" class="ol-popup">
                     <a href="#" id="popup-closer" class="ol-popup-closer"></a>

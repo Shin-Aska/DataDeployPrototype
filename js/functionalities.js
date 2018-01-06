@@ -1062,6 +1062,10 @@ $(document).ready(function () {
     $("#closeNewLayerPage").click(function () {
         $("#newLayerPage").popup("close");
     });
+    
+    $("#logoutBtn").click(function(){
+       window.location.replace("logout.php"); 
+    });
 
     $("#checkbox-v-2a").change(function () {
         generateSharePage();

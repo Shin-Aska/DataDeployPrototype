@@ -1,0 +1,8 @@
+[06-Jan-2018 09:16:09 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, object given in /home/ubuntu/workspace/php/loginscript.php on line 10
+[06-Jan-2018 09:16:09 UTC] PHP Stack trace:
+[06-Jan-2018 09:16:09 UTC] PHP   1. {main}() /home/ubuntu/workspace/php/loginscript.php:0
+[06-Jan-2018 09:16:09 UTC] PHP   2. mysqli_fetch_array() /home/ubuntu/workspace/php/loginscript.php:10
+[06-Jan-2018 09:16:31 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, object given in /home/ubuntu/workspace/php/loginscript.php on line 10
+[06-Jan-2018 09:16:31 UTC] PHP Stack trace:
+[06-Jan-2018 09:16:31 UTC] PHP   1. {main}() /home/ubuntu/workspace/php/loginscript.php:0
+[06-Jan-2018 09:16:31 UTC] PHP   2. mysqli_fetch_array() /home/ubuntu/workspace/php/loginscript.php:10
