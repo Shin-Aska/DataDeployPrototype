@@ -297,41 +297,32 @@
             <div data-role="popup" id="newLayerPage" style="width: 700px; height: 600px; overflow: auto;"><!-- dialog-->
 
                 <div data-role="header">
-                    <h1 id="headerTexter" class="centerText">Connect new Layer</h1>
+                    <h1 id="headerTexter" class="centerText">Connect a new Layer</h1>
                 </div><!-- /header -->
 
                 <div class="ui-content" role="main">
-                    <label for="text-3">Share a link to this app<a id="mailToLinker" href="mailto:?"><i  class="fa fa-envelope" aria-hidden="true" style="float: right; cursor: pointer; font-size: 20pt"></i></a></label>
-                    <input id="linkTxtBox" data-clear-btn="false" name="text-3" id="text-3" value="" type="text">
-                    <div data-role="collapsible" data-collapsed-icon="arrow-r"  data-expanded-icon="arrow-d">
-                        <h3>Link Options</h3>
-                        <fieldset style="display: block;">
-                            <legend>Map Options:</legend>
-                            <input name="checkbox-v-2a" id="checkbox-v-2a" type="checkbox" checked>
-                            <label for="checkbox-v-2a">Save current position to link</label>
+                    <label for="text-1">Enter the store name of the layer</label>
+                    <input id="layerDSTxtBox" data-clear-btn="false" name="text-1" id="text-1" value="" type="text">
+                    <label for="text-2">Enter the workspace name of the layer</label>
+                    <input id="layerWSTxtBox" data-clear-btn="false" name="text-2" id="text-2" value="" type="text">
+                    <label for="text-3">Enter the link of the layer</label>
+                    <input id="layerLinkTxtBox" data-clear-btn="false" name="text-3" id="text-3" value="" type="text">
+                    <label for="text-4">Enter the extent size of the layer</label>
+                    <input id="layerExtTxtBox" data-clear-btn="false" name="text-4" id="text-4" value="" type="text">
+                    <div data-role="collapsible" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" data-collapsed="false">
+                        <h3>Layer Render Options</h3>
+                        <fieldset data-role="controlgroup" data-type="horizontal" style="display: block">
+                            <legend>Options</legend>
+                            <input onchange="onLayerModeChange()" name="renderMode" id="radio-choice-h-2a" value="WMS" checked="checked" type="radio">
+                            <label for="radio-choice-h-2a">WMS(Images / Drone Imagery)</label>
+                            <input onchange="onLayerModeChange()" name="renderMode" id="radio-choice-h-2b" value="WFS" type="radio">
+                            <label for="radio-choice-h-2b">WFS(Markers / Shapes)</label>
                         </fieldset>
-                    </div>
-                    <br><br>
-                    <label for="textarea-1">Embed this app in a website</label>
-                    <textarea id="linkTxtArea" name="textarea-1" id="textarea-1"></textarea>
-                    <div data-role="collapsible" data-collapsed-icon="arrow-r"  data-expanded-icon="arrow-d">
-                        <h3>Embed Options</h3>
-                        <fieldset style="display: block;">
-                            <legend>iframe settings (You can customize the value if you wish)</legend>
-                            <label for="templateSize">Template size:</label>
-                            <select name="templateSize" id="templateSize">
-                                <option value="1">Small</option>
-                                <option value="2">Medium</option>
-                                <option value="3">Large</option>
-                            </select>
-                            <label for="text-width">Width</label>
-                            <input data-clear-btn="false" name="text-width" id="text-width" value="300" type="number">
-                            <label for="text-height">Height</label>
-                            <input data-clear-btn="false" name="text-height" id="text-height" value="300" type="number">
-                        </fieldset>
+                        <p id="msgID">WMS layers are layers that are meant for rendering images such as TIFF(Drone Imageries).</p>
                     </div>
                     <br>
-                    <input id="closeSharePage" type="button" value="Close thise window" class="ui-btn ui-corner-all layoutButton" >
+                    <input onclick="connectNewLayer()" type="button" name="connect" value="Connect Layer" class="ui-btn ui-corner-all layoutButton">
+                    <input id="closeNewLayerPage" type="button" value="Close thise window" class="ui-btn ui-corner-all layoutButton" >
                 </div>
             </div><!-- dialog-->
 

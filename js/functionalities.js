@@ -53,6 +53,125 @@ var doesIntersect = function (coord, geometry) {
 
 /***************--OpenLayers Functionalities--*********************/
 
+
+// This adds a new layer to the app. This is a bit different
+// than layers.js which adds layers along with our PHP code
+var addNewLayer = function(url, mode, ws, datastore) {
+    var buffer = [];
+    var newGroup = "";
+    if (mode == "WMS") {
+        var param = createTargetLayer(ws, datastore);
+        
+        var layer = new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: url,
+                params: {'LAYERS': param, 'TILED': true},
+                serverType: 'geoserver',
+                transition: 0
+            })
+        });
+        
+        var config = {};
+        config["name"] = datastore;
+        config["type"] = "WFS Raster";
+        layersConfig.push(config);
+        layerGeometry.push("Raster");
+        layerExtents.push(null);
+        layerNames.push(datastore + " [Raster]*");
+        layers.push(layer);
+        layersWMS.push(layer);
+        layerCalls.push(url);
+        buffer.push(layer);
+        
+        newGroup = new ol.layer.Group({
+            layers: buffer,
+            title: param + " [WMS - EXTERNAL]"
+        });
+    }
+    else {
+        
+        var param = createTargetLayer(ws, datastore);
+        
+        var layerWMS = new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: url,
+                params: {'LAYERS': param, 'TILED': true},
+                serverType: 'geoserver',
+                transition: 0
+            })
+        });
+        
+        var config = {};
+
+        var layer = new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+            url: url,
+            strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ())
+        });
+        layerGeometry.push(layer);
+        var config = {};
+        config["name"] = datastore;
+        config["type"] = "WFS External";
+        
+
+        var urStr  = url;
+        var cColor = groupColors[layersList.length];
+        var fColor = groupColorsFill[layersList.length];
+        
+        var vector = new ol.layer.Vector({
+            source: layer,
+            style: new ol.style.Style({
+
+                image: new ol.style.Circle({
+                    fill: new ol.style.Fill({
+                        color:cColor
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: fColor,
+                        width: 1
+                    }),
+                    radius: 5
+                }),
+
+                stroke: new ol.style.Stroke({
+                    color: cColor,
+                    width: 1
+                }),
+                fill: new ol.style.Fill({
+                    color: fColor
+                }),
+                text: new ol.style.Text({
+                    font: '12px Calibri,sans-serif',
+                    fill: new ol.style.Fill({
+                        color: fColor
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: cColor,
+                        width: 3
+                    })
+                })
+            })
+        });
+
+        layerExtents.push(null);
+        layerNames.push(datatore);
+        layersConfig.push(config);
+        layerCalls.push(urStr);
+        layers.push(vector);
+        layersWMS.push(layerWMS);
+        
+        buffer.push(vector);
+        
+        newGroup = new ol.layer.Group({
+            layers: buffer,
+            title: param + " [WFS - EXTERNAL]"
+        });
+        
+        
+    }
+    map.addLayer(newGroup);
+}
+
 // This method here enables/disables a particular
 // layer by turning on and off its visibility
 
@@ -309,6 +428,19 @@ function isArray(s) {
     catch (ex){
         return false;
     }
+}
+
+var connectNewLayer = function() {
+    var ws = $("#layerWSTxtBox").val();
+    var ds = $("#layerDSTxtBox").val();
+    var lk = $("#layerLinkTxtBox").val();
+    var et = $("#layerExtTxtBox").val();
+    addNewLayer(lk, newLayerMode, ws, ds);
+    $("#layerWSTxtBox").val("");
+    $("#layerDSTxtBox").val("");
+    $("#layerLinkTxtBox").val("");
+    $("#layerExtTxtBox").val("");
+    $("#newLayerPage").popup("close");
 }
 
 var formatify = function (names, properties, value, id) {
@@ -657,6 +789,19 @@ var generateSharePage = function () {
     $("#mailToLinker").attr("href", mailto);
 }
 
+var newLayerMode = "WMS";
+var onLayerModeChange = function() {
+    var message = "";
+    newLayerMode = $("input[name=renderMode]:checked").val();
+    if (newLayerMode == "WMS") {
+        message = "WMS layers are layers that are meant for rendering images such as TIFF(Drone Imageries).";
+    }
+    else {
+        message = "WFS layers are layers that are meant for rendering shapes such as markers and features.";
+    }
+    $("#msgID").html(message);
+}
+
 
 var file64 = [];
 // Read image ext
@@ -832,6 +977,10 @@ $(document).ready(function () {
     $("#closeSharePage").click(function () {
         $("#sharePage").popup("close");
     });
+    
+    $("#closeNewLayerPage").click(function () {
+        $("#newLayerPage").popup("close");
+    });
 
     $("#checkbox-v-2a").change(function () {
         generateSharePage();
@@ -945,7 +1094,8 @@ $(document).ready(function () {
         }
 
     });
-
+    
+    
     // Google Chrome Hack (Prevent scrollbar from overflowing)
     try {
         if (chrome) {
