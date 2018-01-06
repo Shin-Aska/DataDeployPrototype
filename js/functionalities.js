@@ -59,6 +59,7 @@ var doesIntersect = function (coord, geometry) {
 var addNewLayer = function(url, mode, ws, datastore) {
     var buffer = [];
     var newGroup = "";
+    var totalString = "";
     if (mode == "WMS") {
         var param = createTargetLayer(ws, datastore);
         
@@ -87,6 +88,49 @@ var addNewLayer = function(url, mode, ws, datastore) {
             layers: buffer,
             title: param + " [WMS - EXTERNAL]"
         });
+        
+        var i = layerNames.length - 1;
+        totalString += "<div id='contentItem" + (i + 1) + "'>";
+        totalString += "  <div> <!-- item " + (i + 1) + " -->";
+        totalString += '     <input class="originalValue" type="text" value="' + (i) + '" style="display: none;"  readonly></input>';
+        totalString += '     <p onclick=\'toggleInfo("item' + (i + 1) + '")\' class="infoCircle"><i class="fa fa-info-circle" aria-hidden="true"></i></p>';
+        totalString += '     <a id="popupItem' + (i + 1) + '" href="#popupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>';
+        totalString += '     <label for="checkbox-' + (i + 1) + '">';
+        totalString += '         ' + layerNames[i] + ' ';
+        totalString += '      </label>';
+        totalString += '     <input type="checkbox" name="checkbox-' + (i + 1) + '" id="checkbox-' + (i + 1) + '" checked>';
+        totalString += "  </div>";
+
+        totalString += '  <div class="toggler">';
+        totalString += '    <div id="item' + (i + 1) + '" class="ui-widget-content ui-corner-all hiddenAtFirst">';
+        totalString += '      <h3 class="ui-widget-header ui-corner-all">Toggle</h3>';
+        totalString += '      <p>';
+        totalString += '         Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.';
+        totalString += '      </p>';
+        totalString += '    </div>';
+        totalString += '  </div>';
+        totalString += '</div>';
+        for (var a = 0; a < layerNames.length - 1; a++) {
+            $("#checkbox-" + (a+1)).checkboxradio("destroy");
+        }
+        $("#individualFields").html($("#individualFields").html() + totalString);
+        $("#contentItem" + (i + 1)).enhanceWithin();
+        
+        for (var a = 0; a < layerNames.length - 1; a++) {
+            $("#checkbox-" + (a+1)).checkboxradio();
+        }
+        
+        $("#popupItem" + (i + 1)).click((function (id) {
+            return function () {
+                setMoveTarget(id);
+            }
+        }(i)));
+        
+        $("#checkbox-" + (i+1)).change((function (id) {
+            return function () {
+                layerAction(id);
+            }
+        }(i+1)));
     }
     else {
         
@@ -170,6 +214,41 @@ var addNewLayer = function(url, mode, ws, datastore) {
         
     }
     map.addLayer(newGroup);
+    layersList.push(newGroup);
+    
+    var i = layersList.length - 1;
+    totalString = "";
+    totalString += "<div id='gcontentItem" + (i + 1) + "'>";
+    totalString += "  <div> <!-- item " + (i + 1) + " -->";
+    totalString += '     <input class="originalValue" type="text" value="' + (i) + '" style="display: none;"  readonly></input>';
+    totalString += '     <a id="gpopupItem' + (i + 1) + '" href="#gpopupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>';
+    totalString += '     <label for="gcheckbox-' + (i + 1) + '">';
+    totalString += '         ' + layersList[i].H.title + ' ';
+    totalString += '      </label>';
+    totalString += '     <input type="checkbox" name="gcheckbox-' + (i + 1) + '" id="gcheckbox-' + (i + 1) + '" checked>';
+    totalString += "  </div>";
+
+    for (var a = 0; a < layersList.length - 1; a++) {
+        $("#gcheckbox-" + (a+1)).checkboxradio("destroy");
+    }
+    $("#groupFields").html($("#groupFields").html() + totalString);
+    $("#gcontentItem" + (i + 1)).enhanceWithin();
+    for (var a = 0; a < layersList.length - 1; a++) {
+        $("#gcheckbox-" + (a+1)).checkboxradio();
+    }
+
+    $("#gpopupItem" + (i + 1)).click((function (id) {
+        return function () {
+            gsetMoveTarget(id);
+        }
+    }(i)));
+    
+    $("#gcheckbox-" + (i+1)).change((function (id) {
+        return function () {
+            glayerAction(id);
+        }
+    }(i+1)));
+    
 }
 
 // This method here enables/disables a particular
@@ -436,11 +515,13 @@ var connectNewLayer = function() {
     var lk = $("#layerLinkTxtBox").val();
     var et = $("#layerExtTxtBox").val();
     addNewLayer(lk, newLayerMode, ws, ds);
-    $("#layerWSTxtBox").val("");
-    $("#layerDSTxtBox").val("");
-    $("#layerLinkTxtBox").val("");
-    $("#layerExtTxtBox").val("");
     $("#newLayerPage").popup("close");
+    /*setTimeout(function(){
+        $("#layerWSTxtBox").val("");
+        $("#layerDSTxtBox").val("");
+        $("#layerLinkTxtBox").val("");
+        $("#layerExtTxtBox").val("");
+    }, 500);*/
 }
 
 var formatify = function (names, properties, value, id) {
