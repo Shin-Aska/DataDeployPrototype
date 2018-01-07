@@ -616,6 +616,6 @@ var attribution = document.getElementsByClassName('ol-attribution')[0];
 var attributionList = attribution.getElementsByTagName('ul')[0];
 var firstLayerAttribution = attributionList.getElementsByTagName('li')[0];
 var qgis2webAttribution = document.createElement('li');
-qgis2webAttribution.innerHTML = '<p>Datadeploy Prototype Alpha (Phase 1)</p>';
+qgis2webAttribution.innerHTML = '<p>Datadeploy Prototype Alpha (Phase 2)</p>';
 attributionList.insertBefore(qgis2webAttribution, firstLayerAttribution);
 $(".loadModal").css("display", "none")
