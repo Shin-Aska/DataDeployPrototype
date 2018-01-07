@@ -321,8 +321,8 @@
                             <legend>Options</legend>
                             <input onchange="onLayerModeChange()" name="renderMode" id="radio-choice-h-2a" value="WMS" checked="checked" type="radio">
                             <label for="radio-choice-h-2a">WMS(Images / Drone Imagery)</label>
-                            <input onchange="onLayerModeChange()" name="renderMode" id="radio-choice-h-2b" value="WFS" type="radio">
-                            <label for="radio-choice-h-2b">WFS(Markers / Shapes)</label>
+                            <input onchange="onLayerModeChange()" name="renderMode" id="radio-choice-h-2b" value="GeoJSON" type="radio">
+                            <label for="radio-choice-h-2b">GeoJSON</label>
                         </fieldset>
                         <p id="msgID">WMS layers are layers that are meant for rendering images such as TIFF(Drone Imageries).</p>
                     </div>

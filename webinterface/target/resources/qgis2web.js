@@ -203,6 +203,11 @@ interaction.on('boxend', function (evt) {
     determinant = false;
 });
 
+hoverInteraction = new ol.interaction.Select({
+  condition: ol.events.condition.pointerMove,
+  multi: true
+});
+
 /******************OpenLayers Initialization*******************/
 map = new ol.Map({
     controls: ol.control.defaults({attribution: false}).extend([
@@ -214,11 +219,12 @@ map = new ol.Map({
     overlays: [overlayPopup],
     layers: layersList,
     view: new ol.View({
-        extent: bounds, maxZoom: 23, minZoom: 10
+        //extent: bounds, maxZoom: 23, minZoom: 10
     })
 });
 
 map.addInteraction(interaction);
+map.addInteraction(hoverInteraction);
 map.getView().fit(bounds, map.getSize());
 
 NO_POPUP = 0
@@ -430,7 +436,8 @@ onSingleClick = function (evt) {
     layerInfoCallStack = [];
     targetFeature = [];
     $("#editBtn").css("display", "none");
-    for (var i = 0; i < layers.length; i++) {
+    
+    /*for (var i = 0; i < layers.length; i++) {
         var source = layersWMS[i].getSource();
         var url = source.getGetFeatureInfoUrl(
                 evt.coordinate, viewResolution, view.getProjection(),
@@ -441,7 +448,6 @@ onSingleClick = function (evt) {
         } else {
             targetFeature.push(doesIntersect([coord[0], coord[1]], layerGeometry[i]));
         }
-
         if (layerGeometry[i] != "Raster" && doesIntersect([coord[0], coord[1]], layerGeometry[i]).length > 0) {
             isInside = true;
             if (layersConfig[i].type == "Shapefile") {
@@ -452,6 +458,22 @@ onSingleClick = function (evt) {
             }
 
         }
+    }*/
+    
+    for (var i = 0; i < layerGeometry.length; i++) {
+        if (typeof(layerGeometry[i]) !== "string") {
+            
+            var features = layerGeometry[i].getFeaturesAtCoordinate([coord[0], coord[1]]);
+            var searchRes = [];
+            if (features.length > 0) {
+                if (layersConfig[i].type == "MySQL") {
+                    $("#editBtn").css("display", "block");
+                }
+                isInside = true;
+            }
+            
+            targetFeature = targetFeature.concat(features);
+        }   
     }
 
     if (isInside) {
@@ -459,7 +481,7 @@ onSingleClick = function (evt) {
         $("#popupInfo").popup("open", {"transition": "flip"});
     }
 
-    $.post("php/infoLister.php", {"data": btoa(JSON.stringify(layerInfoCallStack))}, function (data) {
+    /*$.post("php/infoLister.php", {"data": btoa(JSON.stringify(layerInfoCallStack))}, function (data) {
         var txtStr = "";
         
         var names = [];
@@ -490,8 +512,30 @@ onSingleClick = function (evt) {
         //$("#infoContent").html(txtStr);
         $("#infoContent").html(formatify(names, properties, values, "info"));
         $("#infoContent").enhanceWithin();
-    }, "JSON");
-
+    }, "JSON");*/
+    
+    var names = [];
+    var properties = [];
+    var values = [];
+    
+    for (var i = 0; i < targetFeature.length; i++) {
+        var info = targetFeature[i];
+        var feat = info.H;
+        names.push(info.f);
+        var p = [];
+        var v = [];
+        for (prop in feat) {
+            if (feat.hasOwnProperty(prop) && prop != "geometry") {
+                p.push(prop);
+                v.push(feat[prop]);
+            }
+        }
+        properties.push(p);
+        values.push(v);
+    }
+    
+    $("#infoContent").html(formatify(names, properties, values, "info"));
+    $("#infoContent").enhanceWithin();
 
     if (popupText) {
         overlayPopup.setPosition(coord);

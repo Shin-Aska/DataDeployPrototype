@@ -56,7 +56,7 @@ var doesIntersect = function (coord, geometry) {
 
 // This adds a new layer to the app. This is a bit different
 // than layers.js which adds layers along with our PHP code
-var addNewLayer = function(url, mode, ws, datastore) {
+var addNewLayer = function(url, mode, ws, datastore, extStr) {
     var buffer = [];
     var newGroup = "";
     var totalString = "";
@@ -77,8 +77,8 @@ var addNewLayer = function(url, mode, ws, datastore) {
         config["type"] = "WFS Raster";
         layersConfig.push(config);
         layerGeometry.push("Raster");
-        layerExtents.push(null);
-        layerNames.push(datastore + " [Raster]*");
+        layerExtents.push(JSON.parse(extStr));
+        layerNames.push(datastore + " [External Raster]");
         layers.push(layer);
         layersWMS.push(layer);
         layerCalls.push(url);
@@ -136,26 +136,19 @@ var addNewLayer = function(url, mode, ws, datastore) {
         
         var param = createTargetLayer(ws, datastore);
         
-        var layerWMS = new ol.layer.Tile({
-            source: new ol.source.TileWMS({
-                url: url,
-                params: {'LAYERS': param, 'TILED': true},
-                serverType: 'geoserver',
-                transition: 0
-            })
-        });
+        var layerWMS = null;
         
         var config = {};
 
         var layer = new ol.source.Vector({
             format: new ol.format.GeoJSON(),
-            url: url,
-            strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ())
+            url: url
         });
+        
         layerGeometry.push(layer);
         var config = {};
         config["name"] = datastore;
-        config["type"] = "WFS External";
+        config["type"] = "GeoJSON";
         
 
         var urStr  = url;
@@ -197,8 +190,8 @@ var addNewLayer = function(url, mode, ws, datastore) {
             })
         });
 
-        layerExtents.push(null);
-        layerNames.push(datatore);
+        layerExtents.push(JSON.parse(extStr));
+        layerNames.push(datastore + " [External GeoJSON]");
         layersConfig.push(config);
         layerCalls.push(urStr);
         layers.push(vector);
@@ -208,9 +201,51 @@ var addNewLayer = function(url, mode, ws, datastore) {
         
         newGroup = new ol.layer.Group({
             layers: buffer,
-            title: param + " [WFS - EXTERNAL]"
+            title: param + " [GeoJSON - EXTERNAL]"
         });
         
+        var i = layerNames.length - 1;
+        totalString += "<div id='contentItem" + (i + 1) + "'>";
+        totalString += "  <div> <!-- item " + (i + 1) + " -->";
+        totalString += '     <input class="originalValue" type="text" value="' + (i) + '" style="display: none;"  readonly></input>';
+        totalString += '     <p onclick=\'toggleInfo("item' + (i + 1) + '")\' class="infoCircle"><i class="fa fa-info-circle" aria-hidden="true"></i></p>';
+        totalString += '     <a id="popupItem' + (i + 1) + '" href="#popupMenu" data-rel="popup" data-transition="slideup" class="moreOptions"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>';
+        totalString += '     <label for="checkbox-' + (i + 1) + '">';
+        totalString += '         ' + layerNames[i] + ' ';
+        totalString += '      </label>';
+        totalString += '     <input type="checkbox" name="checkbox-' + (i + 1) + '" id="checkbox-' + (i + 1) + '" checked>';
+        totalString += "  </div>";
+
+        totalString += '  <div class="toggler">';
+        totalString += '    <div id="item' + (i + 1) + '" class="ui-widget-content ui-corner-all hiddenAtFirst">';
+        totalString += '      <h3 class="ui-widget-header ui-corner-all">Toggle</h3>';
+        totalString += '      <p>';
+        totalString += '         Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede. Nulla lorem metus, adipiscing ut, luctus sed, hendrerit vitae, mi.';
+        totalString += '      </p>';
+        totalString += '    </div>';
+        totalString += '  </div>';
+        totalString += '</div>';
+        for (var a = 0; a < layerNames.length - 1; a++) {
+            $("#checkbox-" + (a+1)).checkboxradio("destroy");
+        }
+        $("#individualFields").html($("#individualFields").html() + totalString);
+        $("#contentItem" + (i + 1)).enhanceWithin();
+        
+        for (var a = 0; a < layerNames.length - 1; a++) {
+            $("#checkbox-" + (a+1)).checkboxradio();
+        }
+        
+        $("#popupItem" + (i + 1)).click((function (id) {
+            return function () {
+                setMoveTarget(id);
+            }
+        }(i)));
+        
+        $("#checkbox-" + (i+1)).change((function (id) {
+            return function () {
+                layerAction(id);
+            }
+        }(i+1)));
         
     }
     map.addLayer(newGroup);
@@ -514,7 +549,7 @@ var connectNewLayer = function() {
     var ds = $("#layerDSTxtBox").val();
     var lk = $("#layerLinkTxtBox").val();
     var et = $("#layerExtTxtBox").val();
-    addNewLayer(lk, newLayerMode, ws, ds);
+    addNewLayer(lk, newLayerMode, ws, ds, et);
     $("#newLayerPage").popup("close");
     /*setTimeout(function(){
         $("#layerWSTxtBox").val("");
@@ -589,6 +624,9 @@ var formatifytoggle = function () {
 
 var setMoveTarget = function (id) {
     targetContent = id;
+    var original = parseInt($("#contentItem" + (id + 1) + " > div:nth-child(1) > div:nth-child(1) > input:nth-child(1)").val());
+    var type = layersConfig[original].type;
+    
     $("#headerPopupMenu").html("Choose an action for " + layerNames[targetContent]);
     if (id == 0) {
         $("#actUp").css("display", "none");
@@ -606,6 +644,15 @@ var setMoveTarget = function (id) {
     } else {
         $("#showInfo").css("display", "none");
     }
+    
+    if (type == "GeoJSON" || type == "WFS Raster") {
+        $("#showInfo").css("display", "none");
+    }
+    else {
+        $("#showInfo").css("display", "block");
+    }
+    
+    
 }
 
 var gsetMoveTarget = function (id) {
@@ -878,7 +925,7 @@ var onLayerModeChange = function() {
         message = "WMS layers are layers that are meant for rendering images such as TIFF(Drone Imageries).";
     }
     else {
-        message = "WFS layers are layers that are meant for rendering shapes such as markers and features.";
+        message = "GeoJSON layers are layers that are meant for rendering shapes such as markers and features.";
     }
     $("#msgID").html(message);
 }
