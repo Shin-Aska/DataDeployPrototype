@@ -463,7 +463,7 @@ onSingleClick = function (evt) {
     for (var i = 0; i < layerGeometry.length; i++) {
         if (typeof(layerGeometry[i]) !== "string") {
             
-            var features = layerGeometry[i].getFeaturesAtCoordinate([coord[0], coord[1]]);
+            var features = doesIntersect([coord[0], coord[1]], layerGeometry[i]);
             var searchRes = [];
             if (features.length > 0) {
                 if (layersConfig[i].type == "MySQL") {
