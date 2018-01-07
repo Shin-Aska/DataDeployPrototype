@@ -108,3 +108,7 @@ var elBrowse2 = "";
 var elPreview2 = "";
 var useBlob = false;
 var targetFeature = "";
+
+var container = "";
+var content = "";
+var closer = "";

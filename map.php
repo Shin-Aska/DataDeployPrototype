@@ -15,7 +15,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <title>Phase 2 Prototype - UPDATE 1</title>
+        <title>Phase 2 Prototype - UPDATE 2</title>
 
         <link rel="stylesheet" href="css/fontawesome-all.css" />
         <link rel="stylesheet" href="css/dialog-polyfill.min.css">

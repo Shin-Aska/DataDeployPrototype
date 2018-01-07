@@ -283,6 +283,7 @@ onPointerMove = function (evt) {
     var currentFeature;
     var currentLayer;
     var currentFeatureKeys;
+    
     map.forEachFeatureAtPixel(pixel, function (feature, layer) {
         // We only care about features from layers in the layersList, ignore
         // any other layers which the map might contain such as the vector
@@ -366,6 +367,7 @@ onPointerMove = function (evt) {
                 featureOverlay.setStyle(highlightStyle);
             }
             highlight = currentFeature;
+            
         }
     }
 
@@ -385,47 +387,8 @@ onSingleClick = function (evt) {
     if (doHover) {
         return;
     }
-    var pixel = map.getEventPixel(evt.originalEvent);
+    
     var coord = evt.coordinate;
-    var popupField;
-    var popupText = '';
-    var currentFeature;
-    var currentFeatureKeys;
-    map.forEachFeatureAtPixel(pixel, function (feature, layer) {
-        currentFeature = feature;
-        currentFeatureKeys = currentFeature.getKeys();
-        var doPopup = false;
-        for (k in layer.get('fieldImages')) {
-            if (layer.get('fieldImages')[k] != "Hidden") {
-                doPopup = true;
-            }
-        }
-        if (doPopup) {
-            popupText = '<table>';
-            for (var i = 0; i < currentFeatureKeys.length; i++) {
-                if (currentFeatureKeys[i] != 'geometry') {
-                    popupField = '';
-                    if (layer.get('fieldLabels')[currentFeatureKeys[i]] == "inline label") {
-                        popupField += '<th>' + layer.get('fieldAliases')[currentFeatureKeys[i]] + ':</th><td>';
-                    } else {
-                        popupField += '<td colspan="2">';
-                    }
-                    if (layer.get('fieldLabels')[currentFeatureKeys[i]] == "header label") {
-                        popupField += '<strong>' + layer.get('fieldAliases')[currentFeatureKeys[i]] + ':</strong><br />';
-                    }
-                    if (layer.get('fieldImages')[currentFeatureKeys[i]] != "Photo") {
-                        popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? Autolinker.link(String(currentFeature.get(currentFeatureKeys[i]))) + '</td>' : '');
-                    } else {
-                        popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? '<img src="images/' + currentFeature.get(currentFeatureKeys[i]).replace(/[\\\/:]/g, '_').trim() + '" /></td>' : '');
-                    }
-                    popupText = popupText + '<tr>' + popupField + '</tr>';
-                }
-            }
-            popupText = popupText + '</table>';
-        }
-    });
-    var view = map.getView();
-    var viewResolution = view.getResolution();
 
     // Do not remove this commented code. 
     // What this code does is that it loads the information
@@ -537,9 +500,9 @@ onSingleClick = function (evt) {
     $("#infoContent").html(formatify(names, properties, values, "info"));
     $("#infoContent").enhanceWithin();
 
-    if (popupText) {
+    if (false) {
         overlayPopup.setPosition(coord);
-        content.innerHTML = popupText;
+        content.innerHTML = "WEW";
         container.style.display = 'block';
     } else {
         container.style.display = 'none';
@@ -551,6 +514,42 @@ onSingleClick = function (evt) {
 
 map.on('pointermove', function (evt) {
     onPointerMove(evt);
+    var coord = evt.coordinate;
+    var doPopup = false;
+    var targetFeature = [];
+    var contStr = "";
+    
+    for (var i = 0; i < layerGeometry.length; i++) {
+        if (typeof(layerGeometry[i]) !== "string") {
+            
+            var features = doesIntersect([coord[0], coord[1]], layerGeometry[i]);
+            var searchRes = [];
+            if (features.length > 0) {
+                doPopup = true;
+            }
+            
+            targetFeature = targetFeature.concat(features);
+        }   
+    }
+    
+    contStr += "<p>Feature Count: " + targetFeature.length + "</p>\n";
+    contStr += "<ul>\n";
+    for (var i = 0; i < targetFeature.length; i++) {
+        var info = targetFeature[i];
+        var feat = info.H;
+        var name = info.f;
+        contStr += "\t<li>" + name + "</li>\n";
+    }
+    contStr += "</ul>";
+    
+    if (doPopup) {
+        overlayPopup.setPosition(coord);
+        content.innerHTML = contStr;
+        container.style.display = 'block';
+    } else {
+        container.style.display = 'none';
+        closer.blur();
+    }
 });
 map.on('singleclick', function (evt) {
     onSingleClick(evt);

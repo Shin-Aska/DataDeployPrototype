@@ -1227,6 +1227,15 @@ $(document).ready(function () {
 
     });
     
+    container = document.getElementById('popup');
+    content = document.getElementById('popup-content');
+    closer = document.getElementById('popup-closer');
+    
+    closer.onclick = function() {
+        overlay.setPosition(undefined);
+        closer.blur();
+        return false;
+    };
     
     // Google Chrome Hack (Prevent scrollbar from overflowing)
     try {
