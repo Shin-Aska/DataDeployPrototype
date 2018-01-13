@@ -1073,6 +1073,9 @@ function readImage2(file) {
     reader.readAsDataURL(file);
 }
 
+var selectTags = [];
+var selectNames= [];
+
 // Code below here are still part of the GUI but uses JQuery's document.ready
 $(document).ready(function () {
 
@@ -1086,20 +1089,58 @@ $(document).ready(function () {
     //
     
     $("#leftTrigger2Btn").click(function(){
+        $("#select-native-1").selectmenu("destroy");
         $("#select-native-1").html(" ");
         var str = "";
-        for (var i = 0; i < layerNames.length; i++) {
+        for (var i = 0; i < layersConfig.length; i++) {
             if (layersConfig[i].type != "Raster") {
-                str += '<option value="' + i + '">' + layerNames[i] + '</option>';
+                str += '<option value="' + i + '">' + layersConfig[i].name + '</option>';
             }
         }
         $("#select-native-1").html(str);
+        $("#select-native-1").selectmenu();
     });
     
     $("#select-native-1").change(function(){
         var val = $("#select-native-1").val();
-        alert(val);
-    })
+        for (var i = 0; i < layers.length; i++) {
+            if (i != val) {
+                layers[i].setVisible(false);
+            }
+            else {
+                layers[i].setVisible(true);
+            }
+        }
+    });
+    
+    $( "#autocomplete" ).on( "filterablebeforefilter", function ( e, data ) {
+        var $ul = $( this ),
+            $input = $( data.input ),
+            value = $input.val(),
+            html = "";
+        $ul.html( "" );
+        if ( value && value.length > 0 ) {
+            $ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
+            $ul.listview( "refresh" );
+            var val = $("#select-native-1").val();
+            var feat= layerGeometry[val].getFeatures();
+            selectNames = [];
+            selectTags  = [];
+            var str = "";
+            for (var i = 0; i < feat.length; i++) {
+                selectNames.push(feat[i].f);
+                selectTags.push(feat[i].H);
+                str += '<li><a href="#">' + feat[i].f + '</a></li>';
+            }
+            $ul.html(str)
+            $ul.listview("refresh");
+            $ul.trigger("updatelayout");
+        }
+    });
+    
+    $("#showFeaturePopup").click(function(){
+        
+    });
     
     // This is used to interact with the slider.
     // What this one does is that it makes the slider interact with the opacity of the layer.

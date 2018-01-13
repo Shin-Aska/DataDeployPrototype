@@ -181,9 +181,17 @@
                         <div class="ui-field-contain">
                             <label for="select-native-1">Layer</label>
                             <select name="select-native-1" id="select-native-1">
-                                
                             </select>
+                            <label for="selectfeatname">Feature Name</label>
+	
+                            <form class="ui-filterable">
+                                <input id="featName" data-type="search" placeholder="Feature Name">
+                            </form>
+                            <ul id="autocomplete" data-role="listview" data-filter="true" data-filter-reveal="true" data-input="#featName">
+                                
+                            </ul>
                         </div>
+                        <button id="showFeaturePopup" class="ui-btn ui-corner-all"><i class="fa fa-search" aria-hidden="true"></i>Show Details</button>
                     </form>
                 </div><!-- /content wrapper for padding -->
 
