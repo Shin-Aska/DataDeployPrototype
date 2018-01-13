@@ -53,7 +53,7 @@
 
             <div role="main" class="ui-content">
                 <a href="#leftpanel1" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-left: 120px; margin-top: -5px;">Layer List</a>
-                <a href="#leftpanel2" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;">Edit</a>
+                <a id="leftTrigger2Btn" href="#leftpanel2" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;">Edit</a>
                 <a href="#leftpanel3" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;">Filter</a>
                 <a id="newLayerBtnPage" href="#newLayerPage" data-role="button" data-inline="true" data-mini="true" data-rel="popup" data-transition="slidedown" data-position-to="window" style="z-index: 100; margin-top: -5px;">Connect Layer</a>
                 <a id="shareBtnPage" href="#sharePage" data-role="button" data-inline="true" data-mini="true" data-rel="popup" data-transition="slidedown" data-position-to="window" style="z-index: 100; margin-top: -5px;">Share</a>
@@ -176,15 +176,12 @@
             <div data-role="panel" id="leftpanel3" data-position="left" data-display="push" data-dismissible="true" data-theme="a">
 
                 <div class="panel-content">
-                    <h3>Circuit</h3>
+                    <h3>Filter</h3>
                     <form>
                         <div class="ui-field-contain">
-                            <label for="select-native-1">Circuit is:</label>
+                            <label for="select-native-1">Layer</label>
                             <select name="select-native-1" id="select-native-1">
-                                <option value="1">The 1st Option</option>
-                                <option value="2">The 2nd Option</option>
-                                <option value="3">The 3rd Option</option>
-                                <option value="4">The 4th Option</option>
+                                
                             </select>
                         </div>
                     </form>

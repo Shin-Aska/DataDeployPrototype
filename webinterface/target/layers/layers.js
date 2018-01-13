@@ -87,7 +87,9 @@ $.get("php/coverageStoreList.php", function (data) {
         title: "Raster Images"
     });
     group_layer_buffer = [];
-    layersList.push(group_newmap);
+    if (group_layer_buffer.length > 0) {
+        layersList.push(group_newmap);
+    }
     $.get("php/dataStoreList.php", function (data) {
         var dataStores = data;
         var stringNameSpace = "";
@@ -201,8 +203,11 @@ $.get("php/coverageStoreList.php", function (data) {
                     layers: group_layer_buffer,
                     title: stringNameSpace
                 });
+                
+                if (group_layer_buffer.length > 0) {
+                    layersList.push(group_newmap);
+                }
                 group_layer_buffer = [];
-                layersList.push(group_newmap);
             }
         }
 

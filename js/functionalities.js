@@ -118,6 +118,17 @@ var addNewLayer = function(url, mode, ws, datastore, extStr) {
         
         for (var a = 0; a < layerNames.length - 1; a++) {
             $("#checkbox-" + (a+1)).checkboxradio();
+                $("#popupItem" + (a + 1)).click((function (id) {
+                return function () {
+                    setMoveTarget(id);
+                }
+            }(a)));
+            
+            $("#checkbox-" + (a+1)).change((function (id) {
+                return function () {
+                    layerAction(id);
+                }
+            }(a+1)));
         }
         
         $("#popupItem" + (i + 1)).click((function (id) {
@@ -225,6 +236,7 @@ var addNewLayer = function(url, mode, ws, datastore, extStr) {
         totalString += '    </div>';
         totalString += '  </div>';
         totalString += '</div>';
+
         for (var a = 0; a < layerNames.length - 1; a++) {
             $("#checkbox-" + (a+1)).checkboxradio("destroy");
         }
@@ -233,6 +245,17 @@ var addNewLayer = function(url, mode, ws, datastore, extStr) {
         
         for (var a = 0; a < layerNames.length - 1; a++) {
             $("#checkbox-" + (a+1)).checkboxradio();
+            $("#popupItem" + (a + 1)).click((function (id) {
+                return function () {
+                    setMoveTarget(id);
+                }
+            }(a)));
+            
+            $("#checkbox-" + (a+1)).change((function (id) {
+                return function () {
+                    layerAction(id);
+                }
+            }(a+1)));
         }
         
         $("#popupItem" + (i + 1)).click((function (id) {
@@ -270,6 +293,17 @@ var addNewLayer = function(url, mode, ws, datastore, extStr) {
     $("#gcontentItem" + (i + 1)).enhanceWithin();
     for (var a = 0; a < layersList.length - 1; a++) {
         $("#gcheckbox-" + (a+1)).checkboxradio();
+        $("#gpopupItem" + (a + 1)).click((function (id) {
+            return function () {
+                gsetMoveTarget(id);
+            }
+        }(a)));
+        
+        $("#gcheckbox-" + (a+1)).change((function (id) {
+            return function () {
+                glayerAction(id);
+            }
+        }(a+1)));
     }
 
     $("#gpopupItem" + (i + 1)).click((function (id) {
@@ -1042,6 +1076,11 @@ $(document).ready(function () {
     
     useBlob = false && window.URL; // Set to `true` to use Blob instead of Data-URL
     //
+    
+    $("#leftTrigger2Btn").click(function(){
+        
+    });
+    
     // This is used to interact with the slider.
     // What this one does is that it makes the slider interact with the opacity of the layer.
     $("#slider-1").on('slidestop', function (event) {
