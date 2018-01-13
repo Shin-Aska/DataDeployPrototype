@@ -74,7 +74,7 @@ var addNewLayer = function(url, mode, ws, datastore, extStr) {
         
         var config = {};
         config["name"] = datastore;
-        config["type"] = "WFS Raster";
+        config["type"] = "Raster";
         layersConfig.push(config);
         layerGeometry.push("Raster");
         layerExtents.push(JSON.parse(extStr));
@@ -957,9 +957,17 @@ var onLayerModeChange = function() {
     newLayerMode = $("input[name=renderMode]:checked").val();
     if (newLayerMode == "WMS") {
         message = "WMS layers are layers that are meant for rendering images such as TIFF(Drone Imageries).";
+        $("#layerDSTxtBox").val("states");
+        $("#layerWSTxtBox").val("topp");
+        $("#layerLinkTxtBox").val("https://ahocevar.com/geoserver/wms");
+        $("#layerExtTxtBox").val("[]");
     }
     else {
         message = "GeoJSON layers are layers that are meant for rendering shapes such as markers and features.";
+        $("#layerDSTxtBox").val("World");
+        $("#layerWSTxtBox").val("GeoJSON");
+        $("#layerLinkTxtBox").val("https://openlayers.org/en/v3.0.0/examples/data/geojson/countries.geojson");
+        $("#layerExtTxtBox").val("[]");
     }
     $("#msgID").html(message);
 }
@@ -1078,8 +1086,20 @@ $(document).ready(function () {
     //
     
     $("#leftTrigger2Btn").click(function(){
-        
+        $("#select-native-1").html(" ");
+        var str = "";
+        for (var i = 0; i < layerNames.length; i++) {
+            if (layersConfig[i].type != "Raster") {
+                str += '<option value="' + i + '">' + layerNames[i] + '</option>';
+            }
+        }
+        $("#select-native-1").html(str);
     });
+    
+    $("#select-native-1").change(function(){
+        var val = $("#select-native-1").val();
+        alert(val);
+    })
     
     // This is used to interact with the slider.
     // What this one does is that it makes the slider interact with the opacity of the layer.
