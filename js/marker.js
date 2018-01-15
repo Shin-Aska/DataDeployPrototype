@@ -205,7 +205,7 @@ setInterval(function () {
         return;
     }
 
-    if (!compareCoords(currentcoords, lastcoords)) {
+    if (false && !compareCoords(currentcoords, lastcoords)) {
 
         if (circleFeature != null) {
             vectorSource.removeFeature(circleFeature);

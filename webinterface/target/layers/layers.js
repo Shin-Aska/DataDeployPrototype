@@ -86,16 +86,18 @@ $.get("php/coverageStoreList.php", function (data) {
         layers: group_layer_buffer,
         title: "Raster Images"
     });
-    group_layer_buffer = [];
+    
     if (group_layer_buffer.length > 0) {
         layersList.push(group_newmap);
     }
+    group_layer_buffer = [];
     $.get("php/dataStoreList.php", function (data) {
         var dataStores = data;
         var stringNameSpace = "";
         
         for (var i = 0; i < dataStores.dataStores.length; i++) {
             var store = dataStores.dataStores[i];
+            
             param = createTargetLayer(workspace, store.name);
             var currentNameSpace = store.name.split("_")[0];
             
@@ -136,7 +138,7 @@ $.get("php/coverageStoreList.php", function (data) {
                             'bbox=' + bounds.join(',') + ',EPSG:3857';
             var cColor = groupColors[layersList.length + tmpVal - 1];
             var fColor = groupColorsFill[layersList.length + tmpVal - 1];
-            
+            console.log(cColor + "  " + fColor);
             var vector = new ol.layer.Vector({
                 source: layer,
                 style: new ol.style.Style({
