@@ -1113,6 +1113,27 @@ $(document).ready(function () {
         }
     });
     
+    $( "#leftpanel3" ).panel({
+      beforeclose: function( event, ui ) {
+          for (var i = 0; i < layers.length; i++) {
+              layers[i].setVisible(originalLayerVisibility[i]);
+          }
+      },
+      
+      beforeopen: function( event, ui) {
+          originalLayerVisibility = [];
+          for (var i = 0; i < layers.length; i++) {
+              originalLayerVisibility[i] = layers[i].getVisible();
+              if (i == 0) {
+                  layers[i].setVisible(true);
+              }
+              else {
+                  layers[i].setVisible(false);
+              }
+          }
+      }
+    });
+    
     $( "#autocomplete" ).on( "filterablebeforefilter", function ( e, data ) {
         var $ul = $( this ),
             $input = $( data.input ),
@@ -1130,16 +1151,52 @@ $(document).ready(function () {
             for (var i = 0; i < feat.length; i++) {
                 selectNames.push(feat[i].f);
                 selectTags.push(feat[i].H);
-                str += '<li><a href="#">' + feat[i].f + '</a></li>';
+                str += '<li class="optFeat" id="@_res_@' + feat[i].f + '"><a>' + feat[i].f + '</a></li>';
             }
             $ul.html(str)
             $ul.listview("refresh");
             $ul.trigger("updatelayout");
+            
+            $(".optFeat").click(function(){
+               var res = this.id.replace("@_res_@", "");
+               $("#featName").val(res);
+               $( "#autocomplete" ).html("");
+            });
         }
     });
     
+    $("#showFeatureTable").popup({afterclose: function( event, ui ) {
+        $('#featureTable').DataTable().destroy();
+    }});
+    
     $("#showFeaturePopup").click(function(){
-        
+        var val  = $("#select-native-1").val();
+        var feats= layerGeometry[val].getFeatures();
+        var columns = [];
+        var datas   = [];
+        for (var i = 0; i < feats.length; i++) {
+            var feat = feats[i].H;
+            var data = [];
+            for (prop in feat) {
+                if (feat.hasOwnProperty(prop) && prop != "geometry") {
+                    
+                    if (i == 0) {
+                        columns.push({title: prop});
+                    }
+                    
+                    data.push(feat[prop]);
+                    datas.push(data);
+                }
+            }
+        }
+        $("#featureTable").DataTable({
+            data: datas,
+            columns: columns,
+            scrollY: '70vh',
+            scrollCollapse: true,
+            paging:         true,
+        });
+        $("#showFeatureTable").popup("open", {"transition": "flip"});
     });
     
     // This is used to interact with the slider.

@@ -33,6 +33,10 @@
         <link rel="stylesheet" href="./webinterface/target/resources/ol.css" />
         <link rel="stylesheet" href="./webinterface/target/resources/ol3-layerswitcher.css">
         <link rel="stylesheet" href="./webinterface/target/resources/qgis2web.css">
+        
+        <link rel="stylesheet" type="text/css" href="datatable/datatables.min.css"/>
+        <script type="text/javascript" src="datatable/datatables.min.js"></script>
+        
     </head>
     <body>
 
@@ -165,7 +169,7 @@
                         <h4 class="noteContent">Marker choices:</h4>
                         <center>
                             <button class="optionsChooser" id="chooseCircle">Add a normal marker</button>
-                            <button class="optionsChooser" id="chooseCustom">Add a custom marker</button>
+                            <button style="display: none;" class="optionsChooser" id="chooseCustom">Add a custom marker</button>
                         </center>
                     </div>
                 </div><!-- /content wrapper for padding -->
@@ -182,7 +186,7 @@
                             <label for="select-native-1">Layer</label>
                             <select name="select-native-1" id="select-native-1">
                             </select>
-                            <label for="selectfeatname">Feature Name</label>
+                            <label for="selectfeatname">Feature</label>
 	
                             <form class="ui-filterable">
                                 <input id="featName" data-type="search" placeholder="Feature Name">
@@ -193,6 +197,13 @@
                         </div>
                         <button id="showFeaturePopup" class="ui-btn ui-corner-all"><i class="fa fa-search" aria-hidden="true"></i>Show Details</button>
                     </form>
+                    
+                    <div data-role="popup" id="showFeatureTable" data-theme="a">
+                        <h2 class="headingMarker">Table</h2>
+                        <div style="width: 700px; height: 400px; display: block; overflow: scroll;">
+                            <table id="featureTable" class="display" width="100%"></table>
+                        </div>
+                    </div>
                 </div><!-- /content wrapper for padding -->
 
             </div><!-- /leftpanel3 -->

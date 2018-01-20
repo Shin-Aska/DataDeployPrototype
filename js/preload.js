@@ -112,3 +112,5 @@ var targetFeature = "";
 var container = "";
 var content = "";
 var closer = "";
+
+var originalLayerVisibility = [];
