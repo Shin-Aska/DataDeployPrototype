@@ -1195,6 +1195,10 @@ $(document).ready(function () {
             scrollY: '70vh',
             scrollCollapse: true,
             paging:         true,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
         });
         $("#showFeatureTable").popup("open", {"transition": "flip"});
     });

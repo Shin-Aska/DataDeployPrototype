@@ -199,7 +199,7 @@
                     </form>
                     
                     <div data-role="popup" id="showFeatureTable" data-theme="a">
-                        <h2 class="headingMarker">Table</h2>
+                        <h2 class="headingMarker">Show Details</h2>
                         <div style="width: 700px; height: 400px; display: block; overflow: scroll;">
                             <table id="featureTable" class="display" width="100%"></table>
                         </div>
