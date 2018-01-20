@@ -26,6 +26,8 @@
 
         <script src="js/dialog-polyfill.min.js" type="text/javascript"></script>
         <script src="js/jquery.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script src="js/jquery-touch.js"></script>
         <script src="js/jquery-mobile.js"></script>
         <script src="js/overrides.js"></script>
         <script src="js/functionalities.js"></script>
@@ -84,7 +86,7 @@
                                 <legend id="operationalLayer">All Layers<a class="legendStyle" href="#popupGeneral" data-rel="popup" data-transition="slideup"><i class="fa fa-cogs" style="margin-top: 5px; " aria-hidden="true"></i></a></legend>
 
 
-                                <div data-role="popup" id="popupMenu" data-theme="a">
+                                <div class="popupClassDrag" data-role="popup" id="popupMenu" data-theme="a">
                                     <ul data-role="listview" data-inset="true" style="min-width:210px;">
                                         <li id="headerPopupMenu" data-role="list-divider">Choose an action</li>
                                         <li              onclick="zoomTo()"><a href="#">Zoom to</a></li>
@@ -95,7 +97,7 @@
                                     </ul>
                                 </div>
 
-                                <div data-role="popup" id="popupGeneral" data-theme="a">
+                                <div class="popupClassDrag" data-role="popup" id="popupGeneral" data-theme="a">
                                     <ul data-role="listview" data-inset="true" style="min-width:210px;">
                                         <li data-role="list-divider">Choose an action</li>
                                         <li><a href="#" onclick="setLayersAllOn()">Turn all layers on</a></li>
@@ -106,7 +108,7 @@
                                     </ul>
                                 </div>
 
-                                <div data-role="popup" id="popupTransparency" data-theme="a">
+                                <div class="popupClassDrag" data-role="popup" id="popupTransparency" data-theme="a">
                                     <label for="slider-1"><p id="popTargs" >Modify transparency of layer:</p></label>
                                     <input type="range" name="slider-1" id="slider-1" value="100" min="0" max="100">
                                 </div>
@@ -133,7 +135,7 @@
                                         </ul>
                                     </div>
 
-                                    <div data-role="popup" id="gpopupTransparency" data-theme="a">
+                                    <div class="popupClassDrag" data-role="popup" id="gpopupTransparency" data-theme="a">
                                         <label for="slider-2"><p id="gpopTargs" >Modify transparency of group:</p></label>
                                         <input type="range" name="slider-2" id="slider-2" value="100" min="0" max="100">
                                     </div>
@@ -157,13 +159,13 @@
                             <p>To close, click off the panel, swipe left or right, hit the Esc key, or use the button below:</p>
                         </div>
                         <div class="flex-item">
-                            <button id="addMarkerBtn" class="ui-btn ui-corner-all"><i class="fa fa-map-marker" aria-hidden="true"></i> Add a marker</button>
-                            <button id="selectMarkerBtn" class="ui-btn ui-corner-all"><i class="fa fa-mouse-pointer" aria-hidden="true"></i> Make a selection</button>
-                            <button class="ui-btn ui-corner-all" data-rel="close">Cancel Action</button>
+                            <button id="addMarkerBtn" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit"><i class="fa fa-map-marker" aria-hidden="true"></i> Add a marker</button>
+                            <button id="selectMarkerBtn" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit"><i class="fa fa-mouse-pointer" aria-hidden="true"></i> Make a selection</button>
+                            <button class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit" data-rel="close">Cancel Action</button>
                         </div>
                     </div>
 
-                    <div data-role="popup" id="popupAddMarker" data-theme="a">
+                    <div class="popupClassDrag" data-role="popup" id="popupAddMarker" data-theme="a">
                         <h2 class="headingMarker">Select the type of marker you wish to add</h2>
                         <h4 class="noteContent">After pressing a button, you will be asked to point the location where you will place the marker.</h4>
                         <h4 class="noteContent">Marker choices:</h4>
@@ -195,10 +197,10 @@
                                 
                             </ul>
                         </div>
-                        <button id="showFeaturePopup" class="ui-btn ui-corner-all"><i class="fa fa-search" aria-hidden="true"></i>Show Details</button>
+                        <button id="showFeaturePopup" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit"><i class="fa fa-search" aria-hidden="true"></i>Show Details</button>
                     </form>
                     
-                    <div data-role="popup" id="showFeatureTable" data-theme="a">
+                    <div class="popupClassDrag" data-role="popup" id="showFeatureTable" data-theme="a">
                         <h2 class="headingMarker">Show Details</h2>
                         <div style="width: 700px; height: 400px; display: block; overflow: scroll;">
                             <table id="featureTable" class="display" width="100%"></table>
@@ -208,14 +210,14 @@
 
             </div><!-- /leftpanel3 -->
 
-            <div data-role="popup" id="popupInfo" data-theme="a">
+            <div class="popupClassDrag" data-role="popup" id="popupInfo" data-theme="a">
                 <h2 class="headingMarker">Layer(s) Information</h2>
                 <button id="editBtn" onclick="spawnEdit()">Edit selected feature(s)</button>
                 <h4 id="infoContent" class="noteContent" style="width: 800px; height:600px; overflow: auto;">
                 </h4>
             </div>
 
-            <div data-role="popup" id="popupEdit" data-theme="a">
+            <div class="popupClassDrag" data-role="popup" id="popupEdit" data-theme="a">
                 <div style="padding: 10px">
                     <h2 id="headingEdit" class="headingMarker">Edit Layer</h2>
                     <div style="display: block; width: 500px; height:400px; overflow: auto;">
@@ -234,19 +236,19 @@
                         <div id="gpreview"></div>
                         <label for="etext-i">Note</label>
                         <input data-clear-btn="true" name="etext-i" id="etext-i" value="" type="text">
-                        <input onclick="editInformation()" type="button" name="Update" value="Update" class="ui-btn ui-corner-all layoutButton">
-                        <input onclick="cancelEditInformation()" type="button" name="Cancel" value="Cancel" class="ui-btn ui-corner-all layoutButton">
+                        <input onclick="editInformation()" type="button" name="Update" value="Update" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit layoutButton">
+                        <input onclick="cancelEditInformation()" type="button" name="Cancel" value="Cancel" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit layoutButton">
                     </div>
                 </div>
             </div>
 
-            <div data-role="popup" id="popupEditSelection" data-theme="a">
+            <div class="popupClassDrag" data-role="popup" id="popupEditSelection" data-theme="a">
                 <h2 class="headingMarker">Select features to edit</h2>
                 <h4 id="editSelect" class="noteContent" style="width: 500px; height:400px; overflow: auto;">
                 </h4>
             </div>
 
-            <div data-role="popup" id="addLayer" data-theme="a">
+            <div class="popupClassDrag" data-role="popup" id="addLayer" data-theme="a">
                 <div style="padding: 10px">
                     <h2 class="headingMarker">Layer Information</h2>
                     <div style="display: block; width: 500px; height:400px; overflow: auto;">
@@ -269,13 +271,13 @@
                         <div id="preview"></div>
                         <label for="text-i">Note</label>
                         <input data-clear-btn="true" name="text-i" id="text-i" value="" type="text">
-                        <input onclick="addInformation()" type="button" name="Add" value="Add" class="ui-btn ui-corner-all layoutButton">
-                        <input onclick="cancelAddInformation()" type="button" name="Cancel" value="Cancel" class="ui-btn ui-corner-all layoutButton">
+                        <input onclick="addInformation()" type="button" name="Add" value="Add" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit layoutButton">
+                        <input onclick="cancelAddInformation()" type="button" name="Cancel" value="Cancel" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit layoutButton">
                     </div>
                 </div>
             </div>
 
-            <div data-role="popup" id="sharePage" style="width: 700px; height: 600px; overflow: auto;"><!-- dialog-->
+            <div class="popupClassDrag" data-role="popup" id="sharePage" style="width: 700px; height: 600px; overflow: auto;"><!-- dialog-->
 
                 <div data-role="header">
                     <h1 id="headerTexter" class="centerText">Share the page</h1>
@@ -312,11 +314,11 @@
                         </fieldset>
                     </div>
                     <br>
-                    <input id="closeSharePage" type="button" value="Close thise window" class="ui-btn ui-corner-all layoutButton" >
+                    <input id="closeSharePage" type="button" value="Close this window" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit layoutButton" >
                 </div>
             </div><!-- dialog-->
             
-            <div data-role="popup" id="newLayerPage" style="width: 700px; height: 600px; overflow: auto;"><!-- dialog-->
+            <div class="popupClassDrag" data-role="popup" id="newLayerPage" style="width: 700px; height: 600px; overflow: auto;"><!-- dialog-->
 
                 <div data-role="header">
                     <h1 id="headerTexter" class="centerText">Connect a new Layer</h1>
@@ -343,8 +345,8 @@
                         <p id="msgID">WMS layers are layers that are meant for rendering images such as TIFF(Drone Imageries).</p>
                     </div>
                     <br>
-                    <input onclick="connectNewLayer()" type="button" name="connect" value="Connect Layer" class="ui-btn ui-corner-all layoutButton">
-                    <input id="closeNewLayerPage" type="button" value="Close thise window" class="ui-btn ui-corner-all layoutButton" >
+                    <input onclick="connectNewLayer()" type="button" name="connect" value="Connect Layer" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit layoutButton">
+                    <input id="closeNewLayerPage" type="button" value="Close this window" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit layoutButton" >
                 </div>
             </div><!-- dialog-->
 

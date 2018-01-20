@@ -1407,4 +1407,8 @@ $(document).ready(function () {
     catch(ex) {
         
     }
+    
+    $('.popupClassDrag').draggable({
+        cursor: 'move'
+    });
 });
