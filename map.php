@@ -86,7 +86,7 @@
                                 <legend id="operationalLayer">All Layers<a class="legendStyle" href="#popupGeneral" data-rel="popup" data-transition="slideup"><i class="fa fa-cogs" style="margin-top: 5px; " aria-hidden="true"></i></a></legend>
 
 
-                                <div class="popupClassDrag" data-role="popup" id="popupMenu" data-theme="a">
+                                <div data-role="popup" id="popupMenu" data-theme="a">
                                     <ul data-role="listview" data-inset="true" style="min-width:210px;">
                                         <li id="headerPopupMenu" data-role="list-divider">Choose an action</li>
                                         <li              onclick="zoomTo()"><a href="#">Zoom to</a></li>
@@ -97,7 +97,7 @@
                                     </ul>
                                 </div>
 
-                                <div class="popupClassDrag" data-role="popup" id="popupGeneral" data-theme="a">
+                                <div data-role="popup" id="popupGeneral" data-theme="a">
                                     <ul data-role="listview" data-inset="true" style="min-width:210px;">
                                         <li data-role="list-divider">Choose an action</li>
                                         <li><a href="#" onclick="setLayersAllOn()">Turn all layers on</a></li>
@@ -108,7 +108,7 @@
                                     </ul>
                                 </div>
 
-                                <div class="popupClassDrag" data-role="popup" id="popupTransparency" data-theme="a">
+                                <div data-role="popup" id="popupTransparency" data-theme="a">
                                     <label for="slider-1"><p id="popTargs" >Modify transparency of layer:</p></label>
                                     <input type="range" name="slider-1" id="slider-1" value="100" min="0" max="100">
                                 </div>
@@ -135,7 +135,7 @@
                                         </ul>
                                     </div>
 
-                                    <div class="popupClassDrag" data-role="popup" id="gpopupTransparency" data-theme="a">
+                                    <div data-role="popup" id="gpopupTransparency" data-theme="a">
                                         <label for="slider-2"><p id="gpopTargs" >Modify transparency of group:</p></label>
                                         <input type="range" name="slider-2" id="slider-2" value="100" min="0" max="100">
                                     </div>
