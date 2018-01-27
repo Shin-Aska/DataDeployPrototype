@@ -8,7 +8,7 @@ The Opensource Prototype project aims to have a working version that can compete
 1) Project Files: https://drive.google.com/drive/folders/1hH4ffAgpU3q77DlJJ0WVKavwxKDXdaVZ?usp=sharing
 2) Install the following:
     * LAMP (For Linux) or WAMP (for Windows)
-    * MySQL Geoserver Plugin (Comes bundled on the PostGreSQL)
+    * MySQL Geoserver Plugin (Comes bundled on the PostGreSQL)s
     * Geoserver 2.12.1
 3) Read the documentation found in the documentations folder (you automatically obtain a copy once you clone the repository) which comes available in multiple formats (Even in HTML!)
 
