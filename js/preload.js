@@ -114,3 +114,4 @@ var content = "";
 var closer = "";
 
 var originalLayerVisibility = [];
+var pinShowDetails = false;

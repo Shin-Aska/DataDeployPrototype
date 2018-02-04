@@ -1167,6 +1167,7 @@ $(document).ready(function () {
     
     $("#showFeatureTable").popup({afterclose: function( event, ui ) {
         $('#featureTable').DataTable().destroy();
+        $('#showFeatureTable-screen').css("display", "block");
     }});
     
     $("#showFeaturePopup").click(function(){
@@ -1265,6 +1266,27 @@ $(document).ready(function () {
 
     $("#closeSharePage").click(function () {
         $("#sharePage").popup("close");
+    });
+    
+    $("#closeShowDetails").click(function () {
+        $("#showFeatureTable").popup("close");
+    });
+    
+    $("#pinShowDetails").click(function () {
+        pinShowDetails = !pinShowDetails;
+        if (pinShowDetails) {
+            $("#pinShowDetails").val("Unpin this window");
+            $('#showFeatureTable-screen').css("display", "none");
+            $('#showFeatureTable-popup').css("pointer-events", "none");
+            $("#showFeatureTable").css("pointer-events", "auto");
+            
+        }
+        else {
+            $("#pinShowDetails").val("Pin this window");
+            $('#showFeatureTable-screen').css("display", "block");
+            $('#showFeatureTable-popup').css("pointer-events", "auto");
+            $("#showFeatureTable").css("pointer-events", "auto");
+        }
     });
     
     $("#closeNewLayerPage").click(function () {

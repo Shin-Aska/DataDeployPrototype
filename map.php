@@ -15,7 +15,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <title>Phase 2 Prototype - UPDATE 2</title>
+        <title>Phase 2 Prototype - FINAL</title>
 
         <link rel="stylesheet" href="css/fontawesome-all.css" />
         <link rel="stylesheet" href="css/dialog-polyfill.min.css">
@@ -200,11 +200,15 @@
                         <button id="showFeaturePopup" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit"><i class="fa fa-search" aria-hidden="true"></i>Show Details</button>
                     </form>
                     
-                    <div class="popupClassDrag" data-role="popup" id="showFeatureTable" data-theme="a">
+                    <div class="popupClassDrag" data-role="popup" id="showFeatureTable" data-theme="a" data-dismissible="false">
                         <h2 class="headingMarker">Show Details</h2>
                         <div style="width: 700px; height: 400px; display: block; overflow: scroll;">
-                            <table id="featureTable" class="display" width="100%"></table>
+                            <div style="padding: 10px;">
+                                <table id="featureTable" class="display" width="100%"></table>
+                            </div>
                         </div>
+                         <input id="pinShowDetails" type="button" value="Pin this window" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit layoutButton" >
+                         <input id="closeShowDetails" type="button" value="Close this window" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit layoutButton" >
                     </div>
                 </div><!-- /content wrapper for padding -->
 
@@ -277,7 +281,7 @@
                 </div>
             </div>
 
-            <div class="popupClassDrag" data-role="popup" id="sharePage" style="width: 700px; height: 600px; overflow: auto;"><!-- dialog-->
+            <div class="popupClassDrag" data-role="popup" id="sharePage" style="width: 700px; height: 600px; overflow: auto;" data-dismissible="false"><!-- dialog-->
 
                 <div data-role="header">
                     <h1 id="headerTexter" class="centerText">Share the page</h1>
