@@ -42,7 +42,7 @@ var drawMap = "";
 var interaction = "";
 var hoverInteraction = "";
 
-var bounds = [-8432930.741096409, 4809544.659519571, -8432535.843712168, 4810008.508272814];
+var bounds = [ -20037508.342789244, -20037508.342789244, 20037508.342789244, 18440002.895114224 ];
 var map = "";
 var NO_POPUP = "";
 var ALL_FIELDS = "";
