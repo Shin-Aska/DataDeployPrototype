@@ -23,7 +23,10 @@
         <link rel="stylesheet" href="css/layout.css" />
         <link rel="stylesheet" href="css/overrides.css" />
         <link rel="stylesheet" href="css/loadingbar-1.css" />
-
+        
+        <script src="js/modernizr.js"></script>
+        <script src="js/mobile-detect.min.js"></script>
+        <script src="js/mobile-detect-modernizr.min.js"></script>
         <script src="js/dialog-polyfill.min.js" type="text/javascript"></script>
         <script src="js/jquery.js"></script>
         <script src="js/jquery-ui.js"></script>
@@ -31,6 +34,7 @@
         <script src="js/jquery-mobile.js"></script>
         <script src="js/overrides.js"></script>
         <script src="js/functionalities.js"></script>
+        
 
         <link rel="stylesheet" href="./webinterface/target/resources/ol.css" />
         <link rel="stylesheet" href="./webinterface/target/resources/ol3-layerswitcher.css">
@@ -58,12 +62,30 @@
 
 
             <div role="main" class="ui-content">
-                <a href="#leftpanel1" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-left: 120px; margin-top: -5px;">Layer List</a>
+                <?php
+                    require_once 'php/mobiledetect.php';
+                    $detect = new Mobile_Detect;
+                    if (!$detect->isMobile()) {
+                ?>
+                <a href="#leftpanel1" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-left: 40px; margin-top: -5px;">Layer List</a>
                 <a href="#leftpanel2" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;">Edit</a>
                 <a id="leftTrigger2Btn" href="#leftpanel3" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;">Filter</a>
                 <a id="newLayerBtnPage" href="#newLayerPage" data-role="button" data-inline="true" data-mini="true" data-rel="popup" data-transition="slidedown" data-position-to="window" style="z-index: 100; margin-top: -5px;">Connect Layer</a>
                 <a id="shareBtnPage" href="#sharePage" data-role="button" data-inline="true" data-mini="true" data-rel="popup" data-transition="slidedown" data-position-to="window" style="z-index: 100; margin-top: -5px;">Share</a>
                 <a id="logoutBtn" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px;" >Logout</a> 
+                <?php
+                    }
+                    else {
+                ?>
+                <a href="#leftpanel1" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-left: 40px; margin-top: -5px;">🗃</a>
+                <a href="#leftpanel2" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px; margin-left: -10px;">📝</a>
+                <a id="leftTrigger2Btn" href="#leftpanel3" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px; margin-left: -10px;">🔍</a>
+                <a id="newLayerBtnPage" href="#newLayerPage" data-role="button" data-inline="true" data-mini="true" data-rel="popup" data-transition="slidedown" data-position-to="window" style="z-index: 100; margin-top: -5px; margin-left: -10px;">🌐</a>
+                <a id="shareBtnPage" href="#sharePage" data-role="button" data-inline="true" data-mini="true" data-rel="popup" data-transition="slidedown" data-position-to="window" style="z-index: 100; margin-top: -5px; margin-left: -10px;">🔗</a>
+                <a id="logoutBtn" data-role="button" data-inline="true" data-mini="true" style="z-index: 100; margin-top: -5px; margin-left: -10px;" >❗</a> 
+                <?php
+                    }
+                ?>
                 <div id="map" style="height: 99vh; width: 100vw; position: absolute; top: 0; left: 0;" class="map"></div>
                 <div id="popup" class="ol-popup">
                     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
@@ -207,7 +229,9 @@
                                 <table id="featureTable" class="display" width="100%"></table>
                             </div>
                         </div>
+                        <?php if (!$detect->isMobile()) { ?>
                          <input id="pinShowDetails" type="button" value="Pin this window" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit layoutButton" >
+                        <?php } ?>
                          <input id="closeShowDetails" type="button" value="Close this window" class="ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit layoutButton" >
                     </div>
                 </div><!-- /content wrapper for padding -->

@@ -1429,8 +1429,10 @@ $(document).ready(function () {
     catch(ex) {
         
     }
-    
-    $('.popupClassDrag').draggable({
-        cursor: 'move'
-    });
+    var md = new MobileDetect(navigator.userAgent);
+    if (md.mobile() == undefined) {
+        $('.popupClassDrag').draggable({
+            cursor: 'move'
+        });
+    }
 });
