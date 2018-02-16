@@ -1171,37 +1171,42 @@ $(document).ready(function () {
     }});
     
     $("#showFeaturePopup").click(function(){
-        var val  = $("#select-native-1").val();
-        var feats= layerGeometry[val].getFeatures();
-        var columns = [];
-        var datas   = [];
-        for (var i = 0; i < feats.length; i++) {
-            var feat = feats[i].H;
-            var data = [];
-            for (prop in feat) {
-                if (feat.hasOwnProperty(prop) && prop != "geometry") {
-                    
-                    if (i == 0) {
-                        columns.push({title: prop});
+        try {
+            var val  = $("#select-native-1").val();
+            var feats= layerGeometry[val].getFeatures();
+            var columns = [];
+            var datas   = [];
+            for (var i = 0; i < feats.length; i++) {
+                var feat = feats[i].H;
+                var data = [];
+                for (prop in feat) {
+                    if (feat.hasOwnProperty(prop) && prop != "geometry") {
+                        
+                        if (i == 0) {
+                            columns.push({title: prop});
+                        }
+                        
+                        data.push(feat[prop]);
+                        datas.push(data);
                     }
-                    
-                    data.push(feat[prop]);
-                    datas.push(data);
                 }
             }
+            $("#featureTable").DataTable({
+                data: datas,
+                columns: columns,
+                scrollY: '70vh',
+                scrollCollapse: true,
+                paging:         true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+            });
+            $("#showFeatureTable").popup("open", {"transition": "flip"});
         }
-        $("#featureTable").DataTable({
-            data: datas,
-            columns: columns,
-            scrollY: '70vh',
-            scrollCollapse: true,
-            paging:         true,
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ],
-        });
-        $("#showFeatureTable").popup("open", {"transition": "flip"});
+        catch(ex) {
+            $('#featureTable').DataTable().destroy();
+        }
     });
     
     // This is used to interact with the slider.
