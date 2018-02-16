@@ -1174,6 +1174,10 @@ $(document).ready(function () {
         try {
             var val  = $("#select-native-1").val();
             var feats= layerGeometry[val].getFeatures();
+            if (feats.length == 0) {
+                alert("There is nothing to show or the feature is still loading, please wait");
+                return;
+            }
             var columns = [];
             var datas   = [];
             for (var i = 0; i < feats.length; i++) {

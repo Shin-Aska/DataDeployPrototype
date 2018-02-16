@@ -225,7 +225,7 @@ map = new ol.Map({
 
 map.addInteraction(interaction);
 map.addInteraction(hoverInteraction);
-map.getView().fit(bounds, map.getSize());
+map.getView().fit([ -8432930, 4809546.1514079, -8432535.102418, 4810010 ], map.getSize());
 
 NO_POPUP = 0
 ALL_FIELDS = 1
