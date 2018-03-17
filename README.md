@@ -16,8 +16,8 @@ Datadeploy Opensource Prototype project aims to have a working version that can 
 
 For more questions or you want to discuss and implement new things. Chat with the rest of the OpenSource Team at [Slack](http://datadeployteam.slack.com/)
 
-License: GPL V3
-Members:__
-[Richard Orilla*](linkedin.com/in/richard-orilla)__
-[Vaugh Courtney](https://github.com/datadeploytest1)__
+License: GPL V3<br />
+Members: <br />
+[Richard Orilla*](linkedin.com/in/richard-orilla)<br />
+[Vaugh Courtney](https://github.com/datadeploytest1)<br />
 Pierce Conlon
