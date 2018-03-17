@@ -2,19 +2,22 @@
 ![alt text](https://i.imgur.com/pN8hRM1.png?1 "Prototype Header")
 
 # About Opensource Prototype
-The Opensource Prototype project aims to have a working version that can compete with ESRI's ArcGIS using Opensource technology such as PHP, OpenLayers and GeoServer. Although there are plans to support other technologies in parallel as well.
+Datadeploy Opensource Prototype project aims to have a working version that can be an alternative to ESRI's ArcGIS using Opensource technologies such as PHP, OpenLayers and GeoServer. There are also plans for other technologies to be supported such as Cassandra.
 
 # Getting Started
-1) Project Files: https://drive.google.com/drive/folders/1hH4ffAgpU3q77DlJJ0WVKavwxKDXdaVZ?usp=sharing
-2) Install the following:
+1) Install the following:
     * LAMP (For Linux) or WAMP (for Windows)
     * MySQL Geoserver Plugin (Comes bundled on the PostGreSQL)s
     * Geoserver 2.12.1
-3) Read the documentation found in the documentations folder (you automatically obtain a copy once you clone the repository) which comes available in multiple formats (Even in HTML!)
+2) Read the documentation found in the documentations folder (you automatically obtain a copy once you clone the repository) which comes available in multiple formats (Even in HTML!)
+3) Configure the urls of the following files to match your geoserver's configuration: coverageStoreList.php and dataStoreList.php located in the PHP folder
+3.A) Also configure functionalities.js first three variables to match your geoserver's configuration
+4) Configure the database file (currently, PHP/config/mysql.php to match your current MySQL settings
 
 For more questions or you want to discuss and implement new things. Chat with the rest of the OpenSource Team at [Slack](http://datadeployteam.slack.com/)
 
-Members:
-[Richard Orilla](linkedin.com/in/richard-orilla)
-[Vaugh Courtney](https://github.com/datadeploytest1)
+License: GPL V3
+Members:__
+[Richard Orilla*](linkedin.com/in/richard-orilla)__
+[Vaugh Courtney](https://github.com/datadeploytest1)__
 Pierce Conlon

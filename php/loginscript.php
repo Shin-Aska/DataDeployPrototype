@@ -1,7 +1,7 @@
 <?php
     $username = $_POST["u"];
 	$password = $_POST["p"];
-	$mysql = mysqli_connect('localhost', 'root', '');
+	include("config/mysql.php");
     mysqli_select_db($mysql, "pictures");
     $stmt = mysqli_prepare($mysql, "SELECT * FROM user WHERE username = ? AND password = ?");
     mysqli_stmt_bind_param($stmt, "ss", $username, $password);

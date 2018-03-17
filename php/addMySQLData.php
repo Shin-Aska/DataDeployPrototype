@@ -17,7 +17,7 @@
     $not = $_POST["not"];
     $point = $lon . " " . $lat;
 
-    $mysql = mysqli_connect('localhost', 'root', '');
+    include("config/mysql.php");
     mysqli_select_db($mysql, "pictures");
     $stmt = mysqli_prepare($mysql, "INSERT INTO cus_pictures(position, altitude, location, devicetype, date, path, picture, note) VALUES(ST_GeomFromText('POINT(" . $point . ")'), ?, ?, ?, ?, ?, ?, ?)");
     mysqli_stmt_bind_param($stmt, "dssssss", $alt, $loc, $dev, $dat, $pat, $pic, $not);

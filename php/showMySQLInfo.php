@@ -10,7 +10,7 @@
     $result = new Informations();
     $result->info = array();
     
-    $mysql = mysqli_connect('localhost', 'root', '');
+    include("config/mysql.php");
     mysqli_select_db($mysql, "pictures");
     $zresult = mysqli_query($mysql, "SELECT * FROM cus_pictures");
     while ($row = mysqli_fetch_array($zresult)) {

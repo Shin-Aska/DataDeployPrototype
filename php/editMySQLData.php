@@ -15,7 +15,7 @@
     $pic = $_POST["pic"];
     $not = $_POST["not"];
 
-    $mysql = mysqli_connect('localhost', 'root', '');
+    include("config/mysql.php");
     mysqli_select_db($mysql, "pictures");
     $stmt = mysqli_prepare($mysql, "UPDATE cus_pictures SET altitude=?, location=?, devicetype=?, date=?, path=?, picture=?, note=? WHERE pointID= ?");
     mysqli_stmt_bind_param($stmt, "dssssssi", $alt, $loc, $dev, $dat, $pat, $pic, $not, $id);
